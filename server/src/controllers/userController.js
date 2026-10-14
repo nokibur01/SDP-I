@@ -1,11 +1,11 @@
 import db from "../config/db.js";
 
-// Get Profile (FR-06)
+// Get Profile
 export const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
     const [users] = await db.execute(
-      "SELECT id, name, email, student_id, batch, department, role, profile_picture, created_at FROM users WHERE id = ?",
+      "SELECT id, name, email, student_id, batch, department, role, profile_picture, skills, gender, created_at FROM users WHERE id = ?",
       [userId],
     );
 
@@ -21,25 +21,34 @@ export const getProfile = async (req, res) => {
   }
 };
 
-// Update Profile (FR-07)
+// Update Profile
 export const updateProfile = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { name, student_id, batch, department, profile_picture } = req.body;
+    const {
+      name,
+      student_id,
+      batch,
+      department,
+      profile_picture,
+      skills,
+      gender,
+    } = req.body;
 
-    const query = `UPDATE users SET name = ?, student_id = ?, batch = ?, department = ?, profile_picture = ? WHERE id = ?`;
+    const query = `UPDATE users SET name = ?, student_id = ?, batch = ?, department = ?, profile_picture = ?, skills = ?, gender = ? WHERE id = ?`;
     await db.execute(query, [
       name,
       student_id || null,
       batch || null,
       department || null,
       profile_picture || null,
+      skills || null,
+      gender || null,
       userId,
     ]);
 
-    // Fetch updated user data to return
     const [updatedUser] = await db.execute(
-      "SELECT id, name, email, student_id, batch, department, role, profile_picture FROM users WHERE id = ?",
+      "SELECT id, name, email, student_id, batch, department, role, profile_picture, skills, gender FROM users WHERE id = ?",
       [userId],
     );
 
