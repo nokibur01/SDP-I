@@ -1,77 +1,71 @@
 import express from "express";
-import {
-  getProfile,
-  updateProfile,
-  changePassword,
-  updateUserRole,
-} from "../controllers/userController.js";
-import { verifyToken, requireRole } from "../middleware/authMiddleware.js";
+import db from "../config/db.js";
 
 const router = express.Router();
 
-router.get("/profile", verifyToken, getProfile);
-router.put("/profile", verifyToken, updateProfile);
-router.put("/change-password", verifyToken, changePassword);
-
-// Admin-only role management
-router.put("/:userId/role", verifyToken, requireRole("admin"), updateUserRole);
-const db = require("../config/db");
-
-// 1. Get all batches summary
-router.get("/admin/batches", async (req, res) => {
+// Get all users / members
+router.get("/", async (req, res) => {
   try {
-    const [[{ studentCount }]] = await db.query(
-      "SELECT COUNT(*) AS studentCount FROM users",
-    );
-    const [[{ noticeCount }]] = await db.query(
-      "SELECT COUNT(*) AS noticeCount FROM notices",
-    );
-    const [[{ resourceCount }]] = await db.query(
-      "SELECT COUNT(*) AS resourceCount FROM materials",
-    );
-
-    res.json([
-      {
-        batchId: "Batch 3rd Year",
-        name: "Batch 3rd Year (CSE)",
-        department: "CSE",
-        studentCount,
-        noticeCount,
-        resourceCount,
-      },
-    ]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error fetching batches summary" });
-  }
-});
-
-// 2. Get items by category for a batch
-router.get("/admin/batches/:batchId/:tab", async (req, res) => {
-  const { tab } = req.params;
-  const tableMap = {
-    students:
+    const [rows] = await db.query(
       "SELECT id, name, email, role, created_at FROM users ORDER BY id DESC",
-    notices: "SELECT * FROM notices ORDER BY id DESC",
-    resources: "SELECT * FROM materials ORDER BY id DESC",
-    tasks: "SELECT * FROM tasks ORDER BY id DESC",
-    events: "SELECT * FROM events ORDER BY id DESC",
-    projects: "SELECT * FROM projects ORDER BY id DESC",
-  };
-
-  const query = tableMap[tab];
-  if (!query) return res.status(400).json({ message: "Invalid tab" });
-
-  try {
-    const [rows] = await db.query(query);
+    );
     res.json(rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: `Failed to fetch ${tab}` });
+    res.status(500).json({ message: "Error fetching users" });
   }
 });
 
-// 3. Promote/Demote Student Role
+// Get all notices
+router.get("/notices", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM notices ORDER BY id DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching notices" });
+  }
+});
+
+// Get all materials / resources
+router.get("/materials", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM materials ORDER BY id DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching materials" });
+  }
+});
+
+// Get all tasks
+router.get("/tasks", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM tasks ORDER BY id DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching tasks" });
+  }
+});
+
+// Get all events
+router.get("/events", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM events ORDER BY id DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching events" });
+  }
+});
+
+// Get all projects
+router.get("/projects", async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM projects ORDER BY id DESC");
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching projects" });
+  }
+});
+
+// Role Update
 router.put("/admin/users/:id/role", async (req, res) => {
   try {
     const { role } = req.body;
@@ -81,12 +75,11 @@ router.put("/admin/users/:id/role", async (req, res) => {
     ]);
     res.json({ message: "Role updated successfully" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Failed to update role" });
   }
 });
 
-// 4. Universal Admin Delete for any item
+// Universal Delete
 router.delete("/admin/:tab/:id", async (req, res) => {
   const { tab, id } = req.params;
   const tableNames = {
@@ -97,7 +90,6 @@ router.delete("/admin/:tab/:id", async (req, res) => {
     events: "events",
     projects: "projects",
   };
-
   const table = tableNames[tab];
   if (!table) return res.status(400).json({ message: "Invalid category" });
 
@@ -105,8 +97,8 @@ router.delete("/admin/:tab/:id", async (req, res) => {
     await db.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
     res.json({ message: "Deleted successfully" });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ message: "Failed to delete record" });
   }
 });
+
 export default router;
