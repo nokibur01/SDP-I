@@ -1,11 +1,12 @@
 import jwt from "jsonwebtoken";
+import db from "../config/db.js";
 
 /**
  * Middleware: Verify JWT Authentication
  * Validates the Authorization Bearer header using the configured JWT_SECRET.
  * Rejects missing, invalid, or expired tokens with HTTP 401.
  */
-export const verifyToken = (req, res, next) => {
+export const verifyToken = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader) {
     return res.status(401).json({
@@ -32,15 +33,42 @@ export const verifyToken = (req, res, next) => {
     });
   }
 
+  let verified;
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified; // { id, email, role, batch, iat, exp }
-    next();
+    verified = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
     return res.status(401).json({
       success: false,
       message: err.name === "TokenExpiredError" ? "Session expired. Please log in again." : "Invalid authentication token.",
     });
+  }
+
+  // Load the account's *current* role/batch so role changes and deletions take effect immediately
+  // (the token alone could carry a stale role for up to its full lifetime).
+  try {
+    const [rows] = await db.execute(
+      "SELECT id, email, role, batch, department FROM users WHERE id = ?",
+      [verified.id]
+    );
+    if (rows.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "This account no longer exists. Please log in again.",
+      });
+    }
+    const current = rows[0];
+    req.user = {
+      ...verified,
+      id: current.id,
+      email: current.email,
+      role: current.role,
+      batch: current.batch,
+      department: current.department,
+    };
+    next();
+  } catch (err) {
+    console.error("Auth lookup error:", err.message);
+    return res.status(500).json({ success: false, message: "Unable to verify session." });
   }
 };
 

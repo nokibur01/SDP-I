@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { resolveRoleIds } from "./testUsers.js";
 import axios from "axios";
 import dotenv from "dotenv";
 import path from "path";
@@ -30,10 +31,11 @@ async function runTaskPhaseTests() {
   }
 
   const timestamp = Date.now();
+  const { CR_ID, ADMIN_ID } = await resolveRoleIds();
   const studentToken = jwt.sign({ id: 1, role: "student", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
   const studentBToken = jwt.sign({ id: 2, role: "student", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
-  const crToken = jwt.sign({ id: 6, role: "cr", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
-  const adminToken = jwt.sign({ id: 6, role: "admin", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
+  const crToken = jwt.sign({ id: CR_ID, role: "cr", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
+  const adminToken = jwt.sign({ id: ADMIN_ID, role: "admin", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
 
   const futureDate = new Date(Date.now() + 3 * 86400000).toISOString().slice(0, 19).replace("T", " ");
 

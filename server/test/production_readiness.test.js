@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { resolveRoleIds } from "./testUsers.js";
 import axios from "axios";
 import dotenv from "dotenv";
 import path from "path";
@@ -30,10 +31,11 @@ async function runProductionReadinessTests() {
   }
 
   // Create JWT tokens for testing
+  const { CR_ID, ADMIN_ID } = await resolveRoleIds();
   const student1Token = jwt.sign({ id: 1, role: "student", batch: "3rd Year" }, JWT_SECRET);
   const student2Token = jwt.sign({ id: 2, role: "student", batch: "3rd Year" }, JWT_SECRET);
-  const crToken = jwt.sign({ id: 1, role: "cr", batch: "3rd Year" }, JWT_SECRET);
-  const adminToken = jwt.sign({ id: 1, role: "admin", batch: "3rd Year" }, JWT_SECRET);
+  const crToken = jwt.sign({ id: CR_ID, role: "cr", batch: "3rd Year" }, JWT_SECRET);
+  const adminToken = jwt.sign({ id: ADMIN_ID, role: "admin", batch: "3rd Year" }, JWT_SECRET);
 
   const uniqueSuffix = Date.now();
 
@@ -107,7 +109,7 @@ async function runProductionReadinessTests() {
     console.log("--- 2. Project Member Removal Workflow ---");
     // Unauthorized user attempts to remove member
     try {
-      const student3Token = jwt.sign({ id: 9999, role: "student", batch: "3rd Year" }, JWT_SECRET);
+      const student3Token = jwt.sign({ id: 3, role: "student", batch: "3rd Year" }, JWT_SECRET);
       await axios.delete(`${API_BASE}/projects/${projectId}/members/2`, {
         headers: { Authorization: `Bearer ${student3Token}` },
       });

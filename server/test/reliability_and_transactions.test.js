@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { resolveRoleIds } from "./testUsers.js";
 import axios from "axios";
 import dotenv from "dotenv";
 import path from "path";
@@ -31,9 +32,11 @@ async function runReliabilityAndTransactionsTests() {
     }
   }
 
+  const { CR_ID, ADMIN_ID } = await resolveRoleIds();
+
   const student1Token = jwt.sign({ id: 1, role: "student", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
   const student2Token = jwt.sign({ id: 2, role: "student", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
-  const crToken = jwt.sign({ id: 1, role: "cr", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
+  const crToken = jwt.sign({ id: CR_ID, role: "cr", batch: "3rd Year", department: "CSE" }, JWT_SECRET);
 
   const uniqueSuffix = Date.now();
 

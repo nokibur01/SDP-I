@@ -1,6 +1,12 @@
 import mysql from "mysql2";
 import dotenv from "dotenv";
-dotenv.config();
+import path from "path";
+import { fileURLToPath } from "url";
+
+// Always load server/.env regardless of the working directory the process was started from.
+// (This module is imported before server.js body runs, so it must load env itself.)
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.resolve(__dirname, "../../.env"), quiet: true });
 
 const isProduction = process.env.NODE_ENV === "production";
 

@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { resolveRoleIds } from "./testUsers.js";
 import axios from "axios";
 import dotenv from "dotenv";
 import path from "path";
@@ -31,9 +32,10 @@ async function runDashboardTests() {
 
   // 1. Role-Based Announcement Authorization
   console.log("--- 1. Role-Based Announcement Security ---");
+  const { CR_ID, ADMIN_ID } = await resolveRoleIds();
   const studentToken = jwt.sign({ id: 1, role: "student", batch: "3rd Year" }, JWT_SECRET);
-  const crToken = jwt.sign({ id: 1, role: "cr", batch: "3rd Year" }, JWT_SECRET);
-  const adminToken = jwt.sign({ id: 1, role: "admin", batch: "3rd Year" }, JWT_SECRET);
+  const crToken = jwt.sign({ id: CR_ID, role: "cr", batch: "3rd Year" }, JWT_SECRET);
+  const adminToken = jwt.sign({ id: ADMIN_ID, role: "admin", batch: "3rd Year" }, JWT_SECRET);
 
   try {
     await axios.post(`${API_BASE}/notices`, {
