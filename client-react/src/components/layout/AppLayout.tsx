@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { CommandPalette } from './CommandPalette';
+import { ChatbotLauncher } from '../chatbot/ChatbotLauncher';
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -69,6 +70,9 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
 
       {/* Global Command Palette */}
       <CommandPalette isOpen={isCommandOpen} onClose={() => setIsCommandOpen(false)} />
+
+      {/* BatchHub Assistant (AI chatbot) — available on every authenticated page */}
+      <ChatbotLauncher />
     </div>
   );
 };

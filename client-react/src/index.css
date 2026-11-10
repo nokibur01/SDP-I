@@ -147,3 +147,23 @@ html.theme-transition *::after {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-line-strong);
 }
+
+/* BatchHub Assistant: subtle open animation */
+@keyframes chat-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.chat-panel-enter {
+  animation: chat-panel-enter 160ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel-enter {
+    animation: none;
+  }
+}

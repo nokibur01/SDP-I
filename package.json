@@ -10,7 +10,7 @@
     "build": "npm --prefix client-react run build",
     "preview": "npm --prefix client-react run preview",
     "seed:demo": "node server/scripts/seed_demo_data.js",
-    "test": "node server/test/dashboard_fixes.test.js && node server/test/tasks_phase_implementation.test.js && node server/test/security_and_auth.test.js && node server/test/phase2_features.test.js && node server/test/backend_gap_completion.test.js && node server/test/production_readiness.test.js && node server/test/final_improvements.test.js && node server/test/reliability_and_transactions.test.js && node server/test/e2e_browser_routes_and_roles.js"
+    "test": "node server/test/dashboard_fixes.test.js && node server/test/tasks_phase_implementation.test.js && node server/test/security_and_auth.test.js && node server/test/phase2_features.test.js && node server/test/backend_gap_completion.test.js && node server/test/production_readiness.test.js && node server/test/final_improvements.test.js && node server/test/reliability_and_transactions.test.js && node server/test/chatbot.test.js && node server/test/e2e_browser_routes_and_roles.js"
   },
   "devDependencies": {
     "concurrently": "^9.2.5"
