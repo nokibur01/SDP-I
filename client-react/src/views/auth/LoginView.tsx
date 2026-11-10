@@ -63,11 +63,22 @@ export const LoginView: React.FC = () => {
 
       {/* Login card */}
       <div className="relative z-10 w-full max-w-[420px]">
-        <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-12 h-12 rounded-[14px] bg-[#101713]/80 backdrop-blur-md border border-[#95b399]/25 flex items-center justify-center shadow-[0_8px_24px_rgba(0,0,0,0.4)]">
-            <GraduationCap className="w-6 h-6 text-[#95b399]" />
+        {/* Brand lockup */}
+        <div className="flex justify-center mb-6">
+          <div className="inline-flex items-center gap-3 pl-2 pr-5 py-2 rounded-full bg-[#090e0b]/70 backdrop-blur-md border border-[#95b399]/20 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[#a9c4ac] to-[#6f8f75] flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_0_18px_rgba(149,179,153,0.35)]">
+              <GraduationCap className="w-5 h-5 text-[#090e0b]" strokeWidth={2.25} />
+            </div>
+            <div className="flex flex-col leading-none text-left">
+              <span className="text-[19px] font-extrabold tracking-tight">
+                <span className="text-[#d6ded8]">Batch</span>
+                <span className="text-[#95b399]">Hub</span>
+              </span>
+              <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#78877d]">
+                University cohort space
+              </span>
+            </div>
           </div>
-          <span className="mt-3 text-[20px] font-bold text-[#d6ded8] tracking-tight drop-shadow">BatchHub</span>
         </div>
 
         <div className="bg-[#101713]/80 backdrop-blur-xl border border-[#95b399]/15 rounded-[22px] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
