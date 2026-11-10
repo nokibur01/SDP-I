@@ -83,16 +83,18 @@ For local demonstration and presentation screenshots, the following accounts can
 
 ---
 
-## 🎨 Visual Identity — Midnight Campus
+## 🎨 Visual Identity — Matte Dark Forest & Sage
 
-* **Canvas Background:** `#0B1316`
-* **Card Surface:** `#15242A`
-* **Card Hover:** `#192C34`
-* **Elevated Surface:** `#1B2E36`
-* **Inset Input Fields:** `#0E171B`
-* **Structural Borders:** `#1F353C`
-* **Primary Emerald Accent:** `#00D084` (Hover: `#00B875`, Soft: `rgba(0, 208, 132, 0.10)`)
-* **Status Badges:** Coral Red (`#F87171`), Amber Warning (`#FBBF24`), Sky Info (`#38BDF8`), Royal Purple (`#A78BFA`)
+* **Canvas Background:** `#090e0b`
+* **Card / Sidebar Surface:** `#101713`
+* **Card Hover:** `#141d18`
+* **Elevated Surface:** `#16201a`
+* **Inset Input Fields:** `#0c120e`
+* **Structural Borders:** `#1b261f`
+* **Primary Sage Accent:** `#95b399` (Hover: `#839f87`, button text: `#090e0b`)
+* **Secondary Accent (icons):** `#4a6352`
+* **Text:** Main `#d6ded8`, Muted `#78877d`
+* **Priority Badges:** High `#d66767` on `#3b1c1c`, Medium `#d6b867` on `#3a321c`
 
 ---
 
