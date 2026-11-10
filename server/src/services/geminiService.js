@@ -5,27 +5,56 @@
 // Uses the public REST API directly via fetch, so no extra dependency is needed.
 
 const API_ROOT = "https://generativelanguage.googleapis.com/v1beta/models";
-const DEFAULT_MODEL = "gemini-2.5-flash";
-const REQUEST_TIMEOUT_MS = 30_000;
+const DEFAULT_MODEL = "gemini-3.5-flash";
+const DEFAULT_FALLBACK_MODELS = "gemini-3.5-flash-lite";
+const REQUEST_TIMEOUT_MS = 25_000;
 const MAX_TOOL_ROUNDS = 4; // model -> tools -> model ... upper bound per user message
 
 /** Error with a code that is safe to map to a user-facing message. */
 export class GeminiError extends Error {
-  constructor(code, message) {
+  constructor(code, message, retryable = false) {
     super(message);
     this.name = "GeminiError";
     this.code = code; // "not_configured" | "rate_limited" | "blocked" | "timeout" | "upstream"
+    this.retryable = retryable; // worth trying a different model
   }
 }
 
 export const isGeminiConfigured = () =>
   Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim());
 
+/** Primary model first, then fallbacks (GEMINI_MODEL, GEMINI_FALLBACK_MODELS), de-duplicated. */
+const modelChain = () => {
+  const primary = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
+  const fallbacks = (process.env.GEMINI_FALLBACK_MODELS ?? DEFAULT_FALLBACK_MODELS)
+    .split(",")
+    .map((m) => m.trim())
+    .filter(Boolean);
+  return [...new Set([primary, ...fallbacks])];
+};
+
+/**
+ * Call Gemini, moving on to the next model in the chain when one is overloaded,
+ * rate-limited, timing out or retired. Non-retryable errors (bad key, blocked) stop immediately.
+ */
 const callGemini = async (body) => {
+  let lastError;
+  for (const model of modelChain()) {
+    try {
+      return await callModel(model, body);
+    } catch (err) {
+      lastError = err;
+      if (!(err instanceof GeminiError) || !err.retryable) throw err;
+      console.warn(`Gemini model ${model} unavailable (${err.message}); trying next model if configured.`);
+    }
+  }
+  throw lastError;
+};
+
+const callModel = async (model, body) => {
   const apiKey = (process.env.GEMINI_API_KEY || "").trim();
   if (!apiKey) throw new GeminiError("not_configured", "GEMINI_API_KEY is not set.");
 
-  const model = (process.env.GEMINI_MODEL || DEFAULT_MODEL).trim();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
@@ -38,7 +67,7 @@ const callGemini = async (body) => {
       signal: controller.signal,
     });
   } catch (err) {
-    if (err.name === "AbortError") throw new GeminiError("timeout", "Gemini request timed out.");
+    if (err.name === "AbortError") throw new GeminiError("timeout", `Gemini (${model}) request timed out.`, true);
     throw new GeminiError("upstream", `Network error reaching Gemini: ${err.message}`);
   } finally {
     clearTimeout(timer);
@@ -52,11 +81,19 @@ const callGemini = async (body) => {
     } catch {
       /* ignore non-JSON error bodies */
     }
-    if (response.status === 429) throw new GeminiError("rate_limited", `Gemini quota/rate limit: ${detail}`);
-    if (response.status === 400 || response.status === 401 || response.status === 403) {
-      throw new GeminiError("not_configured", `Gemini rejected the request (${response.status}): ${detail}`);
+    if (response.status === 429) throw new GeminiError("rate_limited", `Gemini (${model}) quota/rate limit: ${detail}`, true);
+    if (response.status === 401 || response.status === 403) {
+      throw new GeminiError("not_configured", `Gemini rejected the API key (${response.status}): ${detail}`);
     }
-    throw new GeminiError("upstream", `Gemini error ${response.status}: ${detail}`);
+    if (response.status === 404) {
+      // Model retired or unavailable to this key: try the next one
+      throw new GeminiError("upstream", `Gemini model ${model} not available: ${detail}`, true);
+    }
+    if (response.status === 400) {
+      throw new GeminiError("upstream", `Gemini rejected the request (400): ${detail}`);
+    }
+    // 500/503 = overloaded or temporary failure on Google's side
+    throw new GeminiError("upstream", `Gemini (${model}) error ${response.status}: ${detail}`, response.status >= 500);
   }
 
   return response.json();
