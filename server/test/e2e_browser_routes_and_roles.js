@@ -10,7 +10,7 @@ dotenv.config({ path: path.join(__dirname, "../.env") });
 dotenv.config();
 
 const API_BASE = "http://localhost:5000/api";
-const CLIENT_BASE = "http://localhost:3000";
+const CLIENT_BASE = process.env.CLIENT_BASE_URL || "http://localhost:3000";
 const JWT_SECRET = process.env.JWT_SECRET || "default_jwt_secret";
 
 async function runE2ERoutesAndRolesTest() {

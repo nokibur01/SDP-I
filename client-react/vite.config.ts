@@ -10,6 +10,7 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
+    strictPort: true,
     host: true,
     proxy: {
       '/api': {
@@ -20,6 +21,7 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+    strictPort: true,
     host: true,
     proxy: {
       '/api': {

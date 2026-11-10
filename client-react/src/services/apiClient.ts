@@ -1,6 +1,7 @@
-// Purono line: const API_BASE = '/api';
-// Notun line (Backend port 5000 specify kore din):
-const API_BASE = "http://localhost:5000/api";
+// Relative by default: the Vite dev/preview server proxies /api to the backend (see vite.config.ts),
+// so the app also works from other devices on the network. Set VITE_API_URL to override
+// (e.g. VITE_API_URL=https://api.example.edu/api for a separately hosted backend).
+const API_BASE: string = import.meta.env.VITE_API_URL || "/api";
 
 class ApiClient {
   private getToken(): string | null {
