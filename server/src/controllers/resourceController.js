@@ -1,20 +1,24 @@
 import db from "../config/db.js";
 import { createNotification } from "./notificationController.js";
+import { visibleBatchClause, moderationClause, canSeeBatch, canModerateBatch, batchForNewContent } from "../utils/batchScope.js";
 
 // Get all approved materials + pending materials for CR panel + student's own submissions
 export const getResources = async (req, res) => {
   try {
     const role = req.user.role;
     const userId = req.user.id;
+    const visible = visibleBatchClause(req.user, "m.batch");
+    const moderation = moderationClause(req.user, "m.batch");
 
-    // Fetch all approved materials
+    // Fetch approved materials for the user's batch (+ global)
     const [materials] = await db.execute(
       `SELECT m.*, u.name as uploader_name, sc.course_title 
        FROM materials m 
        LEFT JOIN users u ON m.uploaded_by = u.id 
        LEFT JOIN semester_courses sc ON m.course_code = sc.course_code
-       WHERE m.status = 'approved'
-       ORDER BY m.created_at DESC`
+       WHERE m.status = 'approved' AND ${visible.sql}
+       ORDER BY m.created_at DESC`,
+      visible.params
     );
 
     // Fetch pending materials for CR/Admin review
@@ -25,8 +29,9 @@ export const getResources = async (req, res) => {
          FROM materials m 
          LEFT JOIN users u ON m.uploaded_by = u.id 
          LEFT JOIN semester_courses sc ON m.course_code = sc.course_code
-         WHERE m.status = 'pending'
-         ORDER BY m.created_at DESC`
+         WHERE m.status = 'pending' AND ${moderation.sql}
+         ORDER BY m.created_at DESC`,
+        moderation.params
       );
       pendingMaterials = pMaterials;
     }
@@ -71,7 +76,7 @@ export const uploadResource = async (req, res) => {
         : "Resource uploaded and submitted for CR approval!";
 
     const [result] = await db.execute(
-      "INSERT INTO materials (course_code, title, file_url, category, status, uploaded_by) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO materials (course_code, title, file_url, category, status, uploaded_by, batch) VALUES (?, ?, ?, ?, ?, ?, ?)",
       [
         course_code ? course_code.trim() : "General",
         title.trim(),
@@ -79,6 +84,7 @@ export const uploadResource = async (req, res) => {
         category || "Lecture Notes",
         status,
         userId,
+        batchForNewContent(req.user, req.body.batch),
       ]
     );
 
@@ -98,9 +104,12 @@ export const approveResource = async (req, res) => {
     const { materialId } = req.params;
     const reviewerId = req.user.id;
 
-    const [materials] = await db.execute("SELECT id, title, uploaded_by FROM materials WHERE id = ?", [materialId]);
+    const [materials] = await db.execute("SELECT id, title, uploaded_by, batch FROM materials WHERE id = ?", [materialId]);
     if (materials.length === 0) {
       return res.status(404).json({ success: false, message: "Resource not found." });
+    }
+    if (!canModerateBatch(req.user, materials[0].batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's resources." });
     }
 
     await db.execute(
@@ -137,9 +146,12 @@ export const rejectResource = async (req, res) => {
     const reviewerId = req.user.id;
     const rejectionReason = req.body?.reason || req.body?.rejection_reason || "Declined by batch representative.";
 
-    const [materials] = await db.execute("SELECT id, title, uploaded_by FROM materials WHERE id = ?", [materialId]);
+    const [materials] = await db.execute("SELECT id, title, uploaded_by, batch FROM materials WHERE id = ?", [materialId]);
     if (materials.length === 0) {
       return res.status(404).json({ success: false, message: "Resource not found." });
+    }
+    if (!canModerateBatch(req.user, materials[0].batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's resources." });
     }
 
     // Preserve the submission record with status 'rejected' and audit details
@@ -177,13 +189,13 @@ export const updateResource = async (req, res) => {
     const userRole = req.user.role;
     const { title, file_url, category, course_code } = req.body;
 
-    const [materials] = await db.execute("SELECT id, title, uploaded_by FROM materials WHERE id = ?", [materialId]);
+    const [materials] = await db.execute("SELECT id, title, uploaded_by, batch FROM materials WHERE id = ?", [materialId]);
     if (materials.length === 0) {
       return res.status(404).json({ success: false, message: "Resource not found." });
     }
 
     const isOwner = materials[0].uploaded_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, materials[0].batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({
@@ -221,13 +233,13 @@ export const deleteResource = async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
 
-    const [materials] = await db.execute("SELECT id, title, uploaded_by FROM materials WHERE id = ?", [materialId]);
+    const [materials] = await db.execute("SELECT id, title, uploaded_by, batch FROM materials WHERE id = ?", [materialId]);
     if (materials.length === 0) {
       return res.status(404).json({ success: false, message: "Resource not found." });
     }
 
     const isOwner = materials[0].uploaded_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, materials[0].batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({

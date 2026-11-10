@@ -1,4 +1,11 @@
 import db from "../config/db.js";
+import { isAdmin, canModerateBatch } from "../utils/batchScope.js";
+
+// CRs manage only their own batch's courses/timetable; admins may target any batch.
+const targetBatch = (req, requested) =>
+  isAdmin(req.user) ? (typeof requested === "string" ? requested.trim() : "") : (req.user.batch || "").trim();
+const forbidden = (res) =>
+  res.status(403).json({ success: false, message: "Forbidden: You can only manage your own batch's schedule." });
 
 export const getBatchAcademicData = async (req, res) => {
   try {
@@ -36,7 +43,8 @@ export const addCourse = async (req, res) => {
     if (req.user.role !== "cr" && req.user.role !== "admin") {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
-    const { course_code, course_title, department, batch } = req.body;
+    const { course_code, course_title, department } = req.body;
+    const batch = targetBatch(req, req.body.batch);
     if (!course_code || !course_title || !department || !batch) {
       return res.status(400).json({ success: false, message: "All course fields are required." });
     }
@@ -68,7 +76,8 @@ export const addRoutine = async (req, res) => {
     if (req.user.role !== "cr" && req.user.role !== "admin") {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
-    const { batch, day_of_week, time_slot, course_name } = req.body;
+    const { day_of_week, time_slot, course_name } = req.body;
+    const batch = targetBatch(req, req.body.batch);
     const room = req.body.room_no || req.body.room_number;
     if (!batch || !day_of_week || !time_slot || !course_name || !room) {
       return res.status(400).json({ success: false, message: "All routine fields are required." });
@@ -103,13 +112,15 @@ export const updateRoutine = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
     const { routineId } = req.params;
-    const { batch, day_of_week, time_slot, course_name } = req.body;
+    const { day_of_week, time_slot, course_name } = req.body;
+    const batch = isAdmin(req.user) ? req.body.batch : undefined; // CRs cannot move slots to another batch
     const room = req.body.room_no || req.body.room_number;
 
-    const [existing] = await db.execute("SELECT id FROM routines WHERE id = ?", [routineId]);
+    const [existing] = await db.execute("SELECT id, batch FROM routines WHERE id = ?", [routineId]);
     if (existing.length === 0) {
       return res.status(404).json({ success: false, message: "Routine slot not found." });
     }
+    if (!canModerateBatch(req.user, existing[0].batch)) return forbidden(res);
 
     await db.execute(
       `UPDATE routines 
@@ -141,6 +152,11 @@ export const deleteRoutine = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
     const { routineId } = req.params;
+    const [existing] = await db.execute("SELECT id, batch FROM routines WHERE id = ?", [routineId]);
+    if (existing.length === 0) {
+      return res.status(404).json({ success: false, message: "Routine slot not found." });
+    }
+    if (!canModerateBatch(req.user, existing[0].batch)) return forbidden(res);
     await db.execute("DELETE FROM routines WHERE id = ?", [routineId]);
     res.status(200).json({ success: true, message: "Routine slot deleted successfully!" });
   } catch (error) {
@@ -154,12 +170,14 @@ export const updateCourse = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
     const { courseId } = req.params;
-    const { course_code, course_title, department, batch } = req.body;
+    const { course_code, course_title, department } = req.body;
+    const batch = isAdmin(req.user) ? req.body.batch : undefined; // CRs cannot move courses to another batch
 
-    const [existing] = await db.execute("SELECT id FROM semester_courses WHERE id = ?", [courseId]);
+    const [existing] = await db.execute("SELECT id, batch FROM semester_courses WHERE id = ?", [courseId]);
     if (existing.length === 0) {
       return res.status(404).json({ success: false, message: "Course not found." });
     }
+    if (!canModerateBatch(req.user, existing[0].batch)) return forbidden(res);
 
     await db.execute(
       `UPDATE semester_courses 
@@ -189,6 +207,11 @@ export const deleteCourse = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
     const { courseId } = req.params;
+    const [existing] = await db.execute("SELECT id, batch FROM semester_courses WHERE id = ?", [courseId]);
+    if (existing.length === 0) {
+      return res.status(404).json({ success: false, message: "Course not found." });
+    }
+    if (!canModerateBatch(req.user, existing[0].batch)) return forbidden(res);
     await db.execute("DELETE FROM semester_courses WHERE id = ?", [courseId]);
     res.status(200).json({ success: true, message: "Course deleted successfully!" });
   } catch (error) {
@@ -202,7 +225,13 @@ export const approveMaterial = async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized." });
     }
     const { materialId } = req.params;
-    await db.execute('UPDATE materials SET status = "approved" WHERE id = ?', [
+    const [existing] = await db.execute("SELECT id, batch FROM materials WHERE id = ?", [materialId]);
+    if (existing.length === 0) {
+      return res.status(404).json({ success: false, message: "Material not found." });
+    }
+    if (!canModerateBatch(req.user, existing[0].batch)) return forbidden(res);
+    await db.execute('UPDATE materials SET status = "approved", reviewed_by = ?, reviewed_at = NOW() WHERE id = ?', [
+      req.user.id,
       materialId,
     ]);
     res

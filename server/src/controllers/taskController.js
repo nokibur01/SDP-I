@@ -1,5 +1,6 @@
 import db from "../config/db.js";
 import { createNotification, broadcastNotification } from "./notificationController.js";
+import { visibleBatchClause, moderationClause, canSeeBatch, canModerateBatch, batchForNewContent } from "../utils/batchScope.js";
 
 // Get all active approved tasks for the user's batch, joined with their individual completion status
 export const getTasks = async (req, res) => {
@@ -7,7 +8,10 @@ export const getTasks = async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
 
-    // 1. Fetch approved tasks with individual student completion flag
+    const visible = visibleBatchClause(req.user, "t.batch");
+    const moderation = moderationClause(req.user, "t.batch");
+
+    // 1. Fetch approved tasks (own batch + global) with individual student completion flag
     const [tasks] = await db.execute(
       `SELECT t.*, u.name as creator_name,
               CASE WHEN tc.id IS NOT NULL THEN 1 ELSE 0 END as is_completed,
@@ -15,9 +19,9 @@ export const getTasks = async (req, res) => {
        FROM tasks t
        LEFT JOIN users u ON t.created_by = u.id
        LEFT JOIN task_completions tc ON t.id = tc.task_id AND tc.user_id = ?
-       WHERE t.status = 'approved'
+       WHERE t.status = 'approved' AND ${visible.sql}
        ORDER BY t.due_date ASC`,
-      [userId]
+      [userId, ...visible.params]
     );
 
     // 2. If user is CR or Admin, fetch all pending tasks for moderation
@@ -27,8 +31,9 @@ export const getTasks = async (req, res) => {
         `SELECT t.*, u.name as creator_name, u.student_id as creator_student_id
          FROM tasks t
          LEFT JOIN users u ON t.created_by = u.id
-         WHERE t.status = 'pending'
-         ORDER BY t.created_at DESC`
+         WHERE t.status = 'pending' AND ${moderation.sql}
+         ORDER BY t.created_at DESC`,
+        moderation.params
       );
       pendingTasks = pTasks;
     }
@@ -98,16 +103,19 @@ export const createTask = async (req, res) => {
     // Enforce Approval: CRs/Admins auto-approved, Students pending
     const status = userRole === "cr" || userRole === "admin" ? "approved" : "pending";
 
+    const taskBatch = batchForNewContent(req.user, req.body.batch);
+
     const [result] = await db.execute(
-      `INSERT INTO tasks (title, description, course_code, due_date, priority, department, status, created_by)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [cleanTitle, cleanDesc, cleanCourse, due_date, cleanPriority, cleanDept, status, userId]
+      `INSERT INTO tasks (title, description, course_code, due_date, priority, department, batch, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [cleanTitle, cleanDesc, cleanCourse, due_date, cleanPriority, cleanDept, taskBatch, status, userId]
     );
 
     const taskId = result.insertId;
 
     if (status === "approved") {
       await broadcastNotification({
+        batch: taskBatch,
         excludeUserId: userId,
         type: "task",
         title: `📋 New Deadline: ${cleanTitle}`,
@@ -134,12 +142,14 @@ export const createTask = async (req, res) => {
 // CR / Admin: Fetch Pending Tasks for Approval
 export const getPendingTasks = async (req, res) => {
   try {
+    const moderation = moderationClause(req.user, "t.batch");
     const [tasks] = await db.execute(
       `SELECT t.*, u.name as creator_name, u.name as uploader_name, u.student_id as creator_student_id
        FROM tasks t
        LEFT JOIN users u ON t.created_by = u.id
-       WHERE t.status = 'pending'
-       ORDER BY t.created_at DESC`
+       WHERE t.status = 'pending' AND ${moderation.sql}
+       ORDER BY t.created_at DESC`,
+      moderation.params
     );
 
     res.status(200).json({ success: true, tasks, pendingTasks: tasks });
@@ -154,12 +164,15 @@ export const approveTask = async (req, res) => {
   try {
     const { taskId } = req.params;
 
-    const [tasks] = await db.execute("SELECT id, status, title, created_by, course_code, due_date FROM tasks WHERE id = ?", [taskId]);
+    const [tasks] = await db.execute("SELECT id, status, title, created_by, course_code, due_date, batch FROM tasks WHERE id = ?", [taskId]);
     if (tasks.length === 0) {
       return res.status(404).json({ success: false, message: "Task not found." });
     }
 
     const task = tasks[0];
+    if (!canModerateBatch(req.user, task.batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's tasks." });
+    }
     if (task.status !== "pending") {
       return res.status(400).json({
         success: false,
@@ -181,8 +194,9 @@ export const approveTask = async (req, res) => {
       });
     }
 
-    // Broadcast to students
+    // Broadcast to the task's batch
     await broadcastNotification({
+      batch: task.batch,
       excludeUserId: task.created_by,
       type: "task",
       title: `📋 New Deadline: ${task.title}`,
@@ -203,12 +217,15 @@ export const rejectTask = async (req, res) => {
   try {
     const { taskId } = req.params;
 
-    const [tasks] = await db.execute("SELECT id, status, title, created_by FROM tasks WHERE id = ?", [taskId]);
+    const [tasks] = await db.execute("SELECT id, status, title, created_by, batch FROM tasks WHERE id = ?", [taskId]);
     if (tasks.length === 0) {
       return res.status(404).json({ success: false, message: "Task not found." });
     }
 
     const task = tasks[0];
+    if (!canModerateBatch(req.user, task.batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's tasks." });
+    }
     if (task.status !== "pending") {
       return res.status(400).json({
         success: false,
@@ -246,13 +263,13 @@ export const updateTask = async (req, res) => {
     const userRole = req.user.role;
     const { title, description, course_code, due_date, priority, department } = req.body;
 
-    const [tasks] = await db.execute("SELECT id, title, created_by FROM tasks WHERE id = ?", [taskId]);
+    const [tasks] = await db.execute("SELECT id, title, created_by, batch FROM tasks WHERE id = ?", [taskId]);
     if (tasks.length === 0) {
       return res.status(404).json({ success: false, message: "Task not found." });
     }
 
     const isOwner = tasks[0].created_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, tasks[0].batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({
@@ -295,7 +312,7 @@ export const deleteTask = async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
 
-    const [tasks] = await db.execute("SELECT id, created_by, title FROM tasks WHERE id = ?", [taskId]);
+    const [tasks] = await db.execute("SELECT id, created_by, title, batch FROM tasks WHERE id = ?", [taskId]);
     if (tasks.length === 0) {
       return res.status(404).json({ success: false, message: "Task not found." });
     }
@@ -304,7 +321,7 @@ export const deleteTask = async (req, res) => {
 
     // Ownership Policy: Task creator, CR, or Admin may delete
     const isOwner = task.created_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, task.batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({
@@ -329,8 +346,8 @@ export const completeTask = async (req, res) => {
     const userId = req.user.id;
 
     // Check task exists and is approved
-    const [tasks] = await db.execute("SELECT id, title, status FROM tasks WHERE id = ?", [taskId]);
-    if (tasks.length === 0) {
+    const [tasks] = await db.execute("SELECT id, title, status, batch FROM tasks WHERE id = ?", [taskId]);
+    if (tasks.length === 0 || !canSeeBatch(req.user, tasks[0].batch)) {
       return res.status(404).json({ success: false, message: "Task not found." });
     }
 

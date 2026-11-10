@@ -1,18 +1,22 @@
 import db from "../config/db.js";
 import { createNotification, broadcastNotification } from "./notificationController.js";
+import { visibleBatchClause, moderationClause, canSeeBatch, canModerateBatch, batchForNewContent } from "../utils/batchScope.js";
 
 // Get all approved active events (Pending events are strictly separated for CR/Admin review)
 export const getEvents = async (req, res) => {
   try {
     const role = req.user.role;
+    const visible = visibleBatchClause(req.user, "e.batch");
+    const moderation = moderationClause(req.user, "e.batch");
 
-    // 1. Fetch strictly approved events for all users (No pending events in public feed)
+    // 1. Fetch approved upcoming events for the user's batch (+ global events)
     const [events] = await db.execute(
       `SELECT e.*, u.name as organizer_name 
        FROM events e 
        LEFT JOIN users u ON e.created_by = u.id 
-       WHERE e.status = 'approved' AND e.event_date >= NOW()
-       ORDER BY e.event_date ASC`
+       WHERE e.status = 'approved' AND e.event_date >= NOW() AND ${visible.sql}
+       ORDER BY e.event_date ASC`,
+      visible.params
     );
 
     // 2. Fetch past approved events
@@ -20,9 +24,10 @@ export const getEvents = async (req, res) => {
       `SELECT e.*, u.name as organizer_name 
        FROM events e 
        LEFT JOIN users u ON e.created_by = u.id 
-       WHERE e.status = 'approved' AND e.event_date < NOW()
+       WHERE e.status = 'approved' AND e.event_date < NOW() AND ${visible.sql}
        ORDER BY e.event_date DESC
-       LIMIT 20`
+       LIMIT 20`,
+      visible.params
     );
 
     // 3. Fetch pending events ONLY if user has 'cr' or 'admin' role
@@ -32,8 +37,9 @@ export const getEvents = async (req, res) => {
         `SELECT e.*, u.name as organizer_name 
          FROM events e 
          LEFT JOIN users u ON e.created_by = u.id 
-         WHERE e.status = 'pending' AND e.event_date >= NOW()
-         ORDER BY e.event_date ASC`
+         WHERE e.status = 'pending' AND e.event_date >= NOW() AND ${moderation.sql}
+         ORDER BY e.event_date ASC`,
+        moderation.params
       );
       pendingEvents = pEvents;
     }
@@ -68,17 +74,20 @@ export const createEvent = async (req, res) => {
     // Enforce Approval Workflow: CRs/Admins auto-approve, Students set to pending
     const status = role === "cr" || role === "admin" ? "approved" : "pending";
 
+    const eventBatch = batchForNewContent(req.user, req.body.batch);
+
     const [result] = await db.execute(
-      `INSERT INTO events (title, description, event_date, location, department, status, created_by) 
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [cleanTitle, cleanDesc, event_date, cleanLocation, cleanDept, status, userId]
+      `INSERT INTO events (title, description, event_date, location, department, batch, status, created_by)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [cleanTitle, cleanDesc, event_date, cleanLocation, cleanDept, eventBatch, status, userId]
     );
 
     const eventId = result.insertId;
 
     if (status === "approved") {
-      // Notify students of approved campus event
+      // Notify the event's batch
       await broadcastNotification({
+        batch: eventBatch,
         excludeUserId: userId,
         type: "event",
         title: `🗓️ Campus Event: ${cleanTitle}`,
@@ -107,12 +116,15 @@ export const approveEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
 
-    const [events] = await db.execute("SELECT id, status, title, created_by, event_date, location FROM events WHERE id = ?", [eventId]);
+    const [events] = await db.execute("SELECT id, status, title, created_by, event_date, location, batch FROM events WHERE id = ?", [eventId]);
     if (events.length === 0) {
       return res.status(404).json({ success: false, message: "Event not found." });
     }
 
     const event = events[0];
+    if (!canModerateBatch(req.user, event.batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's events." });
+    }
     if (event.status !== "pending") {
       return res.status(400).json({
         success: false,
@@ -134,8 +146,9 @@ export const approveEvent = async (req, res) => {
       });
     }
 
-    // Broadcast to campus
+    // Broadcast to the event's batch
     await broadcastNotification({
+      batch: event.batch,
       excludeUserId: event.created_by,
       type: "event",
       title: `🗓️ New Event: ${event.title}`,
@@ -159,12 +172,15 @@ export const rejectEvent = async (req, res) => {
   try {
     const { eventId } = req.params;
 
-    const [events] = await db.execute("SELECT id, status, title, created_by FROM events WHERE id = ?", [eventId]);
+    const [events] = await db.execute("SELECT id, status, title, created_by, batch FROM events WHERE id = ?", [eventId]);
     if (events.length === 0) {
       return res.status(404).json({ success: false, message: "Event not found." });
     }
 
     const event = events[0];
+    if (!canModerateBatch(req.user, event.batch)) {
+      return res.status(403).json({ success: false, message: "Forbidden: You can only moderate your own batch's events." });
+    }
     if (event.status !== "pending") {
       return res.status(400).json({
         success: false,
@@ -205,13 +221,13 @@ export const updateEvent = async (req, res) => {
     const userRole = req.user.role;
     const { title, description, event_date, location, department } = req.body;
 
-    const [events] = await db.execute("SELECT id, created_by FROM events WHERE id = ?", [eventId]);
+    const [events] = await db.execute("SELECT id, created_by, batch FROM events WHERE id = ?", [eventId]);
     if (events.length === 0) {
       return res.status(404).json({ success: false, message: "Event not found." });
     }
 
     const isOwner = events[0].created_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, events[0].batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({
@@ -252,13 +268,13 @@ export const deleteEvent = async (req, res) => {
     const userId = req.user.id;
     const userRole = req.user.role;
 
-    const [events] = await db.execute("SELECT id, created_by FROM events WHERE id = ?", [eventId]);
+    const [events] = await db.execute("SELECT id, created_by, batch FROM events WHERE id = ?", [eventId]);
     if (events.length === 0) {
       return res.status(404).json({ success: false, message: "Event not found." });
     }
 
     const isOwner = events[0].created_by === userId;
-    const isStaff = userRole === "admin" || userRole === "cr";
+    const isStaff = (userRole === "admin" || userRole === "cr") && canModerateBatch(req.user, events[0].batch);
 
     if (!isOwner && !isStaff) {
       return res.status(403).json({

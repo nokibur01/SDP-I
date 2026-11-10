@@ -234,3 +234,8 @@ CREATE TABLE IF NOT EXISTS rate_limits (
 );
 
 
+
+-- See database/migrations/05_batch_scoping.sql (per-batch content scoping)
+ALTER TABLE tasks     ADD COLUMN IF NOT EXISTS batch VARCHAR(50) NULL;
+ALTER TABLE events    ADD COLUMN IF NOT EXISTS batch VARCHAR(50) NULL;
+ALTER TABLE materials ADD COLUMN IF NOT EXISTS batch VARCHAR(50) NULL;

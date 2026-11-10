@@ -67,6 +67,16 @@ export const updateProfile = async (req, res) => {
       updates.student_id = current.student_id;
     }
 
+    // CRs lead a specific batch: letting them switch would hand them control of another cohort.
+    const lockCohort = req.user.role === "cr";
+    if (lockCohort && ((req.body.batch !== undefined && String(req.body.batch).trim() !== (current.batch || "")) ||
+        (req.body.department !== undefined && String(req.body.department).trim() !== (current.department || "")))) {
+      return res.status(403).json({
+        success: false,
+        message: "Class Representatives can't change their batch or department. Please ask an administrator.",
+      });
+    }
+
     if (req.body.batch !== undefined) {
       updates.batch = typeof req.body.batch === "string" ? req.body.batch.trim() : current.batch;
     } else {

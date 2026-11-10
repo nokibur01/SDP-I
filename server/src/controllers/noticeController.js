@@ -1,14 +1,22 @@
 import db from "../config/db.js";
 import { broadcastNotification } from "./notificationController.js";
+import { normBatch, isAdmin, canModerateBatch } from "../utils/batchScope.js";
+
+// A notice's batch is its target_audience; "all" / empty means everyone.
+const audienceBatch = (aud) => (aud && normBatch(aud) !== "all" ? aud : null);
 
 // Get all announcements/notices (pinned first, then chronological)
 export const getNotices = async (req, res) => {
   try {
+    // Everyone sees "all" notices plus those targeted at their own batch; admins see everything.
+    const scoped = !isAdmin(req.user);
     const [notices] = await db.execute(
-      `SELECT n.*, u.name as author_name 
-       FROM notices n 
-       LEFT JOIN users u ON n.created_by = u.id 
-       ORDER BY n.is_pinned DESC, n.created_at DESC`
+      `SELECT n.*, u.name as author_name
+       FROM notices n
+       LEFT JOIN users u ON n.created_by = u.id
+       ${scoped ? "WHERE (n.target_audience IS NULL OR LOWER(TRIM(n.target_audience)) IN ('', 'all') OR LOWER(TRIM(n.target_audience)) = ?)" : ""}
+       ORDER BY n.is_pinned DESC, n.created_at DESC`,
+      scoped ? [normBatch(req.user.batch)] : []
     );
 
     res.status(200).json({ success: true, notices });
@@ -46,7 +54,10 @@ export const createNotice = async (req, res) => {
     const cleanCat = ["academic", "examination", "event", "general"].includes(category)
       ? category
       : "general";
-    const cleanAudience = target_audience ? target_audience.trim() : "all";
+    // CRs announce to their own batch only; admins may target any batch or "all".
+    const cleanAudience = isAdmin(req.user)
+      ? (target_audience ? target_audience.trim() : "all")
+      : (req.user.batch ? req.user.batch.trim() : "all");
     const cleanPriority = ["Normal", "Important", "Urgent"].includes(priority)
       ? priority
       : "Normal";
@@ -99,19 +110,19 @@ export const updateNotice = async (req, res) => {
     const userRole = req.user.role;
     const isStaff = userRole === "cr" || userRole === "admin";
 
-    const [existing] = await db.execute("SELECT id, created_by FROM notices WHERE id = ?", [id]);
+    const [existing] = await db.execute("SELECT id, created_by, target_audience FROM notices WHERE id = ?", [id]);
     if (existing.length === 0) {
       return res.status(404).json({ success: false, message: "Announcement not found." });
     }
 
-    if (existing[0].created_by !== userId && !isStaff) {
+    if (existing[0].created_by !== userId && !(isStaff && canModerateBatch(req.user, audienceBatch(existing[0].target_audience)))) {
       return res.status(403).json({ success: false, message: "Forbidden: Cannot edit this announcement." });
     }
 
     const cleanTitle = title ? title.trim() : undefined;
     const cleanDesc = description ? description.trim() : undefined;
     const cleanCat = category ? category.trim() : undefined;
-    const cleanAudience = target_audience ? target_audience.trim() : undefined;
+    const cleanAudience = isAdmin(req.user) && target_audience ? target_audience.trim() : undefined;
     const cleanPriority = priority ? priority.trim() : undefined;
 
     await db.execute(
@@ -140,12 +151,12 @@ export const deleteNotice = async (req, res) => {
     const userRole = req.user.role;
     const isStaff = userRole === "cr" || userRole === "admin";
 
-    const [existing] = await db.execute("SELECT id, created_by FROM notices WHERE id = ?", [id]);
+    const [existing] = await db.execute("SELECT id, created_by, target_audience FROM notices WHERE id = ?", [id]);
     if (existing.length === 0) {
       return res.status(404).json({ success: false, message: "Announcement not found." });
     }
 
-    if (existing[0].created_by !== userId && !isStaff) {
+    if (existing[0].created_by !== userId && !(isStaff && canModerateBatch(req.user, audienceBatch(existing[0].target_audience)))) {
       return res.status(403).json({ success: false, message: "Forbidden: Cannot delete this announcement." });
     }
 
@@ -168,9 +179,12 @@ export const togglePinNotice = async (req, res) => {
       return res.status(403).json({ success: false, message: "Only CRs and Admins can pin announcements." });
     }
 
-    const [existing] = await db.execute("SELECT id, is_pinned, title FROM notices WHERE id = ?", [id]);
+    const [existing] = await db.execute("SELECT id, is_pinned, title, target_audience FROM notices WHERE id = ?", [id]);
     if (existing.length === 0) {
       return res.status(404).json({ success: false, message: "Announcement not found." });
+    }
+    if (!canModerateBatch(req.user, audienceBatch(existing[0].target_audience))) {
+      return res.status(403).json({ success: false, message: "You can only pin announcements for your own batch." });
     }
 
     const newPinned = existing[0].is_pinned === 1 ? 0 : 1;
