@@ -1,398 +1,441 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  Users,
+  Megaphone,
+  BookOpen,
+  CheckSquare,
+  Calendar,
+  FolderGit2,
+  Search,
+  Trash2,
+  RefreshCw,
+  ShieldCheck,
+  AlertCircle,
+  Clock,
+} from "lucide-react";
+import { clsx } from "clsx";
 import { apiClient } from "../../services/apiClient";
+import { useAuthStore } from "../../stores/useAuthStore";
+import { useToast } from "../../components/ui/Toast";
+import { Badge } from "../../components/ui/Badge";
+import { Button } from "../../components/ui/Button";
+import { Input } from "../../components/ui/Input";
+import { ConfirmModal } from "../../components/ui/ConfirmModal";
+import { EmptyState } from "../../components/ui/EmptyState";
+import { ListSkeleton } from "../../components/ui/Skeleton";
+import { AppLayout } from "../../components/layout/AppLayout";
 
-type CategoryKey =
-  | "students"
-  | "notices"
-  | "resources"
-  | "tasks"
-  | "events"
-  | "projects";
+type CategoryKey = "students" | "notices" | "resources" | "tasks" | "events" | "projects";
+type Role = "student" | "cr" | "admin";
+type AdminRecord = Record<string, any> & { id: number };
+
+interface AdminStatsResponse {
+  success: boolean;
+  stats: Record<CategoryKey, number>;
+  roleCounts: Record<Role, number>;
+}
+
+const CATEGORIES: {
+  key: CategoryKey;
+  label: string;
+  singular: string;
+  endpoint: string;
+  icon: React.ElementType;
+}[] = [
+  { key: "students", label: "Users", singular: "user", endpoint: "/users", icon: Users },
+  { key: "notices", label: "Notices", singular: "notice", endpoint: "/users/notices", icon: Megaphone },
+  { key: "resources", label: "Resources", singular: "resource", endpoint: "/users/materials", icon: BookOpen },
+  { key: "tasks", label: "Tasks", singular: "task", endpoint: "/users/tasks", icon: CheckSquare },
+  { key: "events", label: "Events", singular: "event", endpoint: "/users/events", icon: Calendar },
+  { key: "projects", label: "Projects", singular: "project", endpoint: "/users/projects", icon: FolderGit2 },
+];
+
+const ROLE_OPTIONS: { value: Role | "all"; label: string }[] = [
+  { value: "all", label: "All roles" },
+  { value: "student", label: "Students" },
+  { value: "cr", label: "CRs" },
+  { value: "admin", label: "Admins" },
+];
+
+const formatDate = (value?: string) => {
+  if (!value) return null;
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return null;
+  return d.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+};
+
+const statusVariant = (status?: string) =>
+  status === "approved" ? "mint" : status === "pending" ? "warning" : status === "rejected" ? "danger" : "muted";
+
+const authorOf = (item: AdminRecord) =>
+  item.author_name || item.uploader_name || item.creator_name || item.organizer_name || item.publisher_name;
 
 export const AdminDashboardView: React.FC = () => {
+  const { user } = useAuthStore();
+  const { success, error } = useToast();
+  const queryClient = useQueryClient();
+
   const [activeCategory, setActiveCategory] = useState<CategoryKey>("students");
-  const [items, setItems] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [stats, setStats] = useState({
-    students: 0,
-    notices: 0,
-    resources: 0,
-    tasks: 0,
-    events: 0,
-    projects: 0,
+  const [searchQuery, setSearchQuery] = useState("");
+  const [roleFilter, setRoleFilter] = useState<Role | "all">("all");
+  const [pendingDelete, setPendingDelete] = useState<AdminRecord | null>(null);
+
+  const activeConfig = CATEGORIES.find((c) => c.key === activeCategory)!;
+
+  const statsQuery = useQuery({
+    queryKey: ["admin-stats"],
+    queryFn: () => apiClient.get<AdminStatsResponse>("/users/admin/stats"),
   });
 
-  const categories: { key: CategoryKey; label: string; endpoints: string[] }[] =
-    [
-      {
-        key: "students",
-        label: "Students & Users",
-        endpoints: ["/users", "/members"],
-      },
-      {
-        key: "notices",
-        label: "Notices & Announcements",
-        endpoints: ["/notices", "/announcements"],
-      },
-      {
-        key: "resources",
-        label: "Resources & Materials",
-        endpoints: ["/resources", "/materials"],
-      },
-      { key: "tasks", label: "Tasks & Assignments", endpoints: ["/tasks"] },
-      { key: "events", label: "Events & Calendar", endpoints: ["/events"] },
-      { key: "projects", label: "Projects Showcase", endpoints: ["/projects"] },
-    ];
-
-  useEffect(() => {
-    fetchAllDataAutomatically();
-  }, []);
-
-  useEffect(() => {
-    fetchCategoryItems(activeCategory);
-  }, [activeCategory]);
-
-  const fetchAllDataAutomatically = async () => {
-    const newStats: any = {
-      students: 0,
-      notices: 0,
-      resources: 0,
-      tasks: 0,
-      events: 0,
-      projects: 0,
-    };
-
-    for (const cat of categories) {
-      let fetchedList: any[] = [];
-      for (const ep of cat.endpoints) {
-        try {
-          const res: any = await apiClient.get<any>(ep);
-          const raw =
-            res?.data?.data || res?.data?.[cat.key] || res?.data || res || [];
-          if (Array.isArray(raw) && raw.length > 0) {
-            fetchedList = raw;
-            break;
-          }
-        } catch (err) {
-          // Skip failed endpoint
-        }
-      }
-      newStats[cat.key] = fetchedList.length;
-    }
-    setStats(newStats);
-  };
-
-  const fetchCategoryItems = async (category: CategoryKey) => {
-    setLoading(true);
-    const catConfig = categories.find((c) => c.key === category)!;
-    let list: any[] = [];
-
-    for (const ep of catConfig.endpoints) {
-      try {
-        const res: any = await apiClient.get<any>(ep);
-        const raw =
-          res?.data?.data || res?.data?.[category] || res?.data || res || [];
-        if (Array.isArray(raw)) {
-          list = raw;
-          break;
-        }
-      } catch (err) {
-        console.error(`Error fetching from ${ep}:`, err);
-      }
-    }
-
-    setItems(list);
-    setLoading(false);
-  };
-
-  const handleDelete = async (id: number | string) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to permanently delete this record (#${id})?`,
-      )
-    )
-      return;
-
-    try {
-      const catConfig = categories.find((c) => c.key === activeCategory)!;
-      let deleted = false;
-
-      for (const ep of catConfig.endpoints) {
-        try {
-          await apiClient.delete<any>(`/users/admin/${activeCategory}/${id}`);
-          deleted = true;
-          break;
-        } catch {
-          try {
-            await apiClient.delete<any>(`${ep}/${id}`);
-            deleted = true;
-            break;
-          } catch {}
-        }
-      }
-
-      if (deleted) {
-        setItems((prev) => prev.filter((item) => item.id !== id));
-        fetchAllDataAutomatically();
-      } else {
-        alert("Failed to delete record from backend.");
-      }
-    } catch (error: any) {
-      alert(error?.response?.data?.message || "Failed to delete record.");
-    }
-  };
-
-  const filteredItems = items.filter((item) => {
-    const text =
-      `${item.name || ""} ${item.full_name || ""} ${item.title || ""} ${item.email || ""} ${item.course_code || ""} ${item.description || ""}`.toLowerCase();
-    return text.includes(searchQuery.toLowerCase());
+  const listQuery = useQuery({
+    queryKey: ["admin-list", activeCategory],
+    queryFn: () => apiClient.get<AdminRecord[]>(activeConfig.endpoint),
   });
+
+  const refreshAll = () => {
+    queryClient.invalidateQueries({ queryKey: ["admin-stats"] });
+    queryClient.invalidateQueries({ queryKey: ["admin-list"] });
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: (item: AdminRecord) =>
+      apiClient.delete<{ message: string }>(`/users/admin/${activeCategory}/${item.id}`),
+    onSuccess: () => {
+      success(`Deleted ${activeConfig.singular} successfully`);
+      setPendingDelete(null);
+      refreshAll();
+    },
+    onError: (err: Error) => {
+      error(err.message || "Failed to delete record");
+      setPendingDelete(null);
+    },
+  });
+
+  const roleMutation = useMutation({
+    mutationFn: ({ id, role }: { id: number; role: Role }) =>
+      apiClient.put<{ message: string }>(`/users/admin/users/${id}/role`, { role }),
+    onSuccess: (_data, vars) => {
+      success(`Role updated to ${vars.role.toUpperCase()}`);
+      refreshAll();
+    },
+    onError: (err: Error) => error(err.message || "Failed to update role"),
+  });
+
+  const items = Array.isArray(listQuery.data) ? listQuery.data : [];
+
+  const filteredItems = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return items.filter((item) => {
+      if (activeCategory === "students" && roleFilter !== "all" && item.role !== roleFilter) return false;
+      if (!q) return true;
+      const haystack = [
+        item.name,
+        item.title,
+        item.email,
+        item.student_id,
+        item.batch,
+        item.department,
+        item.course_code,
+        item.category,
+        item.description,
+        authorOf(item),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [items, searchQuery, roleFilter, activeCategory]);
+
+  const stats = statsQuery.data?.stats;
+  const roleCounts = statsQuery.data?.roleCounts;
+  const isSelf = (item: AdminRecord) => activeCategory === "students" && Number(item.id) === Number(user?.id);
+
+  const switchCategory = (key: CategoryKey) => {
+    setActiveCategory(key);
+    setSearchQuery("");
+    setRoleFilter("all");
+  };
 
   return (
-    <div
-      style={{
-        padding: "2rem",
-        maxWidth: "1200px",
-        margin: "0 auto",
-        color: "#d6ded8",
-      }}
-    >
-      <div style={{ marginBottom: "2rem" }}>
-        <h1
-          style={{
-            fontSize: "1.875rem",
-            fontWeight: 700,
-            margin: 0,
-            color: "#d6ded8",
-          }}
-        >
-          Admin Master Control Center
-        </h1>
-        <p style={{ color: "#78877d", marginTop: "0.5rem" }}>
-          Welcome Admin! All database records and system information are managed
-          here.
-        </p>
-      </div>
-
-      {/* Summary Cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))",
-          gap: "1rem",
-          marginBottom: "2rem",
-        }}
-      >
-        {categories.map((cat) => {
-          const isSelected = activeCategory === cat.key;
-          return (
-            <div
-              key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              style={{
-                backgroundColor: isSelected ? "#1f2c23" : "#101713",
-                border: isSelected ? "2px solid #95b399" : "1px solid #1b261f",
-                borderRadius: "0.75rem",
-                padding: "1.25rem",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: "0.85rem",
-                  color: isSelected ? "#95b399" : "#78877d",
-                  fontWeight: 600,
-                }}
-              >
-                {cat.label.split(" ")[0]}
-              </div>
-              <div
-                style={{
-                  fontSize: "1.75rem",
-                  fontWeight: 700,
-                  color: "#d6ded8",
-                  marginTop: "0.5rem",
-                }}
-              >
-                {stats[cat.key]}
-              </div>
+    <AppLayout title="Admin Control Center">
+      <div className="flex flex-col gap-6">
+        {/* Header */}
+        <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="w-11 h-11 rounded-[12px] bg-[#0c120e] border border-[#1b261f] flex items-center justify-center text-[#95b399] shrink-0">
+              <ShieldCheck className="w-5 h-5" />
             </div>
-          );
-        })}
-      </div>
+            <div>
+              <h1 className="text-[22px] sm:text-[24px] font-bold text-[#d6ded8] tracking-tight">Admin Control Center</h1>
+              <p className="text-[13.5px] text-[#78877d] mt-0.5">
+                Manage every user and record across all batches.
+                {roleCounts && (
+                  <span className="text-[#a7b3aa]">
+                    {" "}
+                    {roleCounts.student} students · {roleCounts.cr} CRs · {roleCounts.admin} admins
+                  </span>
+                )}
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={refreshAll}
+            isLoading={listQuery.isFetching || statsQuery.isFetching}
+            leftIcon={<RefreshCw className="w-3.5 h-3.5" />}
+          >
+            Refresh
+          </Button>
+        </section>
 
-      {/* Search & Header */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "1.25rem",
-          flexWrap: "wrap",
-          gap: "1rem",
-        }}
-      >
-        <h2
-          style={{
-            fontSize: "1.25rem",
-            fontWeight: 600,
-            color: "#d6ded8",
-            margin: 0,
-            textTransform: "capitalize",
-          }}
-        >
-          Viewing All {activeCategory} ({filteredItems.length})
-        </h2>
+        {/* Category tiles */}
+        <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const selected = cat.key === activeCategory;
+            return (
+              <button
+                key={cat.key}
+                type="button"
+                onClick={() => switchCategory(cat.key)}
+                aria-pressed={selected}
+                className={clsx(
+                  "group text-left rounded-[16px] border p-4 transition-all duration-150 cursor-pointer",
+                  selected
+                    ? "bg-[#1f2c23] border-[#95b399]/50"
+                    : "bg-[#101713] border-[#1b261f] hover:border-[#95b399]/30 hover:bg-[#141d18]",
+                )}
+              >
+                <div className="flex items-center justify-between">
+                  <span
+                    className={clsx(
+                      "text-[11.5px] font-semibold uppercase tracking-wider",
+                      selected ? "text-[#95b399]" : "text-[#a7b3aa]",
+                    )}
+                  >
+                    {cat.label}
+                  </span>
+                  <Icon
+                    className={clsx(
+                      "w-4 h-4 transition-colors",
+                      selected ? "text-[#95b399]" : "text-[#4a6352] group-hover:text-[#95b399]",
+                    )}
+                  />
+                </div>
+                <div className="mt-2.5 text-[24px] font-extrabold text-[#d6ded8] leading-none">
+                  {stats ? (
+                    stats[cat.key]
+                  ) : statsQuery.isError ? (
+                    <span className="text-[#78877d]" title="Couldn't load counts">—</span>
+                  ) : (
+                    <span className="inline-block w-8 h-6 rounded bg-[#16201a] animate-pulse" />
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </section>
 
-        <input
-          type="text"
-          placeholder={`Search ${activeCategory}...`}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            padding: "0.5rem 1rem",
-            borderRadius: "0.5rem",
-            backgroundColor: "#101713",
-            border: "1px solid #1b261f",
-            color: "#d6ded8",
-            outline: "none",
-            minWidth: "260px",
-          }}
+        {/* Toolbar */}
+        <section className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <h2 className="text-[16px] font-semibold text-[#d6ded8]">
+            All {activeConfig.label.toLowerCase()}
+            <span className="text-[#78877d] font-medium"> ({filteredItems.length})</span>
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-2.5 md:w-auto w-full">
+            {activeCategory === "students" && (
+              <div className="flex gap-1 p-1 bg-[#0c120e] border border-[#1b261f] rounded-[12px] overflow-x-auto">
+                {ROLE_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => setRoleFilter(opt.value)}
+                    className={clsx(
+                      "px-3 py-1.5 rounded-[9px] text-[12.5px] font-medium whitespace-nowrap transition-colors cursor-pointer",
+                      roleFilter === opt.value
+                        ? "bg-[#95b399] text-[#090e0b]"
+                        : "text-[#a7b3aa] hover:text-[#d6ded8]",
+                    )}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
+            )}
+            <div className="sm:w-[280px]">
+              <Input
+                placeholder={`Search ${activeConfig.label.toLowerCase()}...`}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                leftElement={<Search className="w-4 h-4" />}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Records */}
+        <section>
+          {listQuery.isLoading ? (
+            <ListSkeleton items={5} />
+          ) : listQuery.isError ? (
+            <EmptyState
+              icon={<AlertCircle className="w-6 h-6" />}
+              title="Couldn't load records"
+              description={(listQuery.error as Error)?.message || "The server did not respond."}
+              actionLabel="Try again"
+              onAction={() => listQuery.refetch()}
+            />
+          ) : filteredItems.length === 0 ? (
+            <EmptyState
+              icon={<Search className="w-6 h-6" />}
+              title={`No ${activeConfig.label.toLowerCase()} found`}
+              description={searchQuery || roleFilter !== "all" ? "Try a different search or filter." : "Nothing has been created yet."}
+            />
+          ) : (
+            <ul className="bg-[#101713] border border-[#1b261f] rounded-[16px] divide-y divide-[#1b261f] overflow-hidden">
+              {filteredItems.map((item) =>
+                activeCategory === "students" ? (
+                  <UserRow
+                    key={item.id}
+                    item={item}
+                    self={isSelf(item)}
+                    roleUpdating={roleMutation.isPending && roleMutation.variables?.id === item.id}
+                    onRoleChange={(role) => roleMutation.mutate({ id: item.id, role })}
+                    onDelete={() => setPendingDelete(item)}
+                  />
+                ) : (
+                  <RecordRow key={item.id} item={item} onDelete={() => setPendingDelete(item)} />
+                ),
+              )}
+            </ul>
+          )}
+        </section>
+
+        <ConfirmModal
+          isOpen={!!pendingDelete}
+          onClose={() => !deleteMutation.isPending && setPendingDelete(null)}
+          onConfirm={() => pendingDelete && deleteMutation.mutate(pendingDelete)}
+          isDanger
+          isLoading={deleteMutation.isPending}
+          title={`Delete ${activeConfig.singular}?`}
+          confirmText="Delete permanently"
+          message={
+            activeCategory === "students"
+              ? `"${pendingDelete?.name ?? ""}" will be removed along with their notices, projects, task completions and notifications. This cannot be undone.`
+              : `"${pendingDelete?.title ?? pendingDelete?.name ?? `#${pendingDelete?.id}`}" will be permanently deleted. This cannot be undone.`
+          }
         />
       </div>
+    </AppLayout>
+  );
+};
 
-      {/* Items List Box */}
-      <div
-        style={{
-          backgroundColor: "#101713",
-          border: "1px solid #1b261f",
-          borderRadius: "0.75rem",
-          overflow: "hidden",
-        }}
-      >
-        {loading ? (
-          <div
-            style={{ padding: "3rem", textAlign: "center", color: "#78877d" }}
-          >
-            Loading {activeCategory} records...
-          </div>
-        ) : filteredItems.length === 0 ? (
-          <div
-            style={{ padding: "3rem", textAlign: "center", color: "#78877d" }}
-          >
-            No records found under {activeCategory}.
-          </div>
-        ) : (
-          <div>
-            {filteredItems.map((item) => (
-              <div
-                key={item.id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  padding: "1rem 1.25rem",
-                  borderBottom: "1px solid #1b261f",
-                  gap: "1rem",
-                }}
-              >
-                <div>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.6rem",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {item.course_code && (
-                      <span
-                        style={{
-                          fontSize: "0.75rem",
-                          padding: "0.15rem 0.5rem",
-                          borderRadius: "0.375rem",
-                          backgroundColor: "#101713",
-                          color: "#7f9fb3",
-                          border: "1px solid #1b261f",
-                        }}
-                      >
-                        {item.course_code}
-                      </span>
-                    )}
-                    <span
-                      style={{
-                        fontWeight: 600,
-                        color: "#d6ded8",
-                        fontSize: "1rem",
-                      }}
-                    >
-                      {item.title ||
-                        item.name ||
-                        item.full_name ||
-                        `Record #${item.id}`}
-                    </span>
-                    {item.role && (
-                      <span
-                        style={{
-                          fontSize: "0.7rem",
-                          textTransform: "uppercase",
-                          padding: "0.15rem 0.5rem",
-                          borderRadius: "999px",
-                          backgroundColor:
-                            item.role === "admin"
-                              ? "#3b1c1c"
-                              : item.role === "cr"
-                                ? "#1f2c23"
-                                : "#1b261f",
-                          color: "#d6ded8",
-                        }}
-                      >
-                        {item.role}
-                      </span>
-                    )}
-                  </div>
-
-                  <div
-                    style={{
-                      fontSize: "0.825rem",
-                      color: "#78877d",
-                      marginTop: "0.25rem",
-                    }}
-                  >
-                    {activeCategory === "students"
-                      ? `${item.email || ""} ${item.student_id ? `• ID: ${item.student_id}` : ""}`
-                      : item.description ||
-                        item.content ||
-                        item.category ||
-                        item.status ||
-                        `Created: ${item.created_at || "N/A"}`}
-                  </div>
-                </div>
-
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  style={{
-                    padding: "0.4rem 0.75rem",
-                    borderRadius: "0.375rem",
-                    border: "1px solid rgba(239, 68, 68, 0.4)",
-                    backgroundColor: "rgba(239, 68, 68, 0.15)",
-                    color: "#d66767",
-                    cursor: "pointer",
-                    fontSize: "0.8rem",
-                    fontWeight: 500,
-                    flexShrink: 0,
-                  }}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+const UserRow: React.FC<{
+  item: AdminRecord;
+  self: boolean;
+  roleUpdating: boolean;
+  onRoleChange: (role: Role) => void;
+  onDelete: () => void;
+}> = ({ item, self, roleUpdating, onRoleChange, onDelete }) => (
+  <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-[#141d18] transition-colors">
+    <div className="flex items-center gap-3 min-w-0 flex-1">
+      <div className="w-9 h-9 rounded-full bg-[#16201a] border border-[#1b261f] flex items-center justify-center text-[13px] font-semibold text-[#95b399] shrink-0">
+        {(item.name || "?").charAt(0).toUpperCase()}
+      </div>
+      <div className="min-w-0">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-semibold text-[14px] text-[#d6ded8] truncate">{item.name}</span>
+          {self && <Badge variant="mint" size="xs">You</Badge>}
+        </div>
+        <div className="text-[12.5px] text-[#78877d] truncate">
+          {item.email}
+          {item.student_id && <> · ID {item.student_id}</>}
+          {(item.department || item.batch) && (
+            <> · {[item.department, item.batch].filter(Boolean).join(" / ")}</>
+          )}
+        </div>
       </div>
     </div>
+    <div className="flex items-center gap-2 sm:shrink-0 pl-12 sm:pl-0">
+      <select
+        aria-label={`Role for ${item.name}`}
+        value={item.role}
+        disabled={self || roleUpdating}
+        onChange={(e) => onRoleChange(e.target.value as Role)}
+        title={self ? "You can't change your own role" : undefined}
+        className="bg-[#0c120e] text-[#d6ded8] text-[12.5px] rounded-[10px] border border-[#1b261f] py-1.5 pl-2.5 pr-7 focus:outline-none focus:border-[#95b399] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+      >
+        <option value="student">Student</option>
+        <option value="cr">CR</option>
+        <option value="admin">Admin</option>
+      </select>
+      <Button
+        variant="danger"
+        size="xs"
+        onClick={onDelete}
+        disabled={self}
+        title={self ? "You can't delete your own account" : undefined}
+        leftIcon={<Trash2 className="w-3.5 h-3.5" />}
+      >
+        Delete
+      </Button>
+    </div>
+  </li>
+);
+
+const RecordRow: React.FC<{ item: AdminRecord; onDelete: () => void }> = ({ item, onDelete }) => {
+  const author = authorOf(item);
+  const created = formatDate(item.created_at);
+  const due = formatDate(item.due_date || item.event_date);
+  const body = item.description || item.content || item.file_path;
+
+  return (
+    <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-[#141d18] transition-colors">
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          {item.course_code && <Badge variant="muted" size="xs">{item.course_code}</Badge>}
+          <span className="font-semibold text-[14px] text-[#d6ded8]">{item.title || item.name || `Record #${item.id}`}</span>
+          {item.status && (
+            <Badge variant={statusVariant(item.status)} size="xs" className="capitalize">
+              {item.status}
+            </Badge>
+          )}
+          {item.priority && (
+            <Badge
+              variant={item.priority === "High" ? "danger" : item.priority === "Medium" ? "warning" : "muted"}
+              size="xs"
+            >
+              {item.priority}
+            </Badge>
+          )}
+          {item.category && <Badge variant="neutral" size="xs" className="capitalize">{item.category}</Badge>}
+        </div>
+        {body && <p className="text-[12.5px] text-[#a7b3aa] mt-1 line-clamp-1">{body}</p>}
+        <div className="flex items-center gap-x-3 gap-y-1 flex-wrap text-[12px] text-[#78877d] mt-1">
+          {author && <span>by {author}</span>}
+          {created && <span>Created {created}</span>}
+          {due && (
+            <span className="inline-flex items-center gap-1">
+              <Clock className="w-3 h-3" />
+              {item.due_date ? "Due" : "On"} {due}
+            </span>
+          )}
+          {item.location && <span>{item.location}</span>}
+        </div>
+      </div>
+      <Button
+        variant="danger"
+        size="xs"
+        onClick={onDelete}
+        leftIcon={<Trash2 className="w-3.5 h-3.5" />}
+        className="self-start sm:self-center"
+      >
+        Delete
+      </Button>
+    </li>
   );
 };
 
