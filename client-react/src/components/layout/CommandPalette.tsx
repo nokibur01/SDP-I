@@ -35,7 +35,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
   const [isLoading, setIsLoading] = useState(false);
 
   const staticActions = [
-    { title: 'Dashboard', subtitle: 'Academic Flight Deck', path: '/dashboard', icon: LayoutGrid },
+    { title: 'Dashboard', subtitle: 'Your week at a glance', path: '/dashboard', icon: LayoutGrid },
     { title: 'Tasks & Deadlines', subtitle: 'Assignments & Submissions', path: '/tasks', icon: CheckSquare },
     { title: 'Events', subtitle: 'Schedules & Midterm Dates', path: '/events', icon: Calendar },
     { title: 'Announcements', subtitle: 'Notices & Department News', path: '/announcements', icon: Megaphone },

@@ -110,7 +110,7 @@ export const Topbar: React.FC<TopbarProps> = ({
           <h1 className="text-[17px] font-bold text-[#d6ded8] tracking-tight truncate">{title}</h1>
           <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#95b399] shrink-0" />
           <span className="hidden sm:inline-block text-[12px] text-[#a7b3aa] font-medium truncate">
-            Semester Cohort Hub
+            {[user?.department, user?.batch].filter(Boolean).join(' · ') || 'BatchHub'}
           </span>
         </div>
       </div>

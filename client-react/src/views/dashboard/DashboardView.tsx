@@ -9,7 +9,6 @@ import {
   ArrowRight,
   ChevronRight,
   ChevronLeft,
-  Sparkles,
   Pin,
   Check,
   Megaphone,
@@ -196,6 +195,15 @@ export const DashboardView: React.FC = () => {
     (t) => !t.is_completed && new Date(t.due_date).getTime() < now.getTime()
   ).length;
 
+  const weekAhead = now.getTime() + 7 * 24 * 60 * 60 * 1000;
+  const dueThisWeekCount = tasks.filter((t) => {
+    const due = new Date(t.due_date).getTime();
+    return !t.is_completed && due >= now.getTime() && due <= weekAhead;
+  }).length;
+  const nextEvent = [...events]
+    .filter((e) => new Date(e.event_date).getTime() >= now.getTime())
+    .sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())[0];
+
   const completionRate = totalTasksCount > 0 ? Math.round((completedTasksCount / totalTasksCount) * 100) : 100;
 
   const activeTasks = tasks.slice(0, 5);
@@ -355,58 +363,111 @@ export const DashboardView: React.FC = () => {
   const isInitialLoading = tasksLoading && eventsLoading && noticesLoading && projectsLoading;
 
   return (
-    <AppLayout title="Academic Flight Deck">
+    <AppLayout title="Dashboard">
       {isInitialLoading ? (
         <DashboardSkeleton />
       ) : (
         <div className="space-y-5">
-          {/* 1. SaaS Hero Greeting Banner */}
-          <section className="bg-gradient-to-r from-[#101713] via-[#101713] to-[#0c120e] border border-[#1b261f] rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.25)] flex flex-col md:flex-row md:items-center justify-between gap-5">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-[14px] bg-[#0c120e] border border-[#95b399]/30 flex items-center justify-center text-[#95b399] shrink-0 shadow-inner">
-                <Sparkles className="w-6 h-6" />
-              </div>
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-[11px] uppercase font-bold tracking-wider text-[#95b399] bg-[#95b399]/10 px-2 py-0.5 rounded-full border border-[#95b399]/20">
-                    {user?.batch ? `Batch ${user.batch}` : `Academic Session ${now.getFullYear()}`}
-                  </span>
-                  <span className="text-[#1b261f]">•</span>
-                  <span className="text-[12px] text-[#a7b3aa] font-medium">
-                    {user?.department || 'Computer Science & Engineering'}
-                  </span>
-                </div>
-                <h2 className="text-[20px] sm:text-[24px] font-bold text-[#d6ded8] tracking-tight mt-1">
-                  {greeting}, {user?.name ? user.name.split(' ')[0] : 'Scholar'}!
-                </h2>
-                <p className="text-[13px] text-[#a7b3aa] mt-0.5 max-w-xl">
-                  Cohort flight deck is synchronized. You have{' '}
-                  <strong className="text-[#d6ded8] font-semibold">
-                    {pendingTasksCount} pending {pendingTasksCount === 1 ? 'task' : 'tasks'}
-                  </strong>{' '}
-                  and {events.length} campus {events.length === 1 ? 'event' : 'events'} on your radar.
-                </p>
-              </div>
-            </div>
+          {/* 1. Welcome Banner */}
+          <section className="relative overflow-hidden bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 sm:p-6">
+            <div className="pointer-events-none absolute -top-24 -right-16 w-72 h-72 rounded-full bg-[#95b399]/[0.06] blur-3xl" />
 
-            {/* Quick Action Trigger */}
-            <div className="flex items-center gap-2.5 shrink-0">
-              <Button
-                variant="secondary"
-                size="sm"
-                leftIcon={<Compass className="w-3.5 h-3.5" />}
-                onClick={() => navigate('/resources')}
-              >
-                Knowledge Hub
-              </Button>
-              <Button
-                variant="primary"
-                size="sm"
-                leftIcon={<Plus className="w-3.5 h-3.5" />}
-                onClick={() => navigate('/tasks')}
-              >
-                New Task
-              </Button>
+            <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap text-[12px] font-medium">
+                  <span className="text-[#78877d]">
+                    {now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}
+                  </span>
+                  {user?.batch && (
+                    <span className="px-2 py-0.5 rounded-full bg-[#1f2c23] text-[#95b399] border border-[#95b399]/20">
+                      {/year|batch/i.test(user.batch) ? user.batch : `Batch ${user.batch}`}
+                    </span>
+                  )}
+                  {user?.department && (
+                    <span className="px-2 py-0.5 rounded-full bg-[#141d18] text-[#a7b3aa] border border-[#1b261f]">
+                      {user.department}
+                    </span>
+                  )}
+                </div>
+
+                <h2 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-2">
+                  {greeting}, {user?.name ? user.name.split(' ')[0] : 'there'}
+                </h2>
+
+                <p className="text-[13.5px] text-[#a7b3aa] mt-1 max-w-xl leading-relaxed">
+                  {pendingTasksCount === 0 ? (
+                    <>You&apos;re all caught up — no pending tasks.</>
+                  ) : (
+                    <>
+                      You have{' '}
+                      <strong className="text-[#d6ded8] font-semibold">
+                        {pendingTasksCount} pending {pendingTasksCount === 1 ? 'task' : 'tasks'}
+                      </strong>
+                      {overdueTasksCount > 0 && (
+                        <>
+                          , <span className="text-[#d66767] font-medium">{overdueTasksCount} overdue</span>
+                        </>
+                      )}
+                      .
+                    </>
+                  )}
+                  {nextEvent && (
+                    <>
+                      {' '}Next up: <span className="text-[#d6ded8] font-medium">{nextEvent.title}</span> on{' '}
+                      {new Date(nextEvent.event_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}.
+                    </>
+                  )}
+                </p>
+
+                <div className="flex items-center gap-2.5 mt-4 flex-wrap">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    leftIcon={<Plus className="w-3.5 h-3.5" />}
+                    onClick={() => navigate('/tasks')}
+                  >
+                    New Task
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    leftIcon={<Compass className="w-3.5 h-3.5" />}
+                    onClick={() => navigate('/resources')}
+                  >
+                    Resources
+                  </Button>
+                </div>
+              </div>
+
+              {/* At-a-glance summary */}
+              <div className="grid grid-cols-3 gap-2.5 lg:w-[360px] shrink-0">
+                <div className="rounded-[14px] bg-[#0c120e] border border-[#1b261f] p-3">
+                  <div className="text-[11px] uppercase tracking-wider font-semibold text-[#78877d]">Progress</div>
+                  <div className="text-[20px] font-bold text-[#d6ded8] mt-1 leading-none">{completionRate}%</div>
+                  <div className="h-1.5 rounded-full bg-[#1b261f] mt-2.5 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-[#95b399] transition-all duration-500"
+                      style={{ width: `${completionRate}%` }}
+                    />
+                  </div>
+                </div>
+                <div className="rounded-[14px] bg-[#0c120e] border border-[#1b261f] p-3">
+                  <div className="text-[11px] uppercase tracking-wider font-semibold text-[#78877d]">This week</div>
+                  <div className="text-[20px] font-bold text-[#d6ded8] mt-1 leading-none">{dueThisWeekCount}</div>
+                  <div className="text-[11.5px] text-[#78877d] mt-2">due soon</div>
+                </div>
+                <div className="rounded-[14px] bg-[#0c120e] border border-[#1b261f] p-3">
+                  <div className="text-[11px] uppercase tracking-wider font-semibold text-[#78877d]">Overdue</div>
+                  <div
+                    className={`text-[20px] font-bold mt-1 leading-none ${
+                      overdueTasksCount > 0 ? 'text-[#d66767]' : 'text-[#d6ded8]'
+                    }`}
+                  >
+                    {overdueTasksCount}
+                  </div>
+                  <div className="text-[11.5px] text-[#78877d] mt-2">{overdueTasksCount > 0 ? 'need attention' : 'all clear'}</div>
+                </div>
+              </div>
             </div>
           </section>
 

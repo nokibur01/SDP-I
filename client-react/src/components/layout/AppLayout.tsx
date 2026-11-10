@@ -10,7 +10,7 @@ export interface AppLayoutProps {
 }
 
 const ROUTE_TITLES: Record<string, string> = {
-  '/dashboard': 'Academic Flight Deck',
+  '/dashboard': 'Dashboard',
   '/tasks': 'Tasks & Deadlines',
   '/events': 'Campus Events',
   '/announcements': 'Batch Announcements',
@@ -19,6 +19,7 @@ const ROUTE_TITLES: Record<string, string> = {
   '/members': 'Batch Members',
   '/profile': 'My Profile',
   '/cr-panel': 'Cohort Administration',
+  '/admin/batches': 'Admin Control Center',
 };
 
 export const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
@@ -41,7 +42,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
     (title && title !== 'Dashboard' ? title : null) ||
     ROUTE_TITLES[location.pathname] ||
     title ||
-    'Academic Flight Deck';
+    'Dashboard';
 
   return (
     <div className="min-h-screen bg-[#090e0b] text-[#d6ded8] flex">
