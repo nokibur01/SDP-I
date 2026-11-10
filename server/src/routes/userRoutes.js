@@ -109,14 +109,48 @@ router.get("/projects", verifyToken, requireRole("admin"), async (req, res) => {
   }
 });
 
+// Aggregate record counts for the admin overview (Admin only)
+router.get("/admin/stats", verifyToken, requireRole("admin"), async (req, res) => {
+  try {
+    const [[row]] = await db.query(
+      `SELECT
+         (SELECT COUNT(*) FROM users)     AS students,
+         (SELECT COUNT(*) FROM notices)   AS notices,
+         (SELECT COUNT(*) FROM materials) AS resources,
+         (SELECT COUNT(*) FROM tasks)     AS tasks,
+         (SELECT COUNT(*) FROM events)    AS events,
+         (SELECT COUNT(*) FROM projects)  AS projects`
+    );
+    const [roles] = await db.query("SELECT role, COUNT(*) AS count FROM users GROUP BY role");
+    const roleCounts = { student: 0, cr: 0, admin: 0 };
+    roles.forEach((r) => { roleCounts[r.role] = Number(r.count); });
+
+    const stats = Object.fromEntries(Object.entries(row).map(([k, v]) => [k, Number(v)]));
+    res.json({ success: true, stats, roleCounts });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Error fetching admin statistics" });
+  }
+});
+
 // Admin update role endpoint (Admin only)
 router.put("/admin/users/:id/role", verifyToken, requireRole("admin"), async (req, res) => {
   try {
     const { role } = req.body;
+    const targetId = Number(req.params.id);
+    if (!Number.isInteger(targetId) || targetId <= 0) {
+      return res.status(400).json({ success: false, message: "Invalid user id" });
+    }
     if (!["student", "cr", "admin"].includes(role)) {
       return res.status(400).json({ success: false, message: "Invalid role specified" });
     }
-    await db.query("UPDATE users SET role = ? WHERE id = ?", [role, req.params.id]);
+    // Prevent an admin from accidentally locking themselves out
+    if (targetId === Number(req.user.id)) {
+      return res.status(400).json({ success: false, message: "You cannot change your own role." });
+    }
+    const [result] = await db.query("UPDATE users SET role = ? WHERE id = ?", [role, targetId]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
     res.json({ success: true, message: "Role updated successfully" });
   } catch (err) {
     res.status(500).json({ success: false, message: "Failed to update role" });
@@ -125,7 +159,8 @@ router.put("/admin/users/:id/role", verifyToken, requireRole("admin"), async (re
 
 // Admin universal deletion endpoint (Admin only)
 router.delete("/admin/:tab/:id", verifyToken, requireRole("admin"), async (req, res) => {
-  const { tab, id } = req.params;
+  const { tab } = req.params;
+  const id = Number(req.params.id);
   const tableNames = {
     students: "users",
     notices: "notices",
@@ -136,12 +171,25 @@ router.delete("/admin/:tab/:id", verifyToken, requireRole("admin"), async (req, 
   };
   const table = tableNames[tab];
   if (!table) return res.status(400).json({ success: false, message: "Invalid category" });
+  if (!Number.isInteger(id) || id <= 0) {
+    return res.status(400).json({ success: false, message: "Invalid record id" });
+  }
+  if (table === "users" && id === Number(req.user.id)) {
+    return res.status(400).json({ success: false, message: "You cannot delete your own account." });
+  }
 
   try {
-    await db.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    const [result] = await db.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "Record not found" });
+    }
     res.json({ success: true, message: "Deleted successfully" });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to delete record" });
+    const message =
+      err?.code === "ER_ROW_IS_REFERENCED_2"
+        ? "This record is referenced by other data and cannot be deleted."
+        : "Failed to delete record";
+    res.status(500).json({ success: false, message });
   }
 });
 
