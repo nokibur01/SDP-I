@@ -1,42 +1,39 @@
 @import "tailwindcss";
 
-/* Matte Dark Forest & Sage Theme */
+/* =========================================================================
+   BatchHub theme tokens
+   Components use these as Tailwind utilities (bg-surface, text-fg, border-line,
+   bg-accent/10 ...). Dark "Matte Forest & Sage" is the default; light mode only
+   swaps the values below, so every component follows automatically.
+   ========================================================================= */
 @theme {
-  --color-canvas: #090e0b;
-  --color-sidebar: #101713;
-  --color-topbar: #101713;
-  --color-card: #101713;
-  --color-card-hover: #141d18;
-  --color-card-inner: #0c120e;
-  --color-card-elevated: #16201a;
-  --color-border-subtle: #1b261f;
-  --color-border-accent: rgba(149, 179, 153, 0.20);
+  --color-canvas: #090e0b;        /* page background */
+  --color-surface: #101713;       /* cards, sidebar, top bar */
+  --color-inset: #0c120e;         /* inputs, wells */
+  --color-surface-hover: #141d18;
+  --color-raised: #16201a;        /* elevated chips, skeletons */
+  --color-accent-soft: #1f2c23;   /* selected / accent tint backgrounds */
+  --color-line: #24332a;          /* borders, dividers */
+  --color-line-strong: #2a3a2f;
 
-  --color-mint: #95b399;
-  --color-mint-hover: #839f87;
-  --color-mint-soft: rgba(149, 179, 153, 0.10);
-  --color-mint-glow: rgba(149, 179, 153, 0.20);
+  --color-accent: #95b399;        /* sage */
+  --color-accent-hover: #839f87;
+  --color-accent-light: #a9c4ac;
+  --color-accent-deep: #6f8f75;
+  --color-on-accent: #090e0b;     /* text on accent buttons */
 
-  --color-emerald: #95b399;
-  --color-emerald-hover: #839f87;
-  --color-emerald-soft: rgba(149, 179, 153, 0.10);
-  --color-emerald-glow: rgba(149, 179, 153, 0.20);
-
-  --color-secondary-accent: #4a6352;
-
-  --color-text-primary: #d6ded8;
-  --color-text-secondary: #a7b3aa;
-  --color-text-muted: #78877d;
-  --color-text-dim: #56635a;
+  --color-fg: #e4eae5;            /* primary text */
+  --color-fg-2: #bcc7bf;          /* secondary text */
+  --color-muted: #97a59b;         /* muted text, dates */
+  --color-muted-2: #8a988e;
+  --color-icon: #5f7a66;          /* quiet icons */
 
   --color-danger: #d66767;
   --color-danger-soft: #3b1c1c;
   --color-warning: #d6b867;
   --color-warning-soft: #3a321c;
   --color-info: #7f9fb3;
-  --color-info-soft: rgba(127, 159, 179, 0.12);
-  --color-purple: #a394c0;
-  --color-purple-soft: rgba(163, 148, 192, 0.12);
+  --color-lilac: #a394c0;
 
   --radius-card: 18px;
   --radius-panel: 14px;
@@ -45,51 +42,69 @@
 }
 
 :root {
-  --bg-color: #090e0b;
-  --card-bg: #101713;
-  --sidebar-bg: #101713;
-  --topbar-bg: #101713;
-  --border-color: #1b261f;
+  color-scheme: dark;
+}
 
-  --primary-accent: #95b399;
-  --secondary-accent: #4a6352;
+/* Light mode: soft paper + deep forest green */
+:root[data-theme="light"] {
+  --color-canvas: #f3f5f2;
+  --color-surface: #ffffff;
+  --color-inset: #eef2ee;
+  --color-surface-hover: #f1f4f0;
+  --color-raised: #e7ece7;
+  --color-accent-soft: #e2ebe3;
+  --color-line: #d5ddd6;
+  --color-line-strong: #bfcac1;
 
-  --text-main: #d6ded8;
-  --text-muted: #78877d;
+  --color-accent: #3f6b48;
+  --color-accent-hover: #355c3d;
+  --color-accent-light: #5f8a67;
+  --color-accent-deep: #2f5537;
+  --color-on-accent: #ffffff;
 
-  --btn-text: #090e0b;
+  --color-fg: #141c17;
+  --color-fg-2: #364339;
+  --color-muted: #56635a;
+  --color-muted-2: #5e6b62;
+  --color-icon: #6b8a72;
 
-  --badge-medium-bg: #3a321c;
-  --badge-medium-text: #d6b867;
-  --badge-high-bg: #3b1c1c;
-  --badge-high-text: #d66767;
+  --color-danger: #b23b3b;
+  --color-danger-soft: #fbe4e4;
+  --color-warning: #8a6510;
+  --color-warning-soft: #f7edd3;
+  --color-info: #2f6283;
+  --color-lilac: #5f4f91;
 
-  /* Legacy aliases (kept so older references resolve to the new palette) */
-  --card-hover: #141d18;
-  --card-inner: #0c120e;
-  --card-elevated: #16201a;
-  --card-border: #1b261f;
-  --card-border-subtle: rgba(149, 179, 153, 0.08);
-  --text-primary: #d6ded8;
-  --text-secondary: #a7b3aa;
-  --text-dim: #56635a;
-  --primary-mint: #95b399;
-  --primary-mint-hover: #839f87;
-  --primary-mint-soft: rgba(149, 179, 153, 0.10);
-  --primary-mint-border: rgba(149, 179, 153, 0.20);
-  --nav-active-bg: rgba(149, 179, 153, 0.12);
-  --nav-active-text: #95b399;
-  --danger-red: #d66767;
-  --danger-soft: #3b1c1c;
-  --warning-orange: #d6b867;
-  --warning-soft: #3a321c;
-  --info-blue: #7f9fb3;
-  --info-soft: rgba(127, 159, 179, 0.12);
+  color-scheme: light;
+}
 
-  --radius-card: 18px;
-  --radius-panel: 14px;
-  --radius-pill: 12px;
-  --radius-sm: 8px;
+/* Sections that must stay dark in both modes (e.g. the login page over dark artwork) */
+.force-dark {
+  --color-canvas: #090e0b;
+  --color-surface: #101713;
+  --color-inset: #0c120e;
+  --color-surface-hover: #141d18;
+  --color-raised: #16201a;
+  --color-accent-soft: #1f2c23;
+  --color-line: #24332a;
+  --color-line-strong: #2a3a2f;
+  --color-accent: #95b399;
+  --color-accent-hover: #839f87;
+  --color-accent-light: #a9c4ac;
+  --color-accent-deep: #6f8f75;
+  --color-on-accent: #090e0b;
+  --color-fg: #e4eae5;
+  --color-fg-2: #bcc7bf;
+  --color-muted: #97a59b;
+  --color-muted-2: #8a988e;
+  --color-icon: #5f7a66;
+  --color-danger: #d66767;
+  --color-danger-soft: #3b1c1c;
+  --color-warning: #d6b867;
+  --color-warning-soft: #3a321c;
+  --color-info: #7f9fb3;
+  --color-lilac: #a394c0;
+  color-scheme: dark;
 }
 
 * {
@@ -98,28 +113,37 @@
 }
 
 body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
+  background-color: var(--color-canvas);
+  color: var(--color-fg);
   min-height: 100vh;
   overflow-x: hidden;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
+  line-height: 1.5;
 }
 
-/* Custom scrollbars matching the forest theme */
+/* Smooth colour fade only while the theme is being switched */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease, fill 200ms ease !important;
+}
+
+/* Custom scrollbars follow the theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090e0b;
+  background: var(--color-canvas);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1b261f;
+  background: var(--color-line);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3a2f;
+  background: var(--color-line-strong);
 }

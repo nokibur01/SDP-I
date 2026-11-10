@@ -199,16 +199,16 @@ export const EventsView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
+              <span className="text-[12.5px] uppercase font-bold tracking-wider text-accent">
                 Department Schedule
               </span>
-              <span className="text-[#1b261f]">•</span>
-              <span className="text-[12px] text-[#a7b3aa]">Hackathons, Seminars & Workshops</span>
+              <span className="text-line">•</span>
+              <span className="text-[13px] text-fg-2">Hackathons, Seminars & Workshops</span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-fg tracking-tight mt-0.5">
               Campus Events & Calendar
             </h1>
-            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
+            <p className="text-[13.5px] text-fg-2 mt-0.5">
               Explore university hackathons, project defense dates, seminars, and batch gatherings.
             </p>
           </div>
@@ -227,11 +227,11 @@ export const EventsView: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Left Column (4 cols): Mini Calendar & Date Filter */}
           <div className="lg:col-span-4 flex flex-col gap-5">
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#1b261f]/60">
+            <div className="bg-surface border border-line rounded-[18px] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-line/60">
                 <div className="flex items-center gap-2">
-                  <CalendarIcon className="w-4 h-4 text-[#95b399]" />
-                  <h3 className="text-[15px] font-bold text-[#d6ded8]">
+                  <CalendarIcon className="w-4 h-4 text-accent" />
+                  <h3 className="text-[15px] font-bold text-fg">
                     {calendarDate.toLocaleString('default', { month: 'long' })} {calendarDate.getFullYear()}
                   </h3>
                 </div>
@@ -242,7 +242,7 @@ export const EventsView: React.FC = () => {
                       setSelectedDay(null);
                     }}
                     title="Previous Month"
-                    className="p-1 rounded-[6px] hover:bg-[#141d18] text-[#a7b3aa] hover:text-[#d6ded8] transition-colors cursor-pointer"
+                    className="p-1 rounded-[6px] hover:bg-surface-hover text-fg-2 hover:text-fg transition-colors cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -252,7 +252,7 @@ export const EventsView: React.FC = () => {
                       setSelectedDay(null);
                     }}
                     title="Current Month"
-                    className="px-2 py-0.5 text-[11px] font-semibold text-[#95b399] hover:bg-[#141d18] rounded-[6px] transition-colors cursor-pointer"
+                    className="px-2 py-0.5 text-[12px] font-semibold text-accent hover:bg-surface-hover rounded-[6px] transition-colors cursor-pointer"
                   >
                     Today
                   </button>
@@ -262,7 +262,7 @@ export const EventsView: React.FC = () => {
                       setSelectedDay(null);
                     }}
                     title="Next Month"
-                    className="p-1 rounded-[6px] hover:bg-[#141d18] text-[#a7b3aa] hover:text-[#d6ded8] transition-colors cursor-pointer"
+                    className="p-1 rounded-[6px] hover:bg-surface-hover text-fg-2 hover:text-fg transition-colors cursor-pointer"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -270,22 +270,22 @@ export const EventsView: React.FC = () => {
               </div>
 
               {selectedDay && (
-                <div className="mb-2 flex items-center justify-between text-[11.5px] px-1">
-                  <span className="text-[#a7b3aa]">
+                <div className="mb-2 flex items-center justify-between text-[12.5px] px-1">
+                  <span className="text-fg-2">
                     Filtered to Day {selectedDay}
                   </span>
                   <button
                     onClick={() => setSelectedDay(null)}
-                    className="text-[#95b399] hover:underline font-semibold cursor-pointer"
+                    className="text-accent hover:underline font-semibold cursor-pointer"
                   >
                     Clear Filter
                   </button>
                 </div>
               )}
 
-              <div className="grid grid-cols-7 gap-1 text-center select-none text-[12px]">
+              <div className="grid grid-cols-7 gap-1 text-center select-none text-[13px]">
                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map((d) => (
-                  <div key={d} className="text-[#a7b3aa] font-semibold py-1">
+                  <div key={d} className="text-fg-2 font-semibold py-1">
                     {d}
                   </div>
                 ))}
@@ -313,33 +313,33 @@ export const EventsView: React.FC = () => {
                       onClick={() => setSelectedDay(isSelected ? null : day)}
                       className={`relative py-1.5 rounded-[9px] font-medium transition-all cursor-pointer flex flex-col items-center justify-center ${
                         isSelected
-                          ? 'bg-[#95b399] text-[#090e0b] font-bold shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
+                          ? 'bg-accent text-on-accent font-bold shadow-[0_2px_8px_rgba(0,0,0,0.25)]'
                           : isTodayDate
-                          ? 'border border-[#95b399]/60 text-[#d6ded8] hover:bg-[#141d18]'
-                          : 'text-[#d6ded8] hover:bg-[#141d18]'
+                          ? 'border border-accent/60 text-fg hover:bg-surface-hover'
+                          : 'text-fg hover:bg-surface-hover'
                       }`}
                     >
                       <span>{day}</span>
                       {hasEventsOnDay && !isSelected && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#95b399] mt-0.5" />
+                        <span className="w-1.5 h-1.5 rounded-full bg-accent mt-0.5" />
                       )}
                     </button>
                   );
                 })}
               </div>
 
-              <div className="mt-4 pt-3 border-t border-[#1b261f]/60 text-[12px] text-[#a7b3aa] flex items-center justify-between">
+              <div className="mt-4 pt-3 border-t border-line/60 text-[13px] text-fg-2 flex items-center justify-between">
                 <span className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-[#95b399]" /> Has Event
+                  <span className="w-2 h-2 rounded-full bg-accent" /> Has Event
                 </span>
                 <span>{upcomingEvents.length} scheduled</span>
               </div>
             </div>
 
             {/* Quick Summary Card */}
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 text-[13px] text-[#a7b3aa] leading-relaxed flex flex-col gap-2">
-              <span className="text-[#d6ded8] font-semibold flex items-center gap-1.5">
-                <CalendarDays className="w-4 h-4 text-[#7f9fb3]" /> Cohort Calendar Guidelines
+            <div className="bg-surface border border-line rounded-[18px] p-5 text-[13px] text-fg-2 leading-relaxed flex flex-col gap-2">
+              <span className="text-fg font-semibold flex items-center gap-1.5">
+                <CalendarDays className="w-4 h-4 text-info" /> Cohort Calendar Guidelines
               </span>
               <p>
                 All student suggestions undergo moderation by the Class Representatives. Approved events
@@ -351,7 +351,7 @@ export const EventsView: React.FC = () => {
           {/* Right Column (8 cols): Event Tabs & Grid */}
           <div className="lg:col-span-8 flex flex-col gap-4">
             {/* Toolbar */}
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="bg-surface border border-line rounded-[16px] p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
               <div className="flex items-center gap-1.5 w-full sm:w-auto">
                 <button
                   onClick={() => {
@@ -360,8 +360,8 @@ export const EventsView: React.FC = () => {
                   }}
                   className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer ${
                     activeTab === 'upcoming'
-                      ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30'
-                      : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                      ? 'bg-inset text-accent border border-accent/30'
+                      : 'text-fg-2 hover:text-fg'
                   }`}
                 >
                   Upcoming ({upcomingEvents.length})
@@ -374,8 +374,8 @@ export const EventsView: React.FC = () => {
                   }}
                   className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer ${
                     activeTab === 'past'
-                      ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30'
-                      : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                      ? 'bg-inset text-accent border border-accent/30'
+                      : 'text-fg-2 hover:text-fg'
                   }`}
                 >
                   Past Events ({pastEvents.length})
@@ -389,8 +389,8 @@ export const EventsView: React.FC = () => {
                     }}
                     className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                       activeTab === 'pending'
-                        ? 'bg-[#0c120e] text-[#d6b867] border border-[#d6b867]/30'
-                        : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                        ? 'bg-inset text-warning border border-warning/30'
+                        : 'text-fg-2 hover:text-fg'
                     }`}
                   >
                     <ShieldCheck className="w-3.5 h-3.5" />
@@ -400,13 +400,13 @@ export const EventsView: React.FC = () => {
               </div>
 
               <div className="w-full sm:w-64 relative">
-                <Search className="w-4 h-4 text-[#a7b3aa] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-fg-2 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Filter events..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-[#d6ded8] placeholder:text-[#a7b3aa] focus:outline-none focus:border-[#95b399]"
+                  className="w-full bg-inset border border-line rounded-[10px] pl-9 pr-3 py-1.5 text-[13px] text-fg placeholder:text-fg-2 focus:outline-none focus:border-accent"
                 />
               </div>
             </div>
@@ -415,10 +415,10 @@ export const EventsView: React.FC = () => {
             {isLoading ? (
               <ListSkeleton items={4} />
             ) : currentList.length === 0 ? (
-              <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
-                <CalendarIcon className="w-10 h-10 text-[#a7b3aa] mb-2" />
-                <h3 className="text-[16px] font-bold text-[#d6ded8]">No Events Found</h3>
-                <p className="text-[13px] text-[#a7b3aa] mt-1">
+              <div className="bg-surface border border-line rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
+                <CalendarIcon className="w-10 h-10 text-fg-2 mb-2" />
+                <h3 className="text-[16px] font-bold text-fg">No Events Found</h3>
+                <p className="text-[13px] text-fg-2 mt-1">
                   {selectedDay
                     ? `No events scheduled on ${calendarDate.toLocaleString('default', { month: 'long' })} ${selectedDay}.`
                     : 'There are no events matching your criteria in this view.'}
@@ -440,20 +440,20 @@ export const EventsView: React.FC = () => {
                     <div
                       key={ev.id}
                       onClick={() => setSelectedEvent(ev)}
-                      className="bg-[#101713] border border-[#1b261f] hover:border-[#95b399]/40 rounded-[16px] p-4 sm:p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer group"
+                      className="bg-surface border border-line hover:border-accent/40 rounded-[16px] p-4 sm:p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer group"
                     >
                       <div className="flex items-start gap-4 min-w-0">
                         {/* Date badge */}
-                        <div className="w-13 h-13 rounded-[12px] bg-[#0c120e] border border-[#1b261f] group-hover:border-[#95b399]/50 flex flex-col items-center justify-center text-center shrink-0 transition-colors">
-                          <span className="text-[11px] uppercase font-bold text-[#a7b3aa]">
+                        <div className="w-13 h-13 rounded-[12px] bg-inset border border-line group-hover:border-accent/50 flex flex-col items-center justify-center text-center shrink-0 transition-colors">
+                          <span className="text-[12px] uppercase font-bold text-fg-2">
                             {evDate.toLocaleString('default', { month: 'short' })}
                           </span>
-                          <span className="text-[17px] font-bold text-[#95b399]">{evDate.getDate()}</span>
+                          <span className="text-[17px] font-bold text-accent">{evDate.getDate()}</span>
                         </div>
 
                         <div className="flex flex-col min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className="text-[15.5px] font-bold text-[#d6ded8] group-hover:text-[#95b399] transition-colors truncate">
+                            <h3 className="text-[15.5px] font-bold text-fg group-hover:text-accent transition-colors truncate">
                               {ev.title}
                             </h3>
                             {ev.department && (
@@ -466,21 +466,21 @@ export const EventsView: React.FC = () => {
                             </Badge>
                           </div>
 
-                          <div className="flex items-center gap-3.5 text-[12.5px] text-[#a7b3aa] mt-1.5 flex-wrap">
+                          <div className="flex items-center gap-3.5 text-[13px] text-fg-2 mt-1.5 flex-wrap">
                             <span className="flex items-center gap-1">
-                              <Clock className="w-3.5 h-3.5 text-[#7f9fb3]" />{' '}
+                              <Clock className="w-3.5 h-3.5 text-info" />{' '}
                               {ev.time || evDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </span>
                             <span className="flex items-center gap-1">
-                              <MapPin className="w-3.5 h-3.5 text-[#7f9fb3]" /> {ev.location || 'Campus'}
+                              <MapPin className="w-3.5 h-3.5 text-info" /> {ev.location || 'Campus'}
                             </span>
-                            <span className="text-[11.5px] text-[#78877d]">
+                            <span className="text-[12.5px] text-muted">
                               Organized by: {ev.organizer_name || 'Academic Lead'}
                             </span>
                           </div>
 
                           {ev.description && (
-                            <p className="text-[13px] text-[#a7b3aa] mt-2 line-clamp-1 leading-relaxed">
+                            <p className="text-[13px] text-fg-2 mt-2 line-clamp-1 leading-relaxed">
                               {ev.description}
                             </p>
                           )}
@@ -490,7 +490,7 @@ export const EventsView: React.FC = () => {
                       {/* Pending Review Actions for CR/Admin */}
                       {isPending && isCRorAdmin && (
                         <div
-                          className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#1b261f]/60"
+                          className="flex items-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-line/60"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <Button
@@ -573,7 +573,7 @@ export const EventsView: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
 
-            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
+            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-line/60">
               <Button
                 variant="ghost"
                 size="sm"
@@ -603,9 +603,9 @@ export const EventsView: React.FC = () => {
             maxWidth="md"
           >
             <div className="space-y-4">
-              <div className="flex items-center gap-3 text-[13px] text-[#a7b3aa] bg-[#0c120e] border border-[#1b261f] p-3 rounded-[12px] flex-wrap">
+              <div className="flex items-center gap-3 text-[13px] text-fg-2 bg-inset border border-line p-3 rounded-[12px] flex-wrap">
                 <span className="flex items-center gap-1.5">
-                  <CalendarIcon className="w-4 h-4 text-[#95b399]" />
+                  <CalendarIcon className="w-4 h-4 text-accent" />
                   {new Date(selectedEvent.event_date).toLocaleDateString(undefined, {
                     weekday: 'long',
                     year: 'numeric',
@@ -614,24 +614,24 @@ export const EventsView: React.FC = () => {
                   })}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <Clock className="w-4 h-4 text-[#7f9fb3]" />
+                  <Clock className="w-4 h-4 text-info" />
                   {selectedEvent.time || new Date(selectedEvent.event_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <MapPin className="w-4 h-4 text-[#7f9fb3]" /> {selectedEvent.location || 'Campus'}
+                  <MapPin className="w-4 h-4 text-info" /> {selectedEvent.location || 'Campus'}
                 </span>
               </div>
 
               <div>
-                <h4 className="text-[13px] font-bold text-[#a7b3aa] uppercase tracking-wider mb-1">
+                <h4 className="text-[13px] font-bold text-fg-2 uppercase tracking-wider mb-1">
                   Event Description
                 </h4>
-                <p className="text-[14px] text-[#d6ded8] leading-relaxed whitespace-pre-line">
+                <p className="text-[14px] text-fg leading-relaxed whitespace-pre-line">
                   {selectedEvent.description || 'No additional description provided.'}
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#1b261f]/60 flex items-center justify-between text-[12px] text-[#a7b3aa]">
+              <div className="pt-3 border-t border-line/60 flex items-center justify-between text-[13px] text-fg-2">
                 <span>Organized by: {selectedEvent.organizer_name || 'Cohort Lead'}</span>
                 {selectedEvent.department && <Badge variant="muted">{selectedEvent.department}</Badge>}
               </div>

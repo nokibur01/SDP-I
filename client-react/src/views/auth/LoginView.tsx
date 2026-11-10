@@ -47,7 +47,7 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#090e0b] flex items-center justify-center px-4 py-10">
+    <div className="force-dark relative min-h-screen w-full overflow-hidden bg-canvas text-fg flex items-center justify-center px-4 py-10">
       {/* Background illustration (high resolution) */}
       <img
         src={forestArt}
@@ -57,34 +57,34 @@ export const LoginView: React.FC = () => {
         className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
       />
       {/* Tone overlays: light overall dim, soft vignette, calmer centre behind the card */}
-      <div className="absolute inset-0 bg-[#090e0b]/35" />
+      <div className="absolute inset-0 bg-canvas/35" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(9,14,11,0.45)_0%,rgba(9,14,11,0.1)_50%,rgba(9,14,11,0.75)_100%)]" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#090e0b] to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-canvas to-transparent" />
 
       {/* Login card */}
       <div className="relative z-10 w-full max-w-[420px]">
         {/* Brand lockup */}
         <div className="flex justify-center mb-6">
-          <div className="inline-flex items-center gap-3 pl-2 pr-5 py-2 rounded-full bg-[#090e0b]/70 backdrop-blur-md border border-[#95b399]/20 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
-            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-[#a9c4ac] to-[#6f8f75] flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_0_18px_rgba(149,179,153,0.35)]">
-              <GraduationCap className="w-5 h-5 text-[#090e0b]" strokeWidth={2.25} />
+          <div className="inline-flex items-center gap-3 pl-2 pr-5 py-2 rounded-full bg-canvas/70 backdrop-blur-md border border-accent/20 shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
+            <div className="relative w-10 h-10 rounded-full bg-gradient-to-br from-accent-light to-accent-deep flex items-center justify-center shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_0_18px_rgba(149,179,153,0.35)]">
+              <GraduationCap className="w-5 h-5 text-on-accent" strokeWidth={2.25} />
             </div>
             <div className="flex flex-col leading-none text-left">
               <span className="text-[19px] font-extrabold tracking-tight">
-                <span className="text-[#d6ded8]">Batch</span>
-                <span className="text-[#95b399]">Hub</span>
+                <span className="text-fg">Batch</span>
+                <span className="text-accent">Hub</span>
               </span>
-              <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#78877d]">
+              <span className="mt-1 text-[11.5px] font-semibold uppercase tracking-[0.18em] text-muted">
                 University cohort space
               </span>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#101713]/80 backdrop-blur-xl border border-[#95b399]/15 rounded-[22px] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
+        <div className="bg-surface/80 backdrop-blur-xl border border-accent/15 rounded-[22px] p-6 sm:p-8 shadow-[0_24px_60px_rgba(0,0,0,0.55)]">
           <div className="mb-6 text-center">
-            <h1 className="text-[24px] font-bold text-[#d6ded8] tracking-tight">Welcome back</h1>
-            <p className="text-[13.5px] text-[#a7b3aa] mt-1">Sign in to continue to your batch workspace.</p>
+            <h1 className="text-[24px] font-bold text-fg tracking-tight">Welcome back</h1>
+            <p className="text-[13.5px] text-fg-2 mt-1">Sign in to continue to your batch workspace.</p>
           </div>
 
           {statusMessage && (
@@ -92,8 +92,8 @@ export const LoginView: React.FC = () => {
               role={statusMessage.type === 'error' ? 'alert' : 'status'}
               className={`mb-5 p-3 rounded-[12px] text-[13px] flex items-start gap-2.5 border ${
                 statusMessage.type === 'success'
-                  ? 'bg-[#1f2c23] text-[#95b399] border-[#95b399]/25'
-                  : 'bg-[#3b1c1c] text-[#d66767] border-[#d66767]/30'
+                  ? 'bg-accent-soft text-accent border-accent/25'
+                  : 'bg-danger-soft text-danger border-danger/30'
               }`}
             >
               {statusMessage.type === 'success' ? (
@@ -131,7 +131,7 @@ export const LoginView: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="hover:text-[#d6ded8] transition-colors focus:outline-none cursor-pointer"
+                  className="hover:text-fg transition-colors focus:outline-none cursor-pointer"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -150,15 +150,15 @@ export const LoginView: React.FC = () => {
             </Button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-[#1b261f] text-center text-[13px] text-[#78877d]">
+          <div className="mt-6 pt-5 border-t border-line text-center text-[13px] text-muted">
             New to BatchHub?{' '}
-            <Link to="/register" className="text-[#95b399] hover:text-[#839f87] font-medium hover:underline">
+            <Link to="/register" className="text-accent hover:text-accent-hover font-medium hover:underline">
               Create an account
             </Link>
           </div>
         </div>
 
-        <p className="text-center text-[12px] text-[#a7b3aa]/80 mt-6 drop-shadow">
+        <p className="text-center text-[13px] text-fg-2/80 mt-6 drop-shadow">
           Resources · Announcements · Projects · Peers · Deadlines
         </p>
       </div>

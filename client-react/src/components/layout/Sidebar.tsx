@@ -67,7 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Sidebar Rail */}
       <aside
         className={clsx(
-          "fixed lg:sticky top-0 left-0 z-40 h-screen shrink-0 bg-[#101713] border-r border-[#1b261f] flex flex-col justify-between p-3 transition-all duration-200 ease-in-out select-none",
+          "fixed lg:sticky top-0 left-0 z-40 h-screen shrink-0 bg-surface border-r border-line flex flex-col justify-between p-3 transition-all duration-200 ease-in-out select-none",
           isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           isCollapsed ? "lg:w-[72px]" : "w-[240px]"
         )}
@@ -81,15 +81,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
           >
             <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-9 h-9 rounded-xl bg-[#101713] border border-[#95b399]/30 flex items-center justify-center shrink-0 shadow-sm shadow-[#95b399]/10">
-                <GraduationCap className="w-5 h-5 text-[#95b399]" />
+              <div className="w-9 h-9 rounded-xl bg-surface border border-accent/30 flex items-center justify-center shrink-0 shadow-sm shadow-accent/10">
+                <GraduationCap className="w-5 h-5 text-accent" />
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col truncate">
-                  <span className="text-[16px] font-bold tracking-tight text-[#d6ded8] leading-tight">
+                  <span className="text-[16px] font-bold tracking-tight text-fg leading-tight">
                     BatchHub
                   </span>
-                  <span className="text-[11.5px] text-[#95b399] font-medium tracking-wide truncate">
+                  <span className="text-[12.5px] text-accent font-medium tracking-wide truncate">
                     {user?.batch || "2024 / CSE"}
                   </span>
                 </div>
@@ -101,7 +101,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={onToggleCollapse}
-                className="hidden lg:flex p-1.5 rounded-lg text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713] transition-colors cursor-pointer"
+                className="hidden lg:flex p-1.5 rounded-lg text-fg-2 hover:text-fg hover:bg-surface transition-colors cursor-pointer"
                 title="Collapse sidebar"
                 aria-label="Collapse sidebar"
               >
@@ -116,7 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <button
                 type="button"
                 onClick={onToggleCollapse}
-                className="p-1.5 rounded-lg text-[#a7b3aa] hover:text-[#95b399] hover:bg-[#101713] transition-colors cursor-pointer"
+                className="p-1.5 rounded-lg text-fg-2 hover:text-accent hover:bg-surface transition-colors cursor-pointer"
                 title="Expand sidebar"
                 aria-label="Expand sidebar"
               >
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* Navigation Links Group */}
           <div className="flex flex-col gap-1">
             {!isCollapsed && (
-              <span className="px-2.5 text-[10.5px] font-bold uppercase tracking-wider text-[#a7b3aa]/80">
+              <span className="px-2.5 text-[11.5px] font-bold uppercase tracking-wider text-fg-2/80">
                 Main Workspace
               </span>
             )}
@@ -148,8 +148,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                           ? "justify-center p-2.5"
                           : "justify-between px-3 py-2",
                         isActive
-                          ? "bg-[#16201a] text-[#95b399] font-semibold border border-[#95b399]/25 shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
-                          : "text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713]"
+                          ? "bg-raised text-accent font-semibold border border-accent/25 shadow-[0_2px_8px_rgba(0,0,0,0.25)]"
+                          : "text-fg-2 hover:text-fg hover:bg-surface"
                       )
                     }
                   >
@@ -158,7 +158,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       {!isCollapsed && <span className="truncate">{item.name}</span>}
                     </div>
                     {!isCollapsed && item.badge && (
-                      <span className="text-[11px] font-semibold px-1.5 py-0.2 rounded-full bg-[#95b399]/15 text-[#95b399]">
+                      <span className="text-[12px] font-semibold px-1.5 py-0.2 rounded-full bg-accent/15 text-accent">
                         {item.badge}
                       </span>
                     )}
@@ -169,9 +169,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           {/* CR Panel Dedicated Gated Section */}
-          <div className="flex flex-col gap-1 pt-2 border-t border-[#1b261f]/60">
+          <div className="flex flex-col gap-1 pt-2 border-t border-line/60">
             {!isCollapsed && (
-              <span className="px-2.5 text-[10.5px] font-bold uppercase tracking-wider text-[#a7b3aa]/80">
+              <span className="px-2.5 text-[11.5px] font-bold uppercase tracking-wider text-fg-2/80">
                 Cohort Leadership
               </span>
             )}
@@ -184,9 +184,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   "flex items-center rounded-[11px] text-[13.5px] font-medium transition-all border border-dashed",
                   isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2",
                   isCRorAdmin
-                    ? "border-[#95b399]/40 bg-[#95b399]/5 text-[#95b399] hover:bg-[#95b399]/10"
-                    : "border-[#1b261f] text-[#a7b3aa] hover:text-[#d6ded8] cursor-not-allowed",
-                  isActive && "bg-[#16201a] font-semibold"
+                    ? "border-accent/40 bg-accent/5 text-accent hover:bg-accent/10"
+                    : "border-line text-fg-2 hover:text-fg cursor-not-allowed",
+                  isActive && "bg-raised font-semibold"
                 )
               }
             >
@@ -195,7 +195,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {!isCollapsed && <span className="truncate">CR Panel</span>}
               </div>
               {!isCollapsed && (
-                <span className="text-[11px] font-semibold px-1.5 py-0.2 rounded bg-[#1b261f] text-[#d6ded8]">
+                <span className="text-[12px] font-semibold px-1.5 py-0.2 rounded bg-line text-fg">
                   {isCRorAdmin ? "Active" : "Locked"}
                 </span>
               )}
@@ -212,7 +212,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     "flex items-center rounded-[11px] text-[13.5px] font-medium transition-all border mt-0.5",
                     isCollapsed ? "justify-center p-2.5" : "justify-between px-3 py-2",
                     "border-blue-500/40 bg-blue-500/10 text-blue-400 hover:bg-blue-500/20",
-                    isActive && "bg-blue-600 text-[#d6ded8] font-semibold"
+                    isActive && "bg-blue-600 text-fg font-semibold"
                   )
                 }
               >
@@ -221,7 +221,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   {!isCollapsed && <span className="truncate">Admin Panel</span>}
                 </div>
                 {!isCollapsed && (
-                  <span className="text-[11px] font-semibold px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
+                  <span className="text-[12px] font-semibold px-1.5 py-0.2 rounded bg-blue-500/20 text-blue-300">
                     Master
                   </span>
                 )}
@@ -233,23 +233,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* User Footer with Role & Logout */}
         <div
           className={clsx(
-            "border-t border-[#1b261f] pt-2.5 flex items-center shrink-0",
+            "border-t border-line pt-2.5 flex items-center shrink-0",
             isCollapsed ? "justify-center flex-col gap-2" : "justify-between px-1"
           )}
         >
           <div className="flex items-center gap-2 min-w-0">
             <div
-              className="w-8 h-8 rounded-full bg-[#141d18] border border-[#1b261f] flex items-center justify-center text-[12px] font-bold text-[#95b399] shrink-0"
+              className="w-8 h-8 rounded-full bg-surface-hover border border-line flex items-center justify-center text-[13px] font-bold text-accent shrink-0"
               title={user?.name || "Academic User"}
             >
               {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
             </div>
             {!isCollapsed && (
               <div className="flex flex-col min-w-0">
-                <span className="text-[13px] font-semibold text-[#d6ded8] truncate max-w-[110px]">
+                <span className="text-[13px] font-semibold text-fg truncate max-w-[110px]">
                   {user?.name || "Academic User"}
                 </span>
-                <span className="text-[11px] text-[#a7b3aa] capitalize truncate">
+                <span className="text-[12px] text-fg-2 capitalize truncate">
                   {user?.role || "student"}
                 </span>
               </div>
@@ -258,7 +258,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           <button
             onClick={logout}
-            className="p-1.5 rounded-[8px] text-[#d66767] hover:bg-[rgba(214,103,103,0.12)] transition-colors cursor-pointer"
+            className="p-1.5 rounded-[8px] text-danger hover:bg-danger/12 transition-colors cursor-pointer"
             title="Sign Out"
             aria-label="Sign Out"
           >

@@ -135,7 +135,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-[#090e0b]/80 backdrop-blur-md"
+          className="fixed inset-0 bg-canvas/80 backdrop-blur-md"
           onClick={onClose}
         />
 
@@ -145,21 +145,21 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -10 }}
           transition={{ type: 'spring', duration: 0.2, bounce: 0.1 }}
-          className="relative w-full max-w-xl bg-[#101713] border border-[#1b261f] rounded-[18px] shadow-[0_24px_60px_rgba(0,0,0,0.7)] overflow-hidden z-10"
+          className="relative w-full max-w-xl bg-surface border border-line rounded-[18px] shadow-[0_24px_60px_rgba(0,0,0,0.7)] overflow-hidden z-10"
         >
           {/* Search Header */}
-          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-[#1b261f]">
-            <Search className="w-5 h-5 text-[#a7b3aa] shrink-0" />
+          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-line">
+            <Search className="w-5 h-5 text-fg-2 shrink-0" />
             <input
               type="text"
               autoFocus
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search students, events, or announcements..."
-              className="w-full bg-transparent text-[#d6ded8] text-[14px] placeholder:text-[#a7b3aa] focus:outline-none"
+              className="w-full bg-transparent text-fg text-[14px] placeholder:text-fg-2 focus:outline-none"
             />
-            {isLoading && <Loader2 className="w-4 h-4 animate-spin text-[#95b399] shrink-0" />}
-            <span className="text-[12px] font-medium text-[#a7b3aa] bg-[#0c120e] border border-[#1b261f] px-2 py-0.5 rounded-[6px]">
+            {isLoading && <Loader2 className="w-4 h-4 animate-spin text-accent shrink-0" />}
+            <span className="text-[13px] font-medium text-fg-2 bg-inset border border-line px-2 py-0.5 rounded-[6px]">
               ESC
             </span>
           </div>
@@ -167,7 +167,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
           {/* Results List */}
           <div className="max-h-80 overflow-y-auto p-2 flex flex-col gap-1">
             {query.trim() && results.length > 0 && (
-              <div className="px-3 py-1.5 text-[12px] font-bold text-[#95b399] tracking-wider uppercase">
+              <div className="px-3 py-1.5 text-[13px] font-bold text-accent tracking-wider uppercase">
                 Search Results
               </div>
             )}
@@ -176,27 +176,27 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
               <button
                 key={item.id}
                 onClick={() => handleSelect(item.path)}
-                className="w-full flex items-center justify-between p-2.5 rounded-[12px] text-left hover:bg-[#16201a] transition-colors group cursor-pointer"
+                className="w-full flex items-center justify-between p-2.5 rounded-[12px] text-left hover:bg-raised transition-colors group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-[12px] font-bold px-2 py-0.5 rounded bg-[#95b399]/10 text-[#95b399] border border-[#95b399]/20">
+                  <span className="text-[13px] font-bold px-2 py-0.5 rounded bg-accent/10 text-accent border border-accent/20">
                     {item.type}
                   </span>
                   <div className="flex flex-col">
-                    <span className="text-[13.5px] font-medium text-[#d6ded8] group-hover:text-[#95b399] transition-colors">
+                    <span className="text-[13.5px] font-medium text-fg group-hover:text-accent transition-colors">
                       {item.title}
                     </span>
                     {item.subtitle && (
-                      <span className="text-[12px] text-[#a7b3aa]">{item.subtitle}</span>
+                      <span className="text-[13px] text-fg-2">{item.subtitle}</span>
                     )}
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-[#a7b3aa] opacity-0 group-hover:opacity-100 transition-opacity" />
+                <ArrowRight className="w-4 h-4 text-fg-2 opacity-0 group-hover:opacity-100 transition-opacity" />
               </button>
             ))}
 
             {query.trim() && !isLoading && results.length === 0 && (
-              <div className="text-center py-8 text-[13px] text-[#a7b3aa]">
+              <div className="text-center py-8 text-[13px] text-fg-2">
                 No academic records found for "{query}".
               </div>
             )}
@@ -204,7 +204,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
             {/* Static Quick Navigation Shortcuts */}
             {!query.trim() && (
               <>
-                <div className="px-3 py-1.5 text-[12px] font-bold text-[#a7b3aa] tracking-wider uppercase">
+                <div className="px-3 py-1.5 text-[13px] font-bold text-fg-2 tracking-wider uppercase">
                   Quick Navigation
                 </div>
                 {staticActions.map((item) => {
@@ -213,20 +213,20 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({ isOpen, onClose 
                     <button
                       key={item.path}
                       onClick={() => handleSelect(item.path)}
-                      className="w-full flex items-center justify-between p-2.5 rounded-[12px] text-left hover:bg-[#16201a] transition-colors group cursor-pointer"
+                      className="w-full flex items-center justify-between p-2.5 rounded-[12px] text-left hover:bg-raised transition-colors group cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-7 h-7 rounded-[8px] bg-[#141d18] flex items-center justify-center text-[#95b399] group-hover:bg-[#95b399] group-hover:text-[#090e0b] transition-colors">
+                        <div className="w-7 h-7 rounded-[8px] bg-surface-hover flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-on-accent transition-colors">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="flex flex-col">
-                          <span className="text-[13.5px] font-medium text-[#d6ded8]">
+                          <span className="text-[13.5px] font-medium text-fg">
                             {item.title}
                           </span>
-                          <span className="text-[12px] text-[#a7b3aa]">{item.subtitle}</span>
+                          <span className="text-[13px] text-fg-2">{item.subtitle}</span>
                         </div>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-[#a7b3aa] opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ArrowRight className="w-4 h-4 text-fg-2 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </button>
                   );
                 })}

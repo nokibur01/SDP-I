@@ -234,12 +234,12 @@ export const CRPanelView: React.FC = () => {
   if (!isCRorAdmin) {
     return (
       <AppLayout title="Access Restricted">
-        <div className="bg-[#101713] border border-[#d66767]/40 rounded-[20px] p-12 text-center flex flex-col items-center justify-center max-w-lg mx-auto mt-12">
-          <div className="w-14 h-14 rounded-full bg-[#d66767]/10 text-[#d66767] border border-[#d66767]/20 flex items-center justify-center mb-4">
+        <div className="bg-surface border border-danger/40 rounded-[20px] p-12 text-center flex flex-col items-center justify-center max-w-lg mx-auto mt-12">
+          <div className="w-14 h-14 rounded-full bg-danger/10 text-danger border border-danger/20 flex items-center justify-center mb-4">
             <Shield className="w-7 h-7" />
           </div>
-          <h2 className="text-[20px] font-bold text-[#d6ded8]">Cohort Leadership Restricted Area</h2>
-          <p className="text-[13.5px] text-[#a7b3aa] mt-2 leading-relaxed">
+          <h2 className="text-[20px] font-bold text-fg">Cohort Leadership Restricted Area</h2>
+          <p className="text-[13.5px] text-fg-2 mt-2 leading-relaxed">
             The CR & Academic Administration Panel is exclusively accessible to authorized Class
             Representatives and Platform Administrators.
           </p>
@@ -255,16 +255,16 @@ export const CRPanelView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
+              <span className="text-[12.5px] uppercase font-bold tracking-wider text-accent">
                 Leadership Flight Deck
               </span>
-              <span className="text-[#1b261f]">•</span>
-              <span className="text-[12px] text-[#a7b3aa]">Moderation, Routines & Curriculum</span>
+              <span className="text-line">•</span>
+              <span className="text-[13px] text-fg-2">Moderation, Routines & Curriculum</span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-fg tracking-tight mt-0.5">
               CR & Academic Administration
             </h1>
-            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
+            <p className="text-[13.5px] text-fg-2 mt-0.5">
               Review student peer uploads, publish weekly class routines, and manage enrolled semester courses.
             </p>
           </div>
@@ -276,19 +276,19 @@ export const CRPanelView: React.FC = () => {
         </div>
 
         {/* Tab Filter Strip */}
-        <div className="flex items-center gap-2 border-b border-[#1b261f] pb-3">
+        <div className="flex items-center gap-2 border-b border-line pb-3">
           <button
             onClick={() => setActiveTab('approvals')}
             className={`px-4 py-2 rounded-[12px] text-[13.5px] font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'approvals'
-                ? 'bg-[#101713] text-[#95b399] border border-[#95b399]/30 shadow-sm'
-                : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                ? 'bg-surface text-accent border border-accent/30 shadow-sm'
+                : 'text-fg-2 hover:text-fg'
             }`}
           >
             <ShieldCheck className="w-4 h-4" />
             <span>Pending Approvals</span>
             {totalPending > 0 && (
-              <span className="px-2 py-0.5 rounded-full bg-[#d6b867]/20 text-[#d6b867] text-[11px] font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-warning/20 text-warning text-[12px] font-bold">
                 {totalPending}
               </span>
             )}
@@ -298,8 +298,8 @@ export const CRPanelView: React.FC = () => {
             onClick={() => setActiveTab('routines')}
             className={`px-4 py-2 rounded-[12px] text-[13.5px] font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'routines'
-                ? 'bg-[#101713] text-[#95b399] border border-[#95b399]/30 shadow-sm'
-                : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                ? 'bg-surface text-accent border border-accent/30 shadow-sm'
+                : 'text-fg-2 hover:text-fg'
             }`}
           >
             <Clock className="w-4 h-4" />
@@ -310,8 +310,8 @@ export const CRPanelView: React.FC = () => {
             onClick={() => setActiveTab('courses')}
             className={`px-4 py-2 rounded-[12px] text-[13.5px] font-semibold transition-all cursor-pointer flex items-center gap-2 ${
               activeTab === 'courses'
-                ? 'bg-[#101713] text-[#95b399] border border-[#95b399]/30 shadow-sm'
-                : 'text-[#a7b3aa] hover:text-[#d6ded8]'
+                ? 'bg-surface text-accent border border-accent/30 shadow-sm'
+                : 'text-fg-2 hover:text-fg'
             }`}
           >
             <Layers className="w-4 h-4" />
@@ -323,11 +323,11 @@ export const CRPanelView: React.FC = () => {
         {activeTab === 'approvals' && (
           <div className="space-y-6">
             {/* 1. Pending Resources */}
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#1b261f]/60">
+            <div className="bg-surface border border-line rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-line/60">
                 <div className="flex items-center gap-2.5">
-                  <BookOpen className="w-4 h-4 text-[#7f9fb3]" />
-                  <h3 className="text-[16px] font-bold text-[#d6ded8]">Pending Study Material Submissions</h3>
+                  <BookOpen className="w-4 h-4 text-info" />
+                  <h3 className="text-[16px] font-bold text-fg">Pending Study Material Submissions</h3>
                 </div>
                 <Badge variant={pendingResources.length > 0 ? 'warning' : 'muted'} size="xs">
                   {pendingResources.length} Pending
@@ -335,28 +335,28 @@ export const CRPanelView: React.FC = () => {
               </div>
 
               {pendingResources.length === 0 ? (
-                <div className="py-6 text-center text-[13px] text-[#a7b3aa]">
+                <div className="py-6 text-center text-[13px] text-fg-2">
                   ✓ All submitted study materials have been reviewed!
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-[#1b261f]/60">
+                <div className="flex flex-col divide-y divide-line/60">
                   {pendingResources.map((res) => (
                     <div key={res.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[14px] font-semibold text-[#d6ded8]">{res.title}</span>
+                          <span className="text-[14px] font-semibold text-fg">{res.title}</span>
                           <Badge variant="muted" size="xs">
                             {res.course_code}
                           </Badge>
-                          <span className="text-[11.5px] text-[#a7b3aa]">({res.category})</span>
+                          <span className="text-[12.5px] text-fg-2">({res.category})</span>
                         </div>
-                        <div className="text-[12px] text-[#a7b3aa] mt-1 flex items-center gap-3">
+                        <div className="text-[13px] text-fg-2 mt-1 flex items-center gap-3">
                           <span>By: {res.uploader_name || 'Student'}</span>
                           <a
                             href={res.file_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[#95b399] hover:underline inline-flex items-center gap-1 font-semibold"
+                            className="text-accent hover:underline inline-flex items-center gap-1 font-semibold"
                           >
                             <span>Inspect File</span> <ExternalLink className="w-3 h-3" />
                           </a>
@@ -391,11 +391,11 @@ export const CRPanelView: React.FC = () => {
             </div>
 
             {/* 2. Pending Events */}
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#1b261f]/60">
+            <div className="bg-surface border border-line rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-line/60">
                 <div className="flex items-center gap-2.5">
-                  <Calendar className="w-4 h-4 text-[#95b399]" />
-                  <h3 className="text-[16px] font-bold text-[#d6ded8]">Pending Event Suggestions</h3>
+                  <Calendar className="w-4 h-4 text-accent" />
+                  <h3 className="text-[16px] font-bold text-fg">Pending Event Suggestions</h3>
                 </div>
                 <Badge variant={pendingEvents.length > 0 ? 'warning' : 'muted'} size="xs">
                   {pendingEvents.length} Pending
@@ -403,24 +403,24 @@ export const CRPanelView: React.FC = () => {
               </div>
 
               {pendingEvents.length === 0 ? (
-                <div className="py-6 text-center text-[13px] text-[#a7b3aa]">
+                <div className="py-6 text-center text-[13px] text-fg-2">
                   ✓ No pending event suggestions awaiting moderation.
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-[#1b261f]/60">
+                <div className="flex flex-col divide-y divide-line/60">
                   {pendingEvents.map((ev) => (
                     <div key={ev.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[14px] font-semibold text-[#d6ded8]">{ev.title}</span>
-                          <span className="text-[12px] text-[#a7b3aa]">({ev.location || 'Campus'})</span>
+                          <span className="text-[14px] font-semibold text-fg">{ev.title}</span>
+                          <span className="text-[13px] text-fg-2">({ev.location || 'Campus'})</span>
                         </div>
-                        <div className="text-[12px] text-[#a7b3aa] mt-1 flex items-center gap-3">
+                        <div className="text-[13px] text-fg-2 mt-1 flex items-center gap-3">
                           <span>Scheduled: {new Date(ev.event_date).toLocaleString()}</span>
                           <span>Suggested by: {ev.organizer_name || 'Student'}</span>
                         </div>
                         {ev.description && (
-                          <p className="text-[12.5px] text-[#78877d] mt-1 line-clamp-1">{ev.description}</p>
+                          <p className="text-[13px] text-muted mt-1 line-clamp-1">{ev.description}</p>
                         )}
                       </div>
 
@@ -450,11 +450,11 @@ export const CRPanelView: React.FC = () => {
             </div>
 
             {/* 3. Pending Tasks */}
-            <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-              <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#1b261f]/60">
+            <div className="bg-surface border border-line rounded-[18px] p-5 sm:p-6 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
+              <div className="flex items-center justify-between pb-3 mb-3 border-b border-line/60">
                 <div className="flex items-center gap-2.5">
-                  <CheckSquare className="w-4 h-4 text-[#d6b867]" />
-                  <h3 className="text-[16px] font-bold text-[#d6ded8]">Pending Task Deadlines</h3>
+                  <CheckSquare className="w-4 h-4 text-warning" />
+                  <h3 className="text-[16px] font-bold text-fg">Pending Task Deadlines</h3>
                 </div>
                 <Badge variant={pendingTasks.length > 0 ? 'warning' : 'muted'} size="xs">
                   {pendingTasks.length} Pending
@@ -462,23 +462,23 @@ export const CRPanelView: React.FC = () => {
               </div>
 
               {pendingTasks.length === 0 ? (
-                <div className="py-6 text-center text-[13px] text-[#a7b3aa]">
+                <div className="py-6 text-center text-[13px] text-fg-2">
                   ✓ All student task submissions have been reviewed!
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-[#1b261f]/60">
+                <div className="flex flex-col divide-y divide-line/60">
                   {pendingTasks.map((task) => (
                     <div key={task.id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[14px] font-semibold text-[#d6ded8]">{task.title}</span>
+                          <span className="text-[14px] font-semibold text-fg">{task.title}</span>
                           {task.course_code && (
                             <Badge variant="muted" size="xs">
                               {task.course_code}
                             </Badge>
                           )}
                         </div>
-                        <div className="text-[12px] text-[#a7b3aa] mt-1 flex items-center gap-3">
+                        <div className="text-[13px] text-fg-2 mt-1 flex items-center gap-3">
                           <span>Due: {new Date(task.due_date).toLocaleString()}</span>
                           <span>Submitter: {task.creator_name || task.uploader_name || 'Student'}</span>
                         </div>
@@ -515,9 +515,9 @@ export const CRPanelView: React.FC = () => {
         {activeTab === 'routines' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Form (5 cols) */}
-            <div className="lg:col-span-5 bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
-              <h3 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Add Routine Schedule Slot</h3>
-              <p className="text-[13px] text-[#a7b3aa] mt-0.5 mb-5">
+            <div className="lg:col-span-5 bg-surface border border-line rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
+              <h3 className="text-[17px] font-bold text-fg tracking-tight">Add Routine Schedule Slot</h3>
+              <p className="text-[13px] text-fg-2 mt-0.5 mb-5">
                 Register recurring class periods and labs for your batch flight deck.
               </p>
 
@@ -596,28 +596,28 @@ export const CRPanelView: React.FC = () => {
             </div>
 
             {/* Existing Routine List (7 cols) */}
-            <div className="lg:col-span-7 bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#1b261f]/60">
-                <h3 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Active Batch Schedule</h3>
-                <span className="text-[12px] text-[#a7b3aa]">{currentRoutines.length} periods registered</span>
+            <div className="lg:col-span-7 bg-surface border border-line rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
+              <div className="flex items-center justify-between pb-3 border-b border-line/60">
+                <h3 className="text-[17px] font-bold text-fg tracking-tight">Active Batch Schedule</h3>
+                <span className="text-[13px] text-fg-2">{currentRoutines.length} periods registered</span>
               </div>
 
               {currentRoutines.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-[#a7b3aa]">
+                <div className="py-12 text-center text-[13px] text-fg-2">
                   No routine slots registered yet for this semester.
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-[#1b261f]/60">
+                <div className="flex flex-col divide-y divide-line/60">
                   {currentRoutines.map((r, idx) => (
                     <div key={r.id || idx} className="py-3 flex items-center justify-between group">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="text-[14px] font-bold text-[#d6ded8]">{r.course_name}</span>
+                          <span className="text-[14px] font-bold text-fg">{r.course_name}</span>
                           <Badge variant="mint" size="xs">
                             {r.day_of_week}
                           </Badge>
                         </div>
-                        <div className="flex items-center gap-3 text-[12px] text-[#a7b3aa] mt-1">
+                        <div className="flex items-center gap-3 text-[13px] text-fg-2 mt-1">
                           <span>{r.time_slot}</span>
                           <span>{r.room_number || r.room_no}</span>
                         </div>
@@ -626,7 +626,7 @@ export const CRPanelView: React.FC = () => {
                       {r.id && (
                         <button
                           onClick={() => deleteRoutineMutation.mutate(r.id)}
-                          className="p-1.5 rounded-[8px] text-[#a7b3aa] hover:text-[#d66767] hover:bg-[#d66767]/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-[8px] text-fg-2 hover:text-danger hover:bg-danger/10 transition-colors cursor-pointer"
                           title="Remove Slot"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -644,9 +644,9 @@ export const CRPanelView: React.FC = () => {
         {activeTab === 'courses' && (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             {/* Form (5 cols) */}
-            <div className="lg:col-span-5 bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
-              <h3 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Register Semester Course</h3>
-              <p className="text-[13px] text-[#a7b3aa] mt-0.5 mb-5">
+            <div className="lg:col-span-5 bg-surface border border-line rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
+              <h3 className="text-[17px] font-bold text-fg tracking-tight">Register Semester Course</h3>
+              <p className="text-[13px] text-fg-2 mt-0.5 mb-5">
                 Enroll a course into curriculum catalog for notes indexing.
               </p>
 
@@ -706,18 +706,18 @@ export const CRPanelView: React.FC = () => {
             </div>
 
             {/* Existing Course Catalog (7 cols) */}
-            <div className="lg:col-span-7 bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
-              <div className="flex items-center justify-between pb-3 border-b border-[#1b261f]/60">
-                <h3 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Curriculum Course Catalog</h3>
-                <span className="text-[12px] text-[#a7b3aa]">{currentCourses.length} courses enrolled</span>
+            <div className="lg:col-span-7 bg-surface border border-line rounded-[20px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
+              <div className="flex items-center justify-between pb-3 border-b border-line/60">
+                <h3 className="text-[17px] font-bold text-fg tracking-tight">Curriculum Course Catalog</h3>
+                <span className="text-[13px] text-fg-2">{currentCourses.length} courses enrolled</span>
               </div>
 
               {currentCourses.length === 0 ? (
-                <div className="py-12 text-center text-[13px] text-[#a7b3aa]">
+                <div className="py-12 text-center text-[13px] text-fg-2">
                   No courses registered in catalog yet.
                 </div>
               ) : (
-                <div className="flex flex-col divide-y divide-[#1b261f]/60">
+                <div className="flex flex-col divide-y divide-line/60">
                   {currentCourses.map((c, idx) => (
                     <div key={c.id || idx} className="py-3 flex items-center justify-between group">
                       <div>
@@ -725,9 +725,9 @@ export const CRPanelView: React.FC = () => {
                           <Badge variant="muted" size="xs">
                             {c.course_code}
                           </Badge>
-                          <span className="text-[14px] font-bold text-[#d6ded8]">{c.course_title}</span>
+                          <span className="text-[14px] font-bold text-fg">{c.course_title}</span>
                         </div>
-                        <div className="text-[12px] text-[#a7b3aa] mt-0.5">
+                        <div className="text-[13px] text-fg-2 mt-0.5">
                           {c.department || 'CSE'} • Batch {c.batch || '2024'}
                         </div>
                       </div>
@@ -735,7 +735,7 @@ export const CRPanelView: React.FC = () => {
                       {c.id && (
                         <button
                           onClick={() => deleteCourseMutation.mutate(c.id)}
-                          className="p-1.5 rounded-[8px] text-[#a7b3aa] hover:text-[#d66767] hover:bg-[#d66767]/10 transition-colors cursor-pointer"
+                          className="p-1.5 rounded-[8px] text-fg-2 hover:text-danger hover:bg-danger/10 transition-colors cursor-pointer"
                           title="Remove Course"
                         >
                           <Trash2 className="w-4 h-4" />

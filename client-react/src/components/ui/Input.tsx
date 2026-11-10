@@ -17,14 +17,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full flex flex-col gap-1.5 text-left">
         {label && (
-          <label htmlFor={inputId} className="text-[12.5px] font-medium text-[#d6ded8] select-none">
+          <label htmlFor={inputId} className="text-[13px] font-medium text-fg select-none">
             {label}
           </label>
         )}
 
         <div className="relative flex items-center w-full">
           {leftElement && (
-            <div className="absolute left-3.5 flex items-center pointer-events-none text-[#78877d]">
+            <div className="absolute left-3.5 flex items-center pointer-events-none text-muted">
               {leftElement}
             </div>
           )}
@@ -34,12 +34,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             className={twMerge(
               clsx(
-                'w-full bg-[#0c120e] text-[#d6ded8] text-[13.5px] rounded-[12px] border border-[#1b261f] py-2.5 px-3.5 transition-all duration-150',
-                'placeholder:text-[#8a988e]',
-                'focus:outline-none focus:border-[#95b399] focus:ring-1 focus:ring-[#95b399]/30',
+                'w-full bg-inset text-fg text-[13.5px] rounded-[12px] border border-line py-2.5 px-3.5 transition-all duration-150',
+                'placeholder:text-muted-2',
+                'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30',
                 leftElement && 'pl-10',
                 rightElement && 'pr-10',
-                error && 'border-[#d66767] focus:border-[#d66767] focus:ring-[#d66767]/30',
+                error && 'border-danger focus:border-danger focus:ring-danger/30',
                 className
               )
             )}
@@ -47,17 +47,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
 
           {rightElement && (
-            <div className="absolute right-3.5 flex items-center text-[#78877d]">
+            <div className="absolute right-3.5 flex items-center text-muted">
               {rightElement}
             </div>
           )}
         </div>
 
         {error && (
-          <span className="text-[12.5px] text-[#d66767] font-medium">{error}</span>
+          <span className="text-[13px] text-danger font-medium">{error}</span>
         )}
         {!error && helperText && (
-          <span className="text-[12.5px] text-[#a7b3aa]">{helperText}</span>
+          <span className="text-[13px] text-fg-2">{helperText}</span>
         )}
       </div>
     );

@@ -5,11 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BatchHub — Centralized Academic Management & Collaboration Platform</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      // Apply the saved theme before first paint to avoid a dark/light flash
+      try { if (localStorage.getItem('batchhub-theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#090e0b] text-[#d6ded8] antialiased selection:bg-[#95b399]/20 selection:text-[#95b399]">
+  <body class="bg-canvas text-fg antialiased selection:bg-accent/20 selection:text-accent">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -164,15 +164,15 @@ export const ResourcesView: React.FC = () => {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case "Lecture Notes":
-        return <FileText className="w-5 h-5 text-[#95b399]" />;
+        return <FileText className="w-5 h-5 text-accent" />;
       case "Assignment":
-        return <FileCode className="w-5 h-5 text-[#7f9fb3]" />;
+        return <FileCode className="w-5 h-5 text-info" />;
       case "Book":
-        return <BookMarked className="w-5 h-5 text-[#a394c0]" />;
+        return <BookMarked className="w-5 h-5 text-lilac" />;
       case "Question Bank":
-        return <HelpCircle className="w-5 h-5 text-[#d6b867]" />;
+        return <HelpCircle className="w-5 h-5 text-warning" />;
       default:
-        return <BookOpen className="w-5 h-5 text-[#a7b3aa]" />;
+        return <BookOpen className="w-5 h-5 text-fg-2" />;
     }
   };
 
@@ -183,18 +183,18 @@ export const ResourcesView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
+              <span className="text-[12.5px] uppercase font-bold tracking-wider text-accent">
                 Study Library
               </span>
-              <span className="text-[#1b261f]">•</span>
-              <span className="text-[12px] text-[#a7b3aa]">
+              <span className="text-line">•</span>
+              <span className="text-[13px] text-fg-2">
                 Notes, Slides & Previous Exams
               </span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-fg tracking-tight mt-0.5">
               Course Study Materials
             </h1>
-            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
+            <p className="text-[13.5px] text-fg-2 mt-0.5">
               Peer-contributed lecture slides, assignment solutions, syllabus
               notes, and exam question archives.
             </p>
@@ -211,7 +211,7 @@ export const ResourcesView: React.FC = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="bg-surface border border-line rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
           {/* Category Tabs */}
           <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
             {[
@@ -226,16 +226,16 @@ export const ResourcesView: React.FC = () => {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                   selectedCategory === cat.id
-                    ? "bg-[#0c120e] text-[#95b399] border border-[#95b399]/30 shadow-sm"
-                    : "text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#0c120e]/50"
+                    ? "bg-inset text-accent border border-accent/30 shadow-sm"
+                    : "text-fg-2 hover:text-fg hover:bg-inset/50"
                 }`}
               >
                 <span>{cat.label}</span>
                 <span
-                  className={`text-[11px] px-1.5 py-0.2 rounded-full ${
+                  className={`text-[12px] px-1.5 py-0.2 rounded-full ${
                     selectedCategory === cat.id
-                      ? "bg-[#95b399]/20 text-[#95b399]"
-                      : "bg-[#1b261f] text-[#a7b3aa]"
+                      ? "bg-accent/20 text-accent"
+                      : "bg-line text-fg-2"
                   }`}
                 >
                   {cat.count}
@@ -246,13 +246,13 @@ export const ResourcesView: React.FC = () => {
 
           {/* Search */}
           <div className="w-full md:w-72 relative">
-            <Search className="w-4 h-4 text-[#a7b3aa] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-fg-2 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search notes, course codes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-[#d6ded8] placeholder:text-[#a7b3aa] focus:outline-none focus:border-[#95b399]"
+              className="w-full bg-inset border border-line rounded-[10px] pl-9 pr-3 py-1.5 text-[13px] text-fg placeholder:text-fg-2 focus:outline-none focus:border-accent"
             />
           </div>
         </div>
@@ -261,12 +261,12 @@ export const ResourcesView: React.FC = () => {
         {isLoading ? (
           <CardGridSkeleton count={6} />
         ) : filteredMaterials.length === 0 ? (
-          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
-            <BookOpen className="w-10 h-10 text-[#a7b3aa] mb-2" />
-            <h3 className="text-[16px] font-bold text-[#d6ded8]">
+          <div className="bg-surface border border-line rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
+            <BookOpen className="w-10 h-10 text-fg-2 mb-2" />
+            <h3 className="text-[16px] font-bold text-fg">
               No Materials Found
             </h3>
-            <p className="text-[13px] text-[#a7b3aa] mt-1">
+            <p className="text-[13px] text-fg-2 mt-1">
               There are no study materials matching this category or keyword.
             </p>
           </div>
@@ -275,12 +275,12 @@ export const ResourcesView: React.FC = () => {
             {filteredMaterials.map((mat) => (
               <div
                 key={mat.id}
-                className="bg-[#101713] border border-[#1b261f] hover:border-[#95b399]/40 rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 group"
+                className="bg-surface border border-line hover:border-accent/40 rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 group"
               >
                 <div className="flex flex-col gap-3">
                   {/* Top tags */}
                   <div className="flex items-center justify-between gap-2">
-                    <div className="w-10 h-10 rounded-[10px] bg-[#0c120e] border border-[#1b261f] group-hover:border-[#95b399]/50 flex items-center justify-center shrink-0 transition-colors">
+                    <div className="w-10 h-10 rounded-[10px] bg-inset border border-line group-hover:border-accent/50 flex items-center justify-center shrink-0 transition-colors">
                       {getCategoryIcon(mat.category)}
                     </div>
 
@@ -288,7 +288,7 @@ export const ResourcesView: React.FC = () => {
                       <Badge variant="muted" size="xs">
                         {mat.course_code}
                       </Badge>
-                      <span className="text-[11.5px] font-medium text-[#a7b3aa] bg-[#0c120e] px-2 py-0.5 rounded border border-[#1b261f]">
+                      <span className="text-[12.5px] font-medium text-fg-2 bg-inset px-2 py-0.5 rounded border border-line">
                         {mat.category}
                       </span>
                     </div>
@@ -296,11 +296,11 @@ export const ResourcesView: React.FC = () => {
 
                   {/* Title */}
                   <div>
-                    <h3 className="text-[15.5px] font-bold text-[#d6ded8] group-hover:text-[#95b399] transition-colors tracking-tight line-clamp-2">
+                    <h3 className="text-[15.5px] font-bold text-fg group-hover:text-accent transition-colors tracking-tight line-clamp-2">
                       {mat.title}
                     </h3>
                     {mat.course_title && (
-                      <p className="text-[12px] text-[#78877d] mt-1 line-clamp-1">
+                      <p className="text-[13px] text-muted mt-1 line-clamp-1">
                         {mat.course_title}
                       </p>
                     )}
@@ -308,7 +308,7 @@ export const ResourcesView: React.FC = () => {
                 </div>
 
                 {/* Footer and Download link */}
-                <div className="pt-3 border-t border-[#1b261f]/60 flex items-center justify-between text-[12px] text-[#a7b3aa]">
+                <div className="pt-3 border-t border-line/60 flex items-center justify-between text-[13px] text-fg-2">
                   <span className="truncate max-w-[130px]">
                     By {mat.uploader_name || "Student"}
                   </span>
@@ -318,7 +318,7 @@ export const ResourcesView: React.FC = () => {
                       href={mat.file_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-[#95b399] hover:underline font-semibold"
+                      className="inline-flex items-center gap-1 text-accent hover:underline font-semibold"
                     >
                       <span>Access Material</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -327,7 +327,7 @@ export const ResourcesView: React.FC = () => {
                     {(mat.uploaded_by === user?.id || isCRorAdmin) && (
                       <button
                         onClick={() => deleteResourceMutation.mutate(mat.id)}
-                        className="p-1 rounded text-[#a7b3aa] hover:text-[#d66767] hover:bg-[#d66767]/10 transition-colors cursor-pointer"
+                        className="p-1 rounded text-fg-2 hover:text-danger hover:bg-danger/10 transition-colors cursor-pointer"
                         title="Delete Material"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -401,7 +401,7 @@ export const ResourcesView: React.FC = () => {
             />
 
             {!isCRorAdmin && (
-              <div className="text-[12.5px] text-[#d6b867] bg-[#d6b867]/10 border border-[#d6b867]/20 p-3 rounded-[10px] flex items-center gap-2">
+              <div className="text-[13px] text-warning bg-warning/10 border border-warning/20 p-3 rounded-[10px] flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>
                   Student uploads require Class Representative verification
@@ -410,7 +410,7 @@ export const ResourcesView: React.FC = () => {
               </div>
             )}
 
-            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
+            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-line/60">
               <Button
                 variant="ghost"
                 size="sm"

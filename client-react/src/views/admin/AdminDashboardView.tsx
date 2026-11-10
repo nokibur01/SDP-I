@@ -164,15 +164,15 @@ export const AdminDashboardView: React.FC = () => {
         {/* Header */}
         <section className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-start gap-3.5">
-            <div className="w-11 h-11 rounded-[12px] bg-[#0c120e] border border-[#1b261f] flex items-center justify-center text-[#95b399] shrink-0">
+            <div className="w-11 h-11 rounded-[12px] bg-inset border border-line flex items-center justify-center text-accent shrink-0">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-[22px] sm:text-[24px] font-bold text-[#d6ded8] tracking-tight">Admin Control Center</h1>
-              <p className="text-[13.5px] text-[#78877d] mt-0.5">
+              <h1 className="text-[22px] sm:text-[24px] font-bold text-fg tracking-tight">Admin Control Center</h1>
+              <p className="text-[13.5px] text-muted mt-0.5">
                 Manage every user and record across all batches.
                 {roleCounts && (
-                  <span className="text-[#a7b3aa]">
+                  <span className="text-fg-2">
                     {" "}
                     {roleCounts.student} students · {roleCounts.cr} CRs · {roleCounts.admin} admins
                   </span>
@@ -205,15 +205,15 @@ export const AdminDashboardView: React.FC = () => {
                 className={clsx(
                   "group text-left rounded-[16px] border p-4 transition-all duration-150 cursor-pointer",
                   selected
-                    ? "bg-[#1f2c23] border-[#95b399]/50"
-                    : "bg-[#101713] border-[#1b261f] hover:border-[#95b399]/30 hover:bg-[#141d18]",
+                    ? "bg-accent-soft border-accent/50"
+                    : "bg-surface border-line hover:border-accent/30 hover:bg-surface-hover",
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className={clsx(
-                      "text-[11.5px] font-semibold uppercase tracking-wider",
-                      selected ? "text-[#95b399]" : "text-[#a7b3aa]",
+                      "text-[12.5px] font-semibold uppercase tracking-wider",
+                      selected ? "text-accent" : "text-fg-2",
                     )}
                   >
                     {cat.label}
@@ -221,17 +221,17 @@ export const AdminDashboardView: React.FC = () => {
                   <Icon
                     className={clsx(
                       "w-4 h-4 transition-colors",
-                      selected ? "text-[#95b399]" : "text-[#4a6352] group-hover:text-[#95b399]",
+                      selected ? "text-accent" : "text-icon group-hover:text-accent",
                     )}
                   />
                 </div>
-                <div className="mt-2.5 text-[24px] font-extrabold text-[#d6ded8] leading-none">
+                <div className="mt-2.5 text-[24px] font-extrabold text-fg leading-none">
                   {stats ? (
                     stats[cat.key]
                   ) : statsQuery.isError ? (
-                    <span className="text-[#78877d]" title="Couldn't load counts">—</span>
+                    <span className="text-muted" title="Couldn't load counts">—</span>
                   ) : (
-                    <span className="inline-block w-8 h-6 rounded bg-[#16201a] animate-pulse" />
+                    <span className="inline-block w-8 h-6 rounded bg-raised animate-pulse" />
                   )}
                 </div>
               </button>
@@ -241,23 +241,23 @@ export const AdminDashboardView: React.FC = () => {
 
         {/* Toolbar */}
         <section className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-          <h2 className="text-[16px] font-semibold text-[#d6ded8]">
+          <h2 className="text-[16px] font-semibold text-fg">
             All {activeConfig.label.toLowerCase()}
-            <span className="text-[#78877d] font-medium"> ({filteredItems.length})</span>
+            <span className="text-muted font-medium"> ({filteredItems.length})</span>
           </h2>
           <div className="flex flex-col sm:flex-row gap-2.5 md:w-auto w-full">
             {activeCategory === "students" && (
-              <div className="flex gap-1 p-1 bg-[#0c120e] border border-[#1b261f] rounded-[12px] overflow-x-auto">
+              <div className="flex gap-1 p-1 bg-inset border border-line rounded-[12px] overflow-x-auto">
                 {ROLE_OPTIONS.map((opt) => (
                   <button
                     key={opt.value}
                     type="button"
                     onClick={() => setRoleFilter(opt.value)}
                     className={clsx(
-                      "px-3 py-1.5 rounded-[9px] text-[12.5px] font-medium whitespace-nowrap transition-colors cursor-pointer",
+                      "px-3 py-1.5 rounded-[9px] text-[13px] font-medium whitespace-nowrap transition-colors cursor-pointer",
                       roleFilter === opt.value
-                        ? "bg-[#95b399] text-[#090e0b]"
-                        : "text-[#a7b3aa] hover:text-[#d6ded8]",
+                        ? "bg-accent text-on-accent"
+                        : "text-fg-2 hover:text-fg",
                     )}
                   >
                     {opt.label}
@@ -295,7 +295,7 @@ export const AdminDashboardView: React.FC = () => {
               description={searchQuery || roleFilter !== "all" ? "Try a different search or filter." : "Nothing has been created yet."}
             />
           ) : (
-            <ul className="bg-[#101713] border border-[#1b261f] rounded-[16px] divide-y divide-[#1b261f] overflow-hidden">
+            <ul className="bg-surface border border-line rounded-[16px] divide-y divide-line overflow-hidden">
               {filteredItems.map((item) =>
                 activeCategory === "students" ? (
                   <UserRow
@@ -340,17 +340,17 @@ const UserRow: React.FC<{
   onRoleChange: (role: Role) => void;
   onDelete: () => void;
 }> = ({ item, self, roleUpdating, onRoleChange, onDelete }) => (
-  <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-[#141d18] transition-colors">
+  <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-surface-hover transition-colors">
     <div className="flex items-center gap-3 min-w-0 flex-1">
-      <div className="w-9 h-9 rounded-full bg-[#16201a] border border-[#1b261f] flex items-center justify-center text-[13px] font-semibold text-[#95b399] shrink-0">
+      <div className="w-9 h-9 rounded-full bg-raised border border-line flex items-center justify-center text-[13px] font-semibold text-accent shrink-0">
         {(item.name || "?").charAt(0).toUpperCase()}
       </div>
       <div className="min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-semibold text-[14px] text-[#d6ded8] truncate">{item.name}</span>
+          <span className="font-semibold text-[14px] text-fg truncate">{item.name}</span>
           {self && <Badge variant="mint" size="xs">You</Badge>}
         </div>
-        <div className="text-[12.5px] text-[#78877d] truncate">
+        <div className="text-[13px] text-muted truncate">
           {item.email}
           {item.student_id && <> · ID {item.student_id}</>}
           {(item.department || item.batch) && (
@@ -366,7 +366,7 @@ const UserRow: React.FC<{
         disabled={self || roleUpdating}
         onChange={(e) => onRoleChange(e.target.value as Role)}
         title={self ? "You can't change your own role" : undefined}
-        className="bg-[#0c120e] text-[#d6ded8] text-[12.5px] rounded-[10px] border border-[#1b261f] py-1.5 pl-2.5 pr-7 focus:outline-none focus:border-[#95b399] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="bg-inset text-fg text-[13px] rounded-[10px] border border-line py-1.5 pl-2.5 pr-7 focus:outline-none focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
       >
         <option value="student">Student</option>
         <option value="cr">CR</option>
@@ -393,11 +393,11 @@ const RecordRow: React.FC<{ item: AdminRecord; onDelete: () => void }> = ({ item
   const body = item.description || item.content || item.file_path;
 
   return (
-    <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-[#141d18] transition-colors">
+    <li className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3.5 hover:bg-surface-hover transition-colors">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 flex-wrap">
           {item.course_code && <Badge variant="muted" size="xs">{item.course_code}</Badge>}
-          <span className="font-semibold text-[14px] text-[#d6ded8]">{item.title || item.name || `Record #${item.id}`}</span>
+          <span className="font-semibold text-[14px] text-fg">{item.title || item.name || `Record #${item.id}`}</span>
           {item.status && (
             <Badge variant={statusVariant(item.status)} size="xs" className="capitalize">
               {item.status}
@@ -413,8 +413,8 @@ const RecordRow: React.FC<{ item: AdminRecord; onDelete: () => void }> = ({ item
           )}
           {item.category && <Badge variant="neutral" size="xs" className="capitalize">{item.category}</Badge>}
         </div>
-        {body && <p className="text-[12.5px] text-[#a7b3aa] mt-1 line-clamp-1">{body}</p>}
-        <div className="flex items-center gap-x-3 gap-y-1 flex-wrap text-[12px] text-[#78877d] mt-1">
+        {body && <p className="text-[13px] text-fg-2 mt-1 line-clamp-1">{body}</p>}
+        <div className="flex items-center gap-x-3 gap-y-1 flex-wrap text-[13px] text-muted mt-1">
           {author && <span>by {author}</span>}
           {created && <span>Created {created}</span>}
           {due && (

@@ -30,25 +30,25 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       'inline-flex items-center justify-center font-medium transition-all duration-150 cursor-pointer disabled:cursor-not-allowed select-none focus:outline-none';
 
     const sizeStyles = {
-      xs: 'text-[11px] px-2.5 py-1 rounded-[8px] gap-1.5',
-      sm: 'text-[12.5px] px-3.5 py-1.5 rounded-[10px] gap-1.5',
+      xs: 'text-[12px] px-2.5 py-1 rounded-[8px] gap-1.5',
+      sm: 'text-[13px] px-3.5 py-1.5 rounded-[10px] gap-1.5',
       md: 'text-[13.5px] px-4 py-2.5 rounded-[12px] gap-2',
       lg: 'text-[15px] px-6 py-3 rounded-[14px] gap-2.5',
     };
 
     const variantStyles = {
       primary:
-        'bg-[#95b399] text-[#090e0b] hover:bg-[#839f87] font-semibold active:scale-[0.98] disabled:opacity-50 disabled:hover:bg-[#95b399] disabled:active:scale-100 shadow-[0_2px_8px_rgba(0,0,0,0.25)]',
+        'bg-accent text-on-accent hover:bg-accent-hover font-semibold active:scale-[0.98] disabled:opacity-50 disabled:hover:bg-accent disabled:active:scale-100 shadow-[0_2px_8px_rgba(0,0,0,0.25)]',
       secondary:
-        'bg-[#141d18] text-[#d6ded8] hover:text-[#d6ded8] border border-[#1b261f] hover:border-[#95b399]/40 hover:bg-[#16201a] active:scale-[0.98] disabled:opacity-50',
+        'bg-surface-hover text-fg hover:text-fg border border-line hover:border-accent/40 hover:bg-raised active:scale-[0.98] disabled:opacity-50',
       outline:
-        'bg-transparent text-[#d6ded8] border border-[#1b261f] hover:border-[#95b399]/50 hover:text-[#d6ded8] active:scale-[0.98] disabled:opacity-50',
+        'bg-transparent text-fg border border-line hover:border-accent/50 hover:text-fg active:scale-[0.98] disabled:opacity-50',
       danger:
-        'bg-[rgba(214,103,103,0.12)] text-[#d66767] border border-[rgba(214,103,103,0.3)] hover:bg-[rgba(214,103,103,0.2)] active:scale-[0.98] disabled:opacity-50',
+        'bg-danger/12 text-danger border border-danger/30 hover:bg-danger/20 active:scale-[0.98] disabled:opacity-50',
       ghost:
-        'bg-transparent text-[#78877d] hover:text-[#d6ded8] hover:bg-[#141d18] active:scale-[0.98] disabled:opacity-50',
+        'bg-transparent text-muted hover:text-fg hover:bg-surface-hover active:scale-[0.98] disabled:opacity-50',
       subtle:
-        'bg-[#0c120e] text-[#d6ded8] hover:text-[#d6ded8] border border-[#1b261f]/60 hover:border-[#1b261f] active:scale-[0.98] disabled:opacity-50',
+        'bg-inset text-fg hover:text-fg border border-line/60 hover:border-line active:scale-[0.98] disabled:opacity-50',
     };
 
     return (

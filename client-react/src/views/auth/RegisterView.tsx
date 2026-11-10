@@ -71,15 +71,15 @@ export const RegisterView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#090e0b] flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-[500px] bg-[#101713] border border-[#1b261f] rounded-[20px] p-7 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+    <div className="min-h-screen w-full bg-canvas flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-[500px] bg-surface border border-line rounded-[20px] p-7 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         {/* Logo and Brand Header */}
         <div className="flex flex-col items-center text-center gap-1.5 mb-6">
           <div className="flex items-center gap-2.5">
-            <GraduationCap className="w-8 h-8 text-[#95b399]" />
-            <h2 className="text-[23px] font-bold text-[#d6ded8] tracking-tight">Create BatchHub Account</h2>
+            <GraduationCap className="w-8 h-8 text-accent" />
+            <h2 className="text-[23px] font-bold text-fg tracking-tight">Create BatchHub Account</h2>
           </div>
-          <p className="text-[13px] text-[#a7b3aa]">
+          <p className="text-[13px] text-fg-2">
             Connect with batchmates and collaborate academically
           </p>
         </div>
@@ -89,8 +89,8 @@ export const RegisterView: React.FC = () => {
           <div
             className={`mb-5 p-3 rounded-[10px] text-[13px] flex items-start gap-2.5 border ${
               statusMessage.type === 'success'
-                ? 'bg-[#95b399]/10 text-[#95b399] border-[#95b399]/25'
-                : 'bg-[#d66767]/10 text-[#d66767] border-[#d66767]/30'
+                ? 'bg-accent/10 text-accent border-accent/25'
+                : 'bg-danger/10 text-danger border-danger/30'
             }`}
           >
             {statusMessage.type === 'success' ? (
@@ -138,7 +138,7 @@ export const RegisterView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="hover:text-[#d6ded8] transition-colors focus:outline-none"
+                className="hover:text-fg transition-colors focus:outline-none"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -189,11 +189,11 @@ export const RegisterView: React.FC = () => {
         </form>
 
         {/* Footer Navigation */}
-        <div className="mt-6 text-center text-[13px] text-[#78877d] border-t border-[#16201a] pt-5">
+        <div className="mt-6 text-center text-[13px] text-muted border-t border-raised pt-5">
           Already have an account?{' '}
           <Link
             to="/login"
-            className="text-[#95b399] hover:underline font-medium hover:text-[#839f87]"
+            className="text-accent hover:underline font-medium hover:text-accent-hover"
           >
             Sign in here
           </Link>

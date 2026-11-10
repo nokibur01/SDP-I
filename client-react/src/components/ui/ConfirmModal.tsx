@@ -33,19 +33,19 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
           <div
             className={`w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0 ${
               isDanger
-                ? 'bg-[#d66767]/10 text-[#d66767] border border-[#d66767]/20'
-                : 'bg-[#95b399]/10 text-[#95b399] border border-[#95b399]/20'
+                ? 'bg-danger/10 text-danger border border-danger/20'
+                : 'bg-accent/10 text-accent border border-accent/20'
             }`}
           >
             {isDanger ? <AlertTriangle className="w-5 h-5" /> : <Info className="w-5 h-5" />}
           </div>
           <div className="flex flex-col">
-            <h3 className="text-[16px] font-bold text-[#d6ded8] tracking-tight">{title}</h3>
-            <p className="text-[13.5px] text-[#a7b3aa] mt-1 leading-relaxed">{message}</p>
+            <h3 className="text-[16px] font-bold text-fg tracking-tight">{title}</h3>
+            <p className="text-[13.5px] text-fg-2 mt-1 leading-relaxed">{message}</p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
+        <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-line/60">
           <Button variant="ghost" size="sm" onClick={onClose} disabled={isLoading}>
             {cancelText}
           </Button>

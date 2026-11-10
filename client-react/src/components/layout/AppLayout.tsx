@@ -45,7 +45,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
     'Dashboard';
 
   return (
-    <div className="min-h-screen bg-[#090e0b] text-[#d6ded8] flex">
+    <div className="min-h-screen bg-canvas text-fg flex">
       {/* Sidebar Rail */}
       <Sidebar
         isOpen={isSidebarOpen}

@@ -21,7 +21,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className="w-full flex flex-col gap-1.5 text-left">
         {label && (
-          <label htmlFor={selectId} className="text-[12.5px] font-medium text-[#d6ded8] select-none">
+          <label htmlFor={selectId} className="text-[13px] font-medium text-fg select-none">
             {label}
           </label>
         )}
@@ -32,25 +32,25 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             ref={ref}
             className={twMerge(
               clsx(
-                'w-full appearance-none bg-[#0c120e] text-[#d6ded8] text-[13.5px] rounded-[12px] border border-[#1b261f] py-2.5 pl-3.5 pr-10 transition-all duration-150',
-                'focus:outline-none focus:border-[#95b399] focus:ring-1 focus:ring-[#95b399]/30 cursor-pointer',
-                error && 'border-[#d66767] focus:border-[#d66767]',
+                'w-full appearance-none bg-inset text-fg text-[13.5px] rounded-[12px] border border-line py-2.5 pl-3.5 pr-10 transition-all duration-150',
+                'focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30 cursor-pointer',
+                error && 'border-danger focus:border-danger',
                 className
               )
             )}
             {...props}
           >
             {options.map((opt) => (
-              <option key={opt.value} value={opt.value} className="bg-[#101713] text-[#d6ded8]">
+              <option key={opt.value} value={opt.value} className="bg-surface text-fg">
                 {opt.label}
               </option>
             ))}
           </select>
 
-          <ChevronDown className="absolute right-3.5 w-4 h-4 text-[#78877d] pointer-events-none" />
+          <ChevronDown className="absolute right-3.5 w-4 h-4 text-muted pointer-events-none" />
         </div>
 
-        {error && <span className="text-[11.5px] text-[#d66767] font-medium">{error}</span>}
+        {error && <span className="text-[12.5px] text-danger font-medium">{error}</span>}
       </div>
     );
   }
