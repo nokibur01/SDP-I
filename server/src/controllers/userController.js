@@ -2,6 +2,9 @@ import bcrypt from "bcryptjs";
 import db from "../config/db.js";
 
 // Get Profile
+
+// ~1.5 MB of base64 (≈1.1 MB image). The client downsizes avatars to 256px, so real uploads are far smaller.
+const MAX_AVATAR_CHARS = 1_500_000;
 export const getProfile = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -77,7 +80,18 @@ export const updateProfile = async (req, res) => {
     }
 
     if (req.body.profile_picture !== undefined) {
-      updates.profile_picture = req.body.profile_picture ? req.body.profile_picture.trim() : null;
+      const pic = typeof req.body.profile_picture === "string" ? req.body.profile_picture.trim() : "";
+      if (pic) {
+        const isImageData = /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(pic);
+        const isHttpUrl = /^https?:\/\/[^\s"'<>]+$/i.test(pic) && pic.length <= 1000;
+        if (!isImageData && !isHttpUrl) {
+          return res.status(400).json({ success: false, message: "Profile picture must be a PNG, JPG, WebP or GIF image." });
+        }
+        if (pic.length > MAX_AVATAR_CHARS) {
+          return res.status(413).json({ success: false, message: "Profile picture is too large. Please use a smaller image." });
+        }
+      }
+      updates.profile_picture = pic || null;
     } else {
       updates.profile_picture = current.profile_picture;
     }

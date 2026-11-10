@@ -115,11 +115,41 @@ export const ProfileView: React.FC = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfileForm((prev) => ({ ...prev, profile_picture: reader.result as string }));
+    if (!file.type.startsWith('image/')) {
+      error('Please choose an image file');
+      return;
+    }
+
+    // Downscale to a 256px square thumbnail so avatars stay small (~20-40 KB) in the database
+    // and in every member list response.
+    const objectUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const SIZE = 256;
+      const side = Math.min(img.width, img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = SIZE;
+      canvas.height = SIZE;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        URL.revokeObjectURL(objectUrl);
+        error('Could not process this image');
+        return;
+      }
+      ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, SIZE, SIZE);
+      URL.revokeObjectURL(objectUrl);
+      const dataUrl = canvas.toDataURL('image/webp', 0.85);
+      setProfileForm((prev) => ({
+        ...prev,
+        // Older browsers without WebP encoding fall back to PNG; use JPEG to keep it small
+        profile_picture: dataUrl.startsWith('data:image/webp') ? dataUrl : canvas.toDataURL('image/jpeg', 0.85),
+      }));
     };
-    reader.readAsDataURL(file);
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      error('Could not read this image');
+    };
+    img.src = objectUrl;
   };
 
   const handleProfileSubmit = (e: React.FormEvent) => {

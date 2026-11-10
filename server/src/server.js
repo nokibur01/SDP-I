@@ -73,9 +73,9 @@ app.use(
   })
 );
 
-// Payload size limit to handle base64 avatars while guarding against excessive payload attacks
-app.use(express.json({ limit: "15mb" }));
-app.use(express.urlencoded({ limit: "15mb", extended: true }));
+// Payload size limit: avatars are downsized client-side and capped at ~1.5 MB server-side
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ limit: "2mb", extended: true }));
 
 // Routes
 app.use("/api/auth", authRoutes);
@@ -95,6 +95,9 @@ app.use((err, req, res, next) => {
   console.error("Unhandled Error:", err.message);
   if (err.message === "CORS policy violation") {
     return res.status(403).json({ success: false, message: "Origin not allowed by CORS." });
+  }
+  if (err.type === "entity.too.large") {
+    return res.status(413).json({ success: false, message: "Request is too large. Please use a smaller file." });
   }
   res.status(500).json({ success: false, message: "Internal server error." });
 });
