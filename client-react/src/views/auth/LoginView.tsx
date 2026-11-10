@@ -48,16 +48,17 @@ export const LoginView: React.FC = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-[#090e0b] flex items-center justify-center px-4 py-10">
-      {/* Background illustration — slightly scaled & softened so it reads as atmosphere, not pixels */}
+      {/* Background illustration (high resolution) */}
       <img
         src={forestArt}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover object-center scale-105 blur-[1.5px] select-none pointer-events-none"
+        decoding="async"
+        className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
       />
-      {/* Tone overlays: darken overall, deepen edges, keep centre calm behind the card */}
-      <div className="absolute inset-0 bg-[#090e0b]/55" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(9,14,11,0.55)_0%,rgba(9,14,11,0.2)_45%,rgba(9,14,11,0.85)_100%)]" />
+      {/* Tone overlays: light overall dim, soft vignette, calmer centre behind the card */}
+      <div className="absolute inset-0 bg-[#090e0b]/35" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(9,14,11,0.45)_0%,rgba(9,14,11,0.1)_50%,rgba(9,14,11,0.75)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#090e0b] to-transparent" />
 
       {/* Login card */}
