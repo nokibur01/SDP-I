@@ -268,16 +268,16 @@ export const TasksView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#00D084]">
+              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
                 Academic Deliverables
               </span>
-              <span className="text-[#1F353C]">•</span>
-              <span className="text-[12px] text-[#9BB2BC]">Milestones & Coursework</span>
+              <span className="text-[#1b261f]">•</span>
+              <span className="text-[12px] text-[#a7b3aa]">Milestones & Coursework</span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-white tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
               Tasks, Assignments & Deadlines
             </h1>
-            <p className="text-[13.5px] text-[#9BB2BC] mt-0.5">
+            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
               Centralized cohort milestone tracking with individualized student progress and CR moderation.
             </p>
           </div>
@@ -295,16 +295,16 @@ export const TasksView: React.FC = () => {
         {/* 2. Workload Metrics & Progress Strip */}
         <div className="space-y-3">
           {tasks.length > 0 && (
-            <div className="bg-[#15242A] border border-[#1F353C] rounded-[14px] p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="bg-[#101713] border border-[#1b261f] rounded-[14px] p-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="flex items-center gap-2.5">
-                <span className="text-[12.5px] font-semibold text-white">Coursework Completion</span>
+                <span className="text-[12.5px] font-semibold text-[#d6ded8]">Coursework Completion</span>
                 <Badge variant="mint" size="xs">
                   {completedCount} of {tasks.length} Done ({tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 100}%)
                 </Badge>
               </div>
-              <div className="w-full sm:w-64 bg-[#0E171B] border border-[#1F353C] rounded-full h-2 overflow-hidden">
+              <div className="w-full sm:w-64 bg-[#0c120e] border border-[#1b261f] rounded-full h-2 overflow-hidden">
                 <div
-                  className="bg-gradient-to-r from-[#00D084] to-[#38BDF8] h-full rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-[#95b399] to-[#7f9fb3] h-full rounded-full transition-all duration-300"
                   style={{ width: `${tasks.length > 0 ? Math.round((completedCount / tasks.length) * 100) : 100}%` }}
                 />
               </div>
@@ -314,72 +314,72 @@ export const TasksView: React.FC = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <button
               onClick={() => setActiveTab('overdue')}
-              className={`p-4 rounded-[16px] bg-[#15242A] border text-left transition-all cursor-pointer ${
-                activeTab === 'overdue' ? 'border-[#F87171] bg-[#192C34]' : 'border-[#1F353C] hover:border-[#F87171]/40'
+              className={`p-4 rounded-[16px] bg-[#101713] border text-left transition-all cursor-pointer ${
+                activeTab === 'overdue' ? 'border-[#d66767] bg-[#141d18]' : 'border-[#1b261f] hover:border-[#d66767]/40'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#9BB2BC]">
+                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#a7b3aa]">
                   Overdue
                 </span>
-                <span className="w-2 h-2 rounded-full bg-[#F87171]" />
+                <span className="w-2 h-2 rounded-full bg-[#d66767]" />
               </div>
-              <span className="text-[26px] font-bold text-[#F87171] mt-1 block">{overdueCount}</span>
-              <span className="text-[12px] text-[#9BB2BC]">Requires attention</span>
+              <span className="text-[26px] font-bold text-[#d66767] mt-1 block">{overdueCount}</span>
+              <span className="text-[12px] text-[#a7b3aa]">Requires attention</span>
             </button>
 
             <button
               onClick={() => setActiveTab('today')}
-              className={`p-4 rounded-[16px] bg-[#15242A] border text-left transition-all cursor-pointer ${
-                activeTab === 'today' ? 'border-[#FBBF24] bg-[#192C34]' : 'border-[#1F353C] hover:border-[#FBBF24]/40'
+              className={`p-4 rounded-[16px] bg-[#101713] border text-left transition-all cursor-pointer ${
+                activeTab === 'today' ? 'border-[#d6b867] bg-[#141d18]' : 'border-[#1b261f] hover:border-[#d6b867]/40'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#9BB2BC]">
+                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#a7b3aa]">
                   Due Today
                 </span>
-                <span className="w-2 h-2 rounded-full bg-[#FBBF24]" />
+                <span className="w-2 h-2 rounded-full bg-[#d6b867]" />
               </div>
-              <span className="text-[26px] font-bold text-[#FBBF24] mt-1 block">{dueTodayCount}</span>
-              <span className="text-[12px] text-[#9BB2BC]">Impending cutoff</span>
+              <span className="text-[26px] font-bold text-[#d6b867] mt-1 block">{dueTodayCount}</span>
+              <span className="text-[12px] text-[#a7b3aa]">Impending cutoff</span>
             </button>
 
             <button
               onClick={() => setActiveTab('active')}
-              className={`p-4 rounded-[16px] bg-[#15242A] border text-left transition-all cursor-pointer ${
-                activeTab === 'active' ? 'border-[#38BDF8] bg-[#192C34]' : 'border-[#1F353C] hover:border-[#38BDF8]/40'
+              className={`p-4 rounded-[16px] bg-[#101713] border text-left transition-all cursor-pointer ${
+                activeTab === 'active' ? 'border-[#7f9fb3] bg-[#141d18]' : 'border-[#1b261f] hover:border-[#7f9fb3]/40'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#9BB2BC]">
+                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#a7b3aa]">
                   Active Tasks
                 </span>
-                <span className="w-2 h-2 rounded-full bg-[#38BDF8]" />
+                <span className="w-2 h-2 rounded-full bg-[#7f9fb3]" />
               </div>
-              <span className="text-[26px] font-bold text-white mt-1 block">{activeCount}</span>
-              <span className="text-[12px] text-[#9BB2BC]">In pipeline</span>
+              <span className="text-[26px] font-bold text-[#d6ded8] mt-1 block">{activeCount}</span>
+              <span className="text-[12px] text-[#a7b3aa]">In pipeline</span>
             </button>
 
             <button
               onClick={() => setActiveTab('completed')}
-              className={`p-4 rounded-[16px] bg-[#15242A] border text-left transition-all cursor-pointer ${
-                activeTab === 'completed' ? 'border-[#00D084] bg-[#192C34]' : 'border-[#1F353C] hover:border-[#00D084]/40'
+              className={`p-4 rounded-[16px] bg-[#101713] border text-left transition-all cursor-pointer ${
+                activeTab === 'completed' ? 'border-[#95b399] bg-[#141d18]' : 'border-[#1b261f] hover:border-[#95b399]/40'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#9BB2BC]">
+                <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#a7b3aa]">
                   Completed
                 </span>
-                <span className="w-2 h-2 rounded-full bg-[#00D084]" />
+                <span className="w-2 h-2 rounded-full bg-[#95b399]" />
               </div>
-              <span className="text-[26px] font-bold text-[#00D084] mt-1 block">{completedCount}</span>
-              <span className="text-[12px] text-[#9BB2BC]">Submitted & archived</span>
+              <span className="text-[26px] font-bold text-[#95b399] mt-1 block">{completedCount}</span>
+              <span className="text-[12px] text-[#a7b3aa]">Submitted & archived</span>
             </button>
           </div>
         </div>
 
         {/* 3. Navigation Filter Tabs */}
-        <div className="flex items-center justify-between border-b border-[#1F353C] pb-3 overflow-x-auto gap-2">
+        <div className="flex items-center justify-between border-b border-[#1b261f] pb-3 overflow-x-auto gap-2">
           <div className="flex items-center gap-1.5 shrink-0">
             {[
               { id: 'all', label: 'All Deadlines', count: tasks.length },
@@ -393,16 +393,16 @@ export const TasksView: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as typeof activeTab)}
                 className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeTab === tab.id
-                    ? 'bg-[#15242A] text-[#00D084] border border-[#00D084]/30 shadow-sm'
-                    : 'text-[#9BB2BC] hover:text-white hover:bg-[#15242A]/60'
+                    ? 'bg-[#101713] text-[#95b399] border border-[#95b399]/30 shadow-sm'
+                    : 'text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713]/60'
                 }`}
               >
                 <span>{tab.label}</span>
                 <span
                   className={`text-[11px] px-1.5 py-0.2 rounded-full ${
                     activeTab === tab.id
-                      ? 'bg-[#00D084]/20 text-[#00D084]'
-                      : 'bg-[#1F353C] text-[#9BB2BC]'
+                      ? 'bg-[#95b399]/20 text-[#95b399]'
+                      : 'bg-[#1b261f] text-[#a7b3aa]'
                   }`}
                 >
                   {tab.count}
@@ -415,14 +415,14 @@ export const TasksView: React.FC = () => {
                 onClick={() => setActiveTab('moderation')}
                 className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'moderation'
-                    ? 'bg-[#15242A] text-[#FBBF24] border border-[#FBBF24]/30 shadow-sm'
-                    : 'text-[#9BB2BC] hover:text-white hover:bg-[#15242A]/60'
+                    ? 'bg-[#101713] text-[#d6b867] border border-[#d6b867]/30 shadow-sm'
+                    : 'text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713]/60'
                 }`}
               >
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>Moderation Queue</span>
                 {pendingTasks.length > 0 && (
-                  <span className="px-1.5 py-0.2 rounded-full bg-[#FBBF24]/20 text-[#FBBF24] text-[11px] font-bold">
+                  <span className="px-1.5 py-0.2 rounded-full bg-[#d6b867]/20 text-[#d6b867] text-[11px] font-bold">
                     {pendingTasks.length}
                   </span>
                 )}
@@ -434,12 +434,12 @@ export const TasksView: React.FC = () => {
                 onClick={() => setActiveTab('my_pending')}
                 className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                   activeTab === 'my_pending'
-                    ? 'bg-[#15242A] text-[#38BDF8] border border-[#38BDF8]/30 shadow-sm'
-                    : 'text-[#9BB2BC] hover:text-white hover:bg-[#15242A]/60'
+                    ? 'bg-[#101713] text-[#7f9fb3] border border-[#7f9fb3]/30 shadow-sm'
+                    : 'text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713]/60'
                 }`}
               >
                 <span>My Pending</span>
-                <span className="px-1.5 py-0.2 rounded-full bg-[#38BDF8]/20 text-[#38BDF8] text-[11px] font-bold">
+                <span className="px-1.5 py-0.2 rounded-full bg-[#7f9fb3]/20 text-[#7f9fb3] text-[11px] font-bold">
                   {myPendingTasks.length}
                 </span>
               </button>
@@ -449,15 +449,15 @@ export const TasksView: React.FC = () => {
 
         {/* 4. Search and Multi-Field Filters Toolbar (when not in moderation view) */}
         {activeTab !== 'moderation' && activeTab !== 'my_pending' && (
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
             <div className="w-full md:w-80 relative">
-              <Search className="w-4 h-4 text-[#9BB2BC] absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-[#a7b3aa] absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 placeholder="Search tasks, codes, instructions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-[#0E171B] border border-[#1F353C] rounded-[10px] pl-9 pr-3 py-2 text-[13px] text-white placeholder:text-[#9BB2BC] focus:outline-none focus:border-[#00D084]"
+                className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] pl-9 pr-3 py-2 text-[13px] text-[#d6ded8] placeholder:text-[#a7b3aa] focus:outline-none focus:border-[#95b399]"
               />
             </div>
 
@@ -465,7 +465,7 @@ export const TasksView: React.FC = () => {
               <select
                 value={selectedCourse}
                 onChange={(e) => setSelectedCourse(e.target.value)}
-                className="bg-[#0E171B] border border-[#1F353C] text-[12.5px] text-[#D2DFE5] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#00D084]"
+                className="bg-[#0c120e] border border-[#1b261f] text-[12.5px] text-[#d6ded8] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#95b399]"
               >
                 <option value="all">All Courses</option>
                 {courseOptions.map((c) => (
@@ -478,7 +478,7 @@ export const TasksView: React.FC = () => {
               <select
                 value={selectedPriority}
                 onChange={(e) => setSelectedPriority(e.target.value)}
-                className="bg-[#0E171B] border border-[#1F353C] text-[12.5px] text-[#D2DFE5] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#00D084]"
+                className="bg-[#0c120e] border border-[#1b261f] text-[12.5px] text-[#d6ded8] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#95b399]"
               >
                 <option value="all">All Priorities</option>
                 <option value="High">High Priority</option>
@@ -489,7 +489,7 @@ export const TasksView: React.FC = () => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-[#0E171B] border border-[#1F353C] text-[12.5px] text-[#D2DFE5] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#00D084]"
+                className="bg-[#0c120e] border border-[#1b261f] text-[12.5px] text-[#d6ded8] px-3 py-2 rounded-[10px] focus:outline-none focus:border-[#95b399]"
               >
                 <option value="due_asc">Nearest Due Date</option>
                 <option value="due_desc">Furthest Due Date</option>
@@ -506,21 +506,21 @@ export const TasksView: React.FC = () => {
           <CardGridSkeleton count={4} />
         ) : activeTab === 'moderation' ? (
           /* CR/Admin Moderation Queue Panel */
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[18px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1F353C]/60">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1b261f]/60">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-[#FBBF24]" />
-                <h3 className="text-[16px] font-bold text-white">Student Submission Moderation Queue</h3>
+                <ShieldCheck className="w-5 h-5 text-[#d6b867]" />
+                <h3 className="text-[16px] font-bold text-[#d6ded8]">Student Submission Moderation Queue</h3>
               </div>
               <Badge variant="warning">{pendingTasks.length} Pending Review</Badge>
             </div>
 
             {pendingTasks.length === 0 ? (
-              <div className="py-12 text-center text-[13.5px] text-[#9BB2BC]">
+              <div className="py-12 text-center text-[13.5px] text-[#a7b3aa]">
                 ✓ All student task submissions have been reviewed and moderated!
               </div>
             ) : (
-              <div className="flex flex-col divide-y divide-[#1F353C]/60">
+              <div className="flex flex-col divide-y divide-[#1b261f]/60">
                 {pendingTasks.map((task) => (
                   <div key={task.id} className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex flex-col gap-1 min-w-0">
@@ -536,16 +536,16 @@ export const TasksView: React.FC = () => {
                         >
                           {task.priority}
                         </Badge>
-                        <span className="text-[12px] text-[#9BB2BC]">
+                        <span className="text-[12px] text-[#a7b3aa]">
                           Due: {new Date(task.due_date).toLocaleString()}
                         </span>
                       </div>
-                      <h4 className="text-[15px] font-bold text-white mt-1">{task.title}</h4>
+                      <h4 className="text-[15px] font-bold text-[#d6ded8] mt-1">{task.title}</h4>
                       {task.description && (
-                        <p className="text-[13px] text-[#9BB2BC] line-clamp-2">{task.description}</p>
+                        <p className="text-[13px] text-[#a7b3aa] line-clamp-2">{task.description}</p>
                       )}
-                      <span className="text-[11.5px] text-[#9BB2BC] mt-0.5">
-                        Submitted by: <strong className="text-[#D2DFE5]">{task.creator_name || 'Student'}</strong> (
+                      <span className="text-[11.5px] text-[#a7b3aa] mt-0.5">
+                        Submitted by: <strong className="text-[#d6ded8]">{task.creator_name || 'Student'}</strong> (
                         {task.creator_student_id || 'ID N/A'})
                       </span>
                     </div>
@@ -576,18 +576,18 @@ export const TasksView: React.FC = () => {
           </div>
         ) : activeTab === 'my_pending' ? (
           /* Student's Own Pending Submissions */
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[18px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1F353C]/60">
-              <h3 className="text-[16px] font-bold text-white">Your Submissions Under Review</h3>
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-6 shadow-[0_12px_32px_rgba(0,0,0,0.25)] flex flex-col gap-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1b261f]/60">
+              <h3 className="text-[16px] font-bold text-[#d6ded8]">Your Submissions Under Review</h3>
               <Badge variant="info">{myPendingTasks.length} Awaiting CR Approval</Badge>
             </div>
 
             {myPendingTasks.length === 0 ? (
-              <div className="py-10 text-center text-[13.5px] text-[#9BB2BC]">
+              <div className="py-10 text-center text-[13.5px] text-[#a7b3aa]">
                 You have no pending submissions awaiting review.
               </div>
             ) : (
-              <div className="flex flex-col divide-y divide-[#1F353C]/60">
+              <div className="flex flex-col divide-y divide-[#1b261f]/60">
                 {myPendingTasks.map((task) => (
                   <div key={task.id} className="py-4 flex items-center justify-between">
                     <div>
@@ -597,12 +597,12 @@ export const TasksView: React.FC = () => {
                             {task.course_code}
                           </Badge>
                         )}
-                        <span className="text-[12px] text-[#9BB2BC]">
+                        <span className="text-[12px] text-[#a7b3aa]">
                           Due: {new Date(task.due_date).toLocaleDateString()}
                         </span>
                       </div>
-                      <h4 className="text-[14.5px] font-bold text-white mt-1">{task.title}</h4>
-                      {task.description && <p className="text-[13px] text-[#9BB2BC]">{task.description}</p>}
+                      <h4 className="text-[14.5px] font-bold text-[#d6ded8] mt-1">{task.title}</h4>
+                      {task.description && <p className="text-[13px] text-[#a7b3aa]">{task.description}</p>}
                     </div>
                     <Badge variant="warning" size="xs">
                       Under Review
@@ -614,12 +614,12 @@ export const TasksView: React.FC = () => {
           </div>
         ) : filteredTasks.length === 0 ? (
           /* Empty State */
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
-            <div className="w-12 h-12 rounded-[14px] bg-[#0E171B] border border-[#1F353C] flex items-center justify-center text-[#9BB2BC] mb-3">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
+            <div className="w-12 h-12 rounded-[14px] bg-[#0c120e] border border-[#1b261f] flex items-center justify-center text-[#a7b3aa] mb-3">
               <CheckSquare className="w-6 h-6" />
             </div>
-            <h3 className="text-[16px] font-bold text-white">No Deadlines Found</h3>
-            <p className="text-[13px] text-[#9BB2BC] max-w-sm mt-1">
+            <h3 className="text-[16px] font-bold text-[#d6ded8]">No Deadlines Found</h3>
+            <p className="text-[13px] text-[#a7b3aa] max-w-sm mt-1">
               There are no tasks matching your selected filters or search parameters.
             </p>
             <Button
@@ -648,12 +648,12 @@ export const TasksView: React.FC = () => {
               return (
                 <div
                   key={task.id}
-                  className={`bg-[#15242A] border rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 ${
+                  className={`bg-[#101713] border rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 ${
                     isDone
-                      ? 'border-[#1F353C] opacity-85'
+                      ? 'border-[#1b261f] opacity-85'
                       : isOverdue
-                      ? 'border-[#F87171]/50 bg-[#162025]'
-                      : 'border-[#1F353C] hover:border-[#00D084]/40'
+                      ? 'border-[#d66767]/50 bg-[#16201a]'
+                      : 'border-[#1b261f] hover:border-[#95b399]/40'
                   }`}
                 >
                   <div className="flex flex-col gap-2.5">
@@ -681,14 +681,14 @@ export const TasksView: React.FC = () => {
 
                       <div className="flex items-center gap-1.5">
                         {isOverdue && (
-                          <span className="text-[11.5px] font-bold text-[#F87171] flex items-center gap-1">
+                          <span className="text-[11.5px] font-bold text-[#d66767] flex items-center gap-1">
                             <AlertTriangle className="w-3.5 h-3.5" /> Overdue
                           </span>
                         )}
                         {(isCRorAdmin || task.created_by === user?.id) && (
                           <button
                             onClick={() => setTaskToDelete(task)}
-                            className="p-1 rounded-[6px] text-[#9BB2BC] hover:text-[#F87171] hover:bg-[#F87171]/10 transition-colors"
+                            className="p-1 rounded-[6px] text-[#a7b3aa] hover:text-[#d66767] hover:bg-[#d66767]/10 transition-colors"
                             title="Delete task"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -709,8 +709,8 @@ export const TasksView: React.FC = () => {
                         }
                         className={`w-5 h-5 rounded-[6px] border flex items-center justify-center transition-all shrink-0 mt-0.5 cursor-pointer ${
                           isDone
-                            ? 'bg-[#00D084] border-[#00D084] text-[#0B1316]'
-                            : 'border-[#1F353C] hover:border-[#00D084]'
+                            ? 'bg-[#95b399] border-[#95b399] text-[#090e0b]'
+                            : 'border-[#1b261f] hover:border-[#95b399]'
                         }`}
                         title={isDone ? 'Mark as pending' : 'Mark as completed'}
                       >
@@ -720,14 +720,14 @@ export const TasksView: React.FC = () => {
                       <div className="flex flex-col min-w-0">
                         <h4
                           className={`text-[15px] font-bold transition-all ${
-                            isDone ? 'line-through text-[#9BB2BC]' : 'text-white'
+                            isDone ? 'line-through text-[#a7b3aa]' : 'text-[#d6ded8]'
                           }`}
                         >
                           {task.title}
                         </h4>
                         {task.description && (
                           <p
-                            className={`text-[13px] text-[#9BB2BC] mt-1 leading-relaxed ${
+                            className={`text-[13px] text-[#a7b3aa] mt-1 leading-relaxed ${
                               !isExpanded ? 'line-clamp-2' : ''
                             }`}
                           >
@@ -738,7 +738,7 @@ export const TasksView: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setExpandedTaskId(isExpanded ? null : task.id)}
-                            className="text-[11.5px] text-[#00D084] hover:underline font-semibold mt-1 self-start flex items-center gap-0.5"
+                            className="text-[11.5px] text-[#95b399] hover:underline font-semibold mt-1 self-start flex items-center gap-0.5"
                           >
                             <span>{isExpanded ? 'Show less' : 'Read more'}</span>
                             {isExpanded ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
@@ -749,9 +749,9 @@ export const TasksView: React.FC = () => {
                   </div>
 
                   {/* Card Footer: Due Date & Submitter */}
-                  <div className="pt-3 border-t border-[#1F353C]/60 flex items-center justify-between text-[12px] text-[#9BB2BC]">
+                  <div className="pt-3 border-t border-[#1b261f]/60 flex items-center justify-between text-[12px] text-[#a7b3aa]">
                     <div className="flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-[#38BDF8]" />
+                      <Clock className="w-3.5 h-3.5 text-[#7f9fb3]" />
                       <span>
                         Due:{' '}
                         {new Date(task.due_date).toLocaleDateString(undefined, {
@@ -763,7 +763,7 @@ export const TasksView: React.FC = () => {
                       </span>
                     </div>
 
-                    <span className="text-[11.5px] text-[#7E96A0]">
+                    <span className="text-[11.5px] text-[#78877d]">
                       By {task.creator_name || 'Cohort Lead'}
                     </span>
                   </div>
@@ -835,7 +835,7 @@ export const TasksView: React.FC = () => {
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
 
-            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1F353C]/60">
+            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
               <Button
                 variant="ghost"
                 size="sm"

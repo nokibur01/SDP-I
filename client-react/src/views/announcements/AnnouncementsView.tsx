@@ -183,16 +183,16 @@ export const AnnouncementsView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#00D084]">
+              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
                 Cohort Bulletin
               </span>
-              <span className="text-[#1F353C]">•</span>
-              <span className="text-[12px] text-[#9BB2BC]">Official Academic Broadcasts</span>
+              <span className="text-[#1b261f]">•</span>
+              <span className="text-[12px] text-[#a7b3aa]">Official Academic Broadcasts</span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-white tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
               Batch Announcements & Notices
             </h1>
-            <p className="text-[13.5px] text-[#9BB2BC] mt-0.5">
+            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
               Important cohort updates, examination room schedules, deadlines, and official university memos.
             </p>
           </div>
@@ -210,7 +210,7 @@ export const AnnouncementsView: React.FC = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
+        <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-4 flex flex-col md:flex-row items-center justify-between gap-3">
           {/* Category Tabs */}
           <div className="flex items-center gap-1.5 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
             {[
@@ -225,16 +225,16 @@ export const AnnouncementsView: React.FC = () => {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
                   selectedCategory === cat.id
-                    ? 'bg-[#0E171B] text-[#00D084] border border-[#00D084]/30 shadow-sm'
-                    : 'text-[#9BB2BC] hover:text-white hover:bg-[#0E171B]/50'
+                    ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30 shadow-sm'
+                    : 'text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#0c120e]/50'
                 }`}
               >
                 <span>{cat.label}</span>
                 <span
                   className={`text-[11px] px-1.5 py-0.2 rounded-full ${
                     selectedCategory === cat.id
-                      ? 'bg-[#00D084]/20 text-[#00D084]'
-                      : 'bg-[#1F353C] text-[#9BB2BC]'
+                      ? 'bg-[#95b399]/20 text-[#95b399]'
+                      : 'bg-[#1b261f] text-[#a7b3aa]'
                   }`}
                 >
                   {cat.count}
@@ -245,13 +245,13 @@ export const AnnouncementsView: React.FC = () => {
 
           {/* Search */}
           <div className="w-full md:w-72 relative">
-            <Search className="w-4 h-4 text-[#9BB2BC] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#a7b3aa] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search announcements..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#0E171B] border border-[#1F353C] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-white placeholder:text-[#9BB2BC] focus:outline-none focus:border-[#00D084]"
+              className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-[#d6ded8] placeholder:text-[#a7b3aa] focus:outline-none focus:border-[#95b399]"
             />
           </div>
         </div>
@@ -260,10 +260,10 @@ export const AnnouncementsView: React.FC = () => {
         {isLoading ? (
           <ListSkeleton items={4} />
         ) : filteredNotices.length === 0 ? (
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
-            <Megaphone className="w-10 h-10 text-[#9BB2BC] mb-2" />
-            <h3 className="text-[16px] font-bold text-white">No Announcements Found</h3>
-            <p className="text-[13px] text-[#9BB2BC] mt-1">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
+            <Megaphone className="w-10 h-10 text-[#a7b3aa] mb-2" />
+            <h3 className="text-[16px] font-bold text-[#d6ded8]">No Announcements Found</h3>
+            <p className="text-[13px] text-[#a7b3aa] mt-1">
               There are no announcements matching your category or search filter.
             </p>
           </div>
@@ -276,18 +276,18 @@ export const AnnouncementsView: React.FC = () => {
                 <div
                   key={notice.id}
                   onClick={() => setSelectedNotice(notice)}
-                  className={`bg-[#15242A] border rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col gap-3 cursor-pointer group ${
+                  className={`bg-[#101713] border rounded-[16px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col gap-3 cursor-pointer group ${
                     isPinned
-                      ? 'border-[#00D084]/40 bg-[#15242A] relative overflow-hidden'
-                      : 'border-[#1F353C] hover:border-[#00D084]/30'
+                      ? 'border-[#95b399]/40 bg-[#101713] relative overflow-hidden'
+                      : 'border-[#1b261f] hover:border-[#95b399]/30'
                   }`}
                 >
                   {/* Top Tag Row */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-2">
                       {isPinned && (
-                        <span className="flex items-center gap-1 text-[11.5px] font-bold text-[#00D084] bg-[#00D084]/10 border border-[#00D084]/20 px-2 py-0.5 rounded-[6px]">
-                          <Pin className="w-3 h-3 fill-[#00D084]" /> PINNED
+                        <span className="flex items-center gap-1 text-[11.5px] font-bold text-[#95b399] bg-[#95b399]/10 border border-[#95b399]/20 px-2 py-0.5 rounded-[6px]">
+                          <Pin className="w-3 h-3 fill-[#95b399]" /> PINNED
                         </span>
                       )}
                       <Badge
@@ -302,11 +302,11 @@ export const AnnouncementsView: React.FC = () => {
                       >
                         {notice.priority}
                       </Badge>
-                      <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#9BB2BC]">
+                      <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#a7b3aa]">
                         {notice.category}
                       </span>
                       {notice.target_audience && notice.target_audience !== 'all' && (
-                        <span className="text-[11px] text-[#7E96A0] bg-[#0E171B] px-2 py-0.5 rounded border border-[#1F353C]">
+                        <span className="text-[11px] text-[#78877d] bg-[#0c120e] px-2 py-0.5 rounded border border-[#1b261f]">
                           Audience: {notice.target_audience}
                         </span>
                       )}
@@ -314,20 +314,20 @@ export const AnnouncementsView: React.FC = () => {
 
                     {/* Author & Date + Management Controls */}
                     <div className="flex items-center gap-3">
-                      <span className="text-[12px] text-[#9BB2BC] flex items-center gap-1">
-                        <Calendar className="w-3.5 h-3.5 text-[#38BDF8]" />
+                      <span className="text-[12px] text-[#a7b3aa] flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5 text-[#7f9fb3]" />
                         {formatRelativeTime(notice.created_at)}
                       </span>
 
                       {isCRorAdmin && (
                         <div
-                          className="flex items-center gap-1 border-l border-[#1F353C] pl-2"
+                          className="flex items-center gap-1 border-l border-[#1b261f] pl-2"
                           onClick={(e) => e.stopPropagation()}
                         >
                           <button
                             type="button"
                             onClick={() => togglePinMutation.mutate(notice.id)}
-                            className="p-1 rounded-[6px] text-[#9BB2BC] hover:text-[#00D084] hover:bg-[#00D084]/10 transition-colors"
+                            className="p-1 rounded-[6px] text-[#a7b3aa] hover:text-[#95b399] hover:bg-[#95b399]/10 transition-colors"
                             title={isPinned ? 'Unpin' : 'Pin to top'}
                           >
                             {isPinned ? <PinOff className="w-3.5 h-3.5" /> : <Pin className="w-3.5 h-3.5" />}
@@ -335,7 +335,7 @@ export const AnnouncementsView: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => setNoticeToDelete(notice)}
-                            className="p-1 rounded-[6px] text-[#9BB2BC] hover:text-[#F87171] hover:bg-[#F87171]/10 transition-colors"
+                            className="p-1 rounded-[6px] text-[#a7b3aa] hover:text-[#d66767] hover:bg-[#d66767]/10 transition-colors"
                             title="Delete announcement"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -347,22 +347,22 @@ export const AnnouncementsView: React.FC = () => {
 
                   {/* Title & Preview */}
                   <div>
-                    <h3 className="text-[16px] font-bold text-white group-hover:text-[#00D084] transition-colors tracking-tight">
+                    <h3 className="text-[16px] font-bold text-[#d6ded8] group-hover:text-[#95b399] transition-colors tracking-tight">
                       {notice.title}
                     </h3>
-                    <p className="text-[13.5px] text-[#9BB2BC] mt-1.5 leading-relaxed line-clamp-3">
+                    <p className="text-[13.5px] text-[#a7b3aa] mt-1.5 leading-relaxed line-clamp-3">
                       {notice.description}
                     </p>
                   </div>
 
                   {/* Footer */}
-                  <div className="pt-2 border-t border-[#1F353C]/60 flex items-center justify-between text-[12px] text-[#9BB2BC]">
+                  <div className="pt-2 border-t border-[#1b261f]/60 flex items-center justify-between text-[12px] text-[#a7b3aa]">
                     <span className="flex items-center gap-1.5">
-                      <User className="w-3.5 h-3.5 text-[#00D084]" />
-                      Posted by: <strong className="text-white">{notice.author_name || 'Class Representative'}</strong>
+                      <User className="w-3.5 h-3.5 text-[#95b399]" />
+                      Posted by: <strong className="text-[#d6ded8]">{notice.author_name || 'Class Representative'}</strong>
                     </span>
 
-                    <span className="text-[#00D084] font-semibold flex items-center gap-1 group-hover:underline">
+                    <span className="text-[#95b399] font-semibold flex items-center gap-1 group-hover:underline">
                       <Eye className="w-3.5 h-3.5" /> Read Full Bulletin
                     </span>
                   </div>
@@ -441,14 +441,14 @@ export const AnnouncementsView: React.FC = () => {
                 id="pinCheckbox"
                 checked={formData.is_pinned}
                 onChange={(e) => setFormData({ ...formData, is_pinned: e.target.checked })}
-                className="w-4 h-4 accent-[#00D084] rounded cursor-pointer"
+                className="w-4 h-4 accent-[#95b399] rounded cursor-pointer"
               />
-              <label htmlFor="pinCheckbox" className="text-[13px] text-white cursor-pointer select-none">
+              <label htmlFor="pinCheckbox" className="text-[13px] text-[#d6ded8] cursor-pointer select-none">
                 Pin this notice to the top of the cohort feed
               </label>
             </div>
 
-            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1F353C]/60">
+            <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
               <Button
                 variant="ghost"
                 size="sm"
@@ -477,7 +477,7 @@ export const AnnouncementsView: React.FC = () => {
             maxWidth="lg"
           >
             <div className="space-y-4">
-              <div className="flex items-center justify-between gap-2 border-b border-[#1F353C]/60 pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-[#1b261f]/60 pb-3">
                 <div className="flex items-center gap-2">
                   <Badge variant="mint">{selectedNotice.category.toUpperCase()}</Badge>
                   <Badge
@@ -492,12 +492,12 @@ export const AnnouncementsView: React.FC = () => {
                     {selectedNotice.priority}
                   </Badge>
                   {selectedNotice.is_pinned ? (
-                    <span className="text-[12px] text-[#00D084] font-bold flex items-center gap-1">
-                      <Pin className="w-3.5 h-3.5 fill-[#00D084]" /> Pinned
+                    <span className="text-[12px] text-[#95b399] font-bold flex items-center gap-1">
+                      <Pin className="w-3.5 h-3.5 fill-[#95b399]" /> Pinned
                     </span>
                   ) : null}
                 </div>
-                <span className="text-[12px] text-[#9BB2BC]">
+                <span className="text-[12px] text-[#a7b3aa]">
                   {new Date(selectedNotice.created_at).toLocaleDateString(undefined, {
                     weekday: 'long',
                     year: 'numeric',
@@ -507,22 +507,22 @@ export const AnnouncementsView: React.FC = () => {
                 </span>
               </div>
 
-              <h2 className="text-[20px] font-bold text-white tracking-tight">{selectedNotice.title}</h2>
+              <h2 className="text-[20px] font-bold text-[#d6ded8] tracking-tight">{selectedNotice.title}</h2>
 
-              <div className="bg-[#0E171B] border border-[#1F353C] rounded-[12px] p-3 text-[12.5px] text-[#9BB2BC] flex items-center justify-between flex-wrap gap-2">
+              <div className="bg-[#0c120e] border border-[#1b261f] rounded-[12px] p-3 text-[12.5px] text-[#a7b3aa] flex items-center justify-between flex-wrap gap-2">
                 <span>
-                  Author: <strong className="text-white">{selectedNotice.author_name || 'Class Representative'}</strong>
+                  Author: <strong className="text-[#d6ded8]">{selectedNotice.author_name || 'Class Representative'}</strong>
                 </span>
                 <span>
-                  Audience: <strong className="text-white">{selectedNotice.target_audience || 'All Cohort'}</strong>
+                  Audience: <strong className="text-[#d6ded8]">{selectedNotice.target_audience || 'All Cohort'}</strong>
                 </span>
               </div>
 
-              <div className="text-[14px] text-[#D2DFE5] leading-relaxed whitespace-pre-line py-2">
+              <div className="text-[14px] text-[#d6ded8] leading-relaxed whitespace-pre-line py-2">
                 {selectedNotice.description}
               </div>
 
-              <div className="flex justify-end pt-3 border-t border-[#1F353C]/60">
+              <div className="flex justify-end pt-3 border-t border-[#1b261f]/60">
                 <Button variant="secondary" size="sm" onClick={() => setSelectedNotice(null)}>
                   Close
                 </Button>

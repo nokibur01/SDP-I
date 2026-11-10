@@ -46,15 +46,15 @@ export const LoginView: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#0B1316] flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-[420px] bg-[#15242A] border border-[#1F353C] rounded-[20px] p-7 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+    <div className="min-h-screen w-full bg-[#090e0b] flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-[420px] bg-[#101713] border border-[#1b261f] rounded-[20px] p-7 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
         {/* Logo and Brand Header */}
         <div className="flex flex-col items-center text-center gap-1.5 mb-7">
           <div className="flex items-center gap-2.5">
-            <GraduationCap className="w-8 h-8 text-[#00D084]" />
-            <h2 className="text-[24px] font-bold text-white tracking-tight">BatchHub</h2>
+            <GraduationCap className="w-8 h-8 text-[#95b399]" />
+            <h2 className="text-[24px] font-bold text-[#d6ded8] tracking-tight">BatchHub</h2>
           </div>
-          <p className="text-[13px] text-[#9BB2BC]">
+          <p className="text-[13px] text-[#a7b3aa]">
             Sign in to access your university academic batch portal
           </p>
         </div>
@@ -64,8 +64,8 @@ export const LoginView: React.FC = () => {
           <div
             className={`mb-5 p-3 rounded-[10px] text-[13px] flex items-start gap-2.5 border ${
               statusMessage.type === 'success'
-                ? 'bg-[#00D084]/10 text-[#00D084] border-[#00D084]/25'
-                : 'bg-[#F87171]/10 text-[#F87171] border-[#F87171]/30'
+                ? 'bg-[#95b399]/10 text-[#95b399] border-[#95b399]/25'
+                : 'bg-[#d66767]/10 text-[#d66767] border-[#d66767]/30'
             }`}
           >
             {statusMessage.type === 'success' ? (
@@ -101,7 +101,7 @@ export const LoginView: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="hover:text-white transition-colors focus:outline-none"
+                className="hover:text-[#d6ded8] transition-colors focus:outline-none"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -120,11 +120,11 @@ export const LoginView: React.FC = () => {
         </form>
 
         {/* Footer Navigation */}
-        <div className="mt-6 text-center text-[13px] text-[#7B949E] border-t border-[#1A2F37] pt-5">
+        <div className="mt-6 text-center text-[13px] text-[#78877d] border-t border-[#16201a] pt-5">
           Don't have an account?{' '}
           <Link
             to="/register"
-            className="text-[#00D084] hover:underline font-medium hover:text-[#00B875]"
+            className="text-[#95b399] hover:underline font-medium hover:text-[#839f87]"
           >
             Register here
           </Link>

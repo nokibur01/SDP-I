@@ -126,16 +126,16 @@ export const MembersView: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#00D084]">
+              <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
                 Batch Directory
               </span>
-              <span className="text-[#1F353C]">•</span>
-              <span className="text-[12px] text-[#9BB2BC]">Students, CRs & Cohort Talent</span>
+              <span className="text-[#1b261f]">•</span>
+              <span className="text-[12px] text-[#a7b3aa]">Students, CRs & Cohort Talent</span>
             </div>
-            <h1 className="text-[22px] sm:text-[26px] font-bold text-white tracking-tight mt-0.5">
+            <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
               Classmates & Member Roster
             </h1>
-            <p className="text-[13.5px] text-[#9BB2BC] mt-0.5">
+            <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
               Explore your batch, filter peers by technical expertise, and recruit teammates for course projects.
             </p>
           </div>
@@ -147,15 +147,15 @@ export const MembersView: React.FC = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Tabs */}
           <div className="flex items-center gap-1.5 w-full sm:w-auto">
             <button
               onClick={() => setActiveFilter('my-batch')}
               className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer ${
                 activeFilter === 'my-batch'
-                  ? 'bg-[#0E171B] text-[#00D084] border border-[#00D084]/30'
-                  : 'text-[#9BB2BC] hover:text-white'
+                  ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30'
+                  : 'text-[#a7b3aa] hover:text-[#d6ded8]'
               }`}
             >
               My Batch ({members.filter((m) => m.batch === user?.batch).length || members.length})
@@ -165,8 +165,8 @@ export const MembersView: React.FC = () => {
               onClick={() => setActiveFilter('all')}
               className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer ${
                 activeFilter === 'all'
-                  ? 'bg-[#0E171B] text-[#00D084] border border-[#00D084]/30'
-                  : 'text-[#9BB2BC] hover:text-white'
+                  ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30'
+                  : 'text-[#a7b3aa] hover:text-[#d6ded8]'
               }`}
             >
               All Students ({members.length})
@@ -176,8 +176,8 @@ export const MembersView: React.FC = () => {
               onClick={() => setActiveFilter('leadership')}
               className={`px-3 py-1.5 rounded-[10px] text-[13px] font-semibold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeFilter === 'leadership'
-                  ? 'bg-[#0E171B] text-[#00D084] border border-[#00D084]/30'
-                  : 'text-[#9BB2BC] hover:text-white'
+                  ? 'bg-[#0c120e] text-[#95b399] border border-[#95b399]/30'
+                  : 'text-[#a7b3aa] hover:text-[#d6ded8]'
               }`}
             >
               <Shield className="w-3.5 h-3.5" />
@@ -187,13 +187,13 @@ export const MembersView: React.FC = () => {
 
           {/* Search */}
           <div className="w-full sm:w-80 relative">
-            <Search className="w-4 h-4 text-[#9BB2BC] absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-[#a7b3aa] absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               placeholder="Search by name, student ID, skill..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#0E171B] border border-[#1F353C] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-white placeholder:text-[#9BB2BC] focus:outline-none focus:border-[#00D084]"
+              className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] pl-9 pr-3 py-1.5 text-[12.5px] text-[#d6ded8] placeholder:text-[#a7b3aa] focus:outline-none focus:border-[#95b399]"
             />
           </div>
         </div>
@@ -202,10 +202,10 @@ export const MembersView: React.FC = () => {
         {isLoading ? (
           <CardGridSkeleton count={6} />
         ) : filteredMembers.length === 0 ? (
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
-            <Users className="w-10 h-10 text-[#9BB2BC] mb-2" />
-            <h3 className="text-[16px] font-bold text-white">No Students Found</h3>
-            <p className="text-[13px] text-[#9BB2BC] mt-1">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[18px] p-12 text-center flex flex-col items-center justify-center">
+            <Users className="w-10 h-10 text-[#a7b3aa] mb-2" />
+            <h3 className="text-[16px] font-bold text-[#d6ded8]">No Students Found</h3>
+            <p className="text-[13px] text-[#a7b3aa] mt-1">
               No students matched your search criteria or batch filter.
             </p>
           </div>
@@ -222,7 +222,7 @@ export const MembersView: React.FC = () => {
               return (
                 <div
                   key={member.id}
-                  className="bg-[#15242A] border border-[#1F353C] hover:border-[#00D084]/40 rounded-[18px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 group"
+                  className="bg-[#101713] border border-[#1b261f] hover:border-[#95b399]/40 rounded-[18px] p-5 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.15)] flex flex-col justify-between gap-4 group"
                 >
                   <div className="flex flex-col gap-3">
                     {/* Top Row: Avatar & Badges */}
@@ -232,19 +232,19 @@ export const MembersView: React.FC = () => {
                           <img
                             src={member.profile_picture}
                             alt={member.name}
-                            className="w-12 h-12 rounded-full object-cover border border-[#00D084]/30 shrink-0"
+                            className="w-12 h-12 rounded-full object-cover border border-[#95b399]/30 shrink-0"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-full bg-[#0E171B] border border-[#1F353C] group-hover:border-[#00D084]/40 flex items-center justify-center text-[16px] font-bold text-[#00D084] shrink-0 transition-colors">
+                          <div className="w-12 h-12 rounded-full bg-[#0c120e] border border-[#1b261f] group-hover:border-[#95b399]/40 flex items-center justify-center text-[16px] font-bold text-[#95b399] shrink-0 transition-colors">
                             {member.name.charAt(0).toUpperCase()}
                           </div>
                         )}
 
                         <div className="flex flex-col min-w-0">
-                          <h3 className="text-[15px] font-bold text-white group-hover:text-[#00D084] transition-colors truncate">
+                          <h3 className="text-[15px] font-bold text-[#d6ded8] group-hover:text-[#95b399] transition-colors truncate">
                             {member.name}
                           </h3>
-                          <span className="text-[12px] text-[#9BB2BC] font-mono">
+                          <span className="text-[12px] text-[#a7b3aa] font-mono">
                             ID: {member.student_id || 'N/A'}
                           </span>
                         </div>
@@ -259,8 +259,8 @@ export const MembersView: React.FC = () => {
                     </div>
 
                     {/* Department & Batch */}
-                    <div className="text-[12.5px] text-[#9BB2BC] flex items-center gap-2">
-                      <GraduationCap className="w-3.5 h-3.5 text-[#38BDF8]" />
+                    <div className="text-[12.5px] text-[#a7b3aa] flex items-center gap-2">
+                      <GraduationCap className="w-3.5 h-3.5 text-[#7f9fb3]" />
                       <span>
                         {member.department || 'CSE'} • Batch {member.batch || '2024'}
                       </span>
@@ -272,33 +272,33 @@ export const MembersView: React.FC = () => {
                         {skillsList.slice(0, 4).map((skill) => (
                           <span
                             key={skill}
-                            className="text-[11px] font-medium bg-[#0E171B] border border-[#1F353C] text-[#D2DFE5] px-2 py-0.5 rounded-[6px]"
+                            className="text-[11px] font-medium bg-[#0c120e] border border-[#1b261f] text-[#d6ded8] px-2 py-0.5 rounded-[6px]"
                           >
                             {skill}
                           </span>
                         ))}
                         {skillsList.length > 4 && (
-                          <span className="text-[11px] text-[#9BB2BC]">+{skillsList.length - 4}</span>
+                          <span className="text-[11px] text-[#a7b3aa]">+{skillsList.length - 4}</span>
                         )}
                       </div>
                     )}
                   </div>
 
                   {/* Card Footer: Email & Invite Action */}
-                  <div className="pt-3 border-t border-[#1F353C]/60 flex items-center justify-between text-[12px]">
+                  <div className="pt-3 border-t border-[#1b261f]/60 flex items-center justify-between text-[12px]">
                     <a
                       href={`mailto:${member.email}`}
-                      className="text-[#9BB2BC] hover:text-white flex items-center gap-1.5 truncate max-w-[170px]"
+                      className="text-[#a7b3aa] hover:text-[#d6ded8] flex items-center gap-1.5 truncate max-w-[170px]"
                       title={member.email}
                     >
-                      <Mail className="w-3.5 h-3.5 text-[#00D084]" />
+                      <Mail className="w-3.5 h-3.5 text-[#95b399]" />
                       <span className="truncate">{member.email}</span>
                     </a>
 
                     {!isSelf && (
                       <button
                         onClick={() => setInviteTargetStudent(member)}
-                        className="text-[12px] text-[#00D084] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
+                        className="text-[12px] text-[#95b399] hover:underline font-semibold flex items-center gap-1 cursor-pointer"
                       >
                         <UserPlus className="w-3.5 h-3.5" />
                         <span>Invite</span>
@@ -322,18 +322,18 @@ export const MembersView: React.FC = () => {
           >
             <form onSubmit={handleSendInvite} className="space-y-4">
               {myProjects.length === 0 ? (
-                <div className="text-[13px] text-[#9BB2BC] bg-[#0E171B] border border-[#1F353C] p-4 rounded-[12px]">
+                <div className="text-[13px] text-[#a7b3aa] bg-[#0c120e] border border-[#1b261f] p-4 rounded-[12px]">
                   You have not published any projects yet. Go to the Projects tab to create one first before inviting teammates!
                 </div>
               ) : (
                 <div>
-                  <label className="text-[13px] font-semibold text-white block mb-2">
+                  <label className="text-[13px] font-semibold text-[#d6ded8] block mb-2">
                     Select Your Project *
                   </label>
                   <select
                     value={selectedProjectId}
                     onChange={(e) => setSelectedProjectId(e.target.value)}
-                    className="w-full bg-[#0E171B] border border-[#1F353C] rounded-[10px] p-2.5 text-[13px] text-white focus:outline-none focus:border-[#00D084]"
+                    className="w-full bg-[#0c120e] border border-[#1b261f] rounded-[10px] p-2.5 text-[13px] text-[#d6ded8] focus:outline-none focus:border-[#95b399]"
                     required
                   >
                     <option value="">Choose project...</option>
@@ -346,7 +346,7 @@ export const MembersView: React.FC = () => {
                 </div>
               )}
 
-              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1F353C]/60">
+              <div className="flex items-center justify-end gap-2.5 pt-4 border-t border-[#1b261f]/60">
                 <Button
                   variant="ghost"
                   size="sm"

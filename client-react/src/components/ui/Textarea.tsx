@@ -15,7 +15,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full flex flex-col gap-1.5 text-left">
         {label && (
-          <label htmlFor={inputId} className="text-[12.5px] font-medium text-[#D2DFE5] select-none">
+          <label htmlFor={inputId} className="text-[12.5px] font-medium text-[#d6ded8] select-none">
             {label}
           </label>
         )}
@@ -25,18 +25,18 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           className={twMerge(
             clsx(
-              'w-full bg-[#0E171B] text-white text-[13.5px] rounded-[12px] border border-[#1F353C] py-2.5 px-3.5 transition-all duration-150',
-              'placeholder:text-[#8EA2AC]',
-              'focus:outline-none focus:border-[#00D084] focus:ring-1 focus:ring-[#00D084]/30 min-h-[90px] resize-y',
-              error && 'border-[#F87171] focus:border-[#F87171] focus:ring-[#F87171]/30',
+              'w-full bg-[#0c120e] text-[#d6ded8] text-[13.5px] rounded-[12px] border border-[#1b261f] py-2.5 px-3.5 transition-all duration-150',
+              'placeholder:text-[#8a988e]',
+              'focus:outline-none focus:border-[#95b399] focus:ring-1 focus:ring-[#95b399]/30 min-h-[90px] resize-y',
+              error && 'border-[#d66767] focus:border-[#d66767] focus:ring-[#d66767]/30',
               className
             )
           )}
           {...props}
         />
 
-        {error && <span className="text-[12.5px] text-[#F87171] font-medium">{error}</span>}
-        {!error && helperText && <span className="text-[12.5px] text-[#9BB2BC]">{helperText}</span>}
+        {error && <span className="text-[12.5px] text-[#d66767] font-medium">{error}</span>}
+        {!error && helperText && <span className="text-[12.5px] text-[#a7b3aa]">{helperText}</span>}
       </div>
     );
   }

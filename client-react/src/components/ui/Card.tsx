@@ -13,18 +13,18 @@ export const Card: React.FC<CardProps> = ({
   ...props
 }) => {
   const variantStyles = {
-    default: 'bg-[#15242A] border border-[#1F353C]',
-    elevated: 'bg-[#1B2E36] border border-[#1F353C] shadow-[0_12px_32px_rgba(0,0,0,0.35)]',
-    recessed: 'bg-[#0E171B] border border-[#1F353C]/60',
+    default: 'bg-[#101713] border border-[#1b261f]',
+    elevated: 'bg-[#16201a] border border-[#1b261f] shadow-[0_12px_32px_rgba(0,0,0,0.35)]',
+    recessed: 'bg-[#0c120e] border border-[#1b261f]/60',
     interactive:
-      'bg-[#15242A] border border-[#1F353C] hover:border-[#00D084]/40 hover:bg-[#182A31] transition-all duration-200 cursor-pointer',
+      'bg-[#101713] border border-[#1b261f] hover:border-[#95b399]/40 hover:bg-[#16201a] transition-all duration-200 cursor-pointer',
   };
 
   return (
     <div
       className={twMerge(
         clsx(
-          'rounded-[18px] p-5 sm:p-6 text-white overflow-hidden',
+          'rounded-[18px] p-5 sm:p-6 text-[#d6ded8] overflow-hidden',
           variantStyles[variant],
           className
         )
@@ -52,7 +52,7 @@ export const CardTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({
   ...props
 }) => (
   <h3
-    className={twMerge(clsx('text-[17px] font-semibold text-white tracking-tight', className))}
+    className={twMerge(clsx('text-[17px] font-semibold text-[#d6ded8] tracking-tight', className))}
     {...props}
   >
     {children}
@@ -64,7 +64,7 @@ export const CardDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement
   children,
   ...props
 }) => (
-  <p className={twMerge(clsx('text-[13px] text-[#7E96A0]', className))} {...props}>
+  <p className={twMerge(clsx('text-[13px] text-[#78877d]', className))} {...props}>
     {children}
   </p>
 );
@@ -82,7 +82,7 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
 }) => (
   <div
     className={twMerge(
-      clsx('flex items-center justify-between pt-4 mt-4 border-t border-[#1F353C]/80', className)
+      clsx('flex items-center justify-between pt-4 mt-4 border-t border-[#1b261f]/80', className)
     )}
     {...props}
   >

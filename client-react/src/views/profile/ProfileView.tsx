@@ -158,30 +158,30 @@ export const ProfileView: React.FC = () => {
         {/* Header */}
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#00D084]">
+            <span className="text-[11.5px] uppercase font-bold tracking-wider text-[#95b399]">
               Identity & Security
             </span>
-            <span className="text-[#1F353C]">•</span>
-            <span className="text-[12px] text-[#9BB2BC]">Academic Credentials</span>
+            <span className="text-[#1b261f]">•</span>
+            <span className="text-[12px] text-[#a7b3aa]">Academic Credentials</span>
           </div>
-          <h1 className="text-[22px] sm:text-[26px] font-bold text-white tracking-tight mt-0.5">
+          <h1 className="text-[22px] sm:text-[26px] font-bold text-[#d6ded8] tracking-tight mt-0.5">
             Account Settings & Profile
           </h1>
-          <p className="text-[13.5px] text-[#9BB2BC] mt-0.5">
+          <p className="text-[13.5px] text-[#a7b3aa] mt-0.5">
             Manage your personal academic identity, department affiliations, technical skill tags, and passwords.
           </p>
         </div>
 
         {/* 1. Main Profile Card */}
-        <div className="bg-[#15242A] border border-[#1F353C] rounded-[20px] p-6 sm:p-8 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
-          <div className="flex items-center justify-between pb-6 mb-6 border-b border-[#1F353C]/60">
+        <div className="bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 sm:p-8 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
+          <div className="flex items-center justify-between pb-6 mb-6 border-b border-[#1b261f]/60">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-[12px] bg-[#0E171B] border border-[#1F353C] flex items-center justify-center text-[#00D084]">
+              <div className="w-10 h-10 rounded-[12px] bg-[#0c120e] border border-[#1b261f] flex items-center justify-center text-[#95b399]">
                 <UserIcon className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-[17px] font-bold text-white tracking-tight">Personal & Academic Profile</h2>
-                <p className="text-[12.5px] text-[#9BB2BC]">Information visible across cohort directories.</p>
+                <h2 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Personal & Academic Profile</h2>
+                <p className="text-[12.5px] text-[#a7b3aa]">Information visible across cohort directories.</p>
               </div>
             </div>
 
@@ -194,22 +194,22 @@ export const ProfileView: React.FC = () => {
 
           <form onSubmit={handleProfileSubmit} className="space-y-6">
             {/* Avatar Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 border-b border-[#1F353C]/60">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pb-6 border-b border-[#1b261f]/60">
               <div className="relative group shrink-0">
                 {profileForm.profile_picture ? (
                   <img
                     src={profileForm.profile_picture}
                     alt="Profile"
-                    className="w-20 h-20 rounded-full object-cover border-2 border-[#00D084]/40"
+                    className="w-20 h-20 rounded-full object-cover border-2 border-[#95b399]/40"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-[#0E171B] border-2 border-[#1F353C] flex items-center justify-center text-[26px] font-bold text-[#00D084]">
+                  <div className="w-20 h-20 rounded-full bg-[#0c120e] border-2 border-[#1b261f] flex items-center justify-center text-[26px] font-bold text-[#95b399]">
                     {profileForm.name ? profileForm.name.charAt(0).toUpperCase() : 'U'}
                   </div>
                 )}
                 <label
                   htmlFor="avatarInput"
-                  className="absolute bottom-0 right-0 p-1.5 rounded-full bg-[#00D084] text-[#0B1316] shadow-md hover:bg-[#00B875] transition-colors cursor-pointer"
+                  className="absolute bottom-0 right-0 p-1.5 rounded-full bg-[#95b399] text-[#090e0b] shadow-md hover:bg-[#839f87] transition-colors cursor-pointer"
                   title="Upload new photo"
                 >
                   <Camera className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -224,8 +224,8 @@ export const ProfileView: React.FC = () => {
               </div>
 
               <div className="flex flex-col">
-                <span className="text-[14px] font-semibold text-white">Profile Picture</span>
-                <span className="text-[12.5px] text-[#9BB2BC] mt-0.5">
+                <span className="text-[14px] font-semibold text-[#d6ded8]">Profile Picture</span>
+                <span className="text-[12.5px] text-[#a7b3aa] mt-0.5">
                   PNG, JPG, or GIF up to 5MB. Click camera icon to replace.
                 </span>
               </div>
@@ -241,14 +241,14 @@ export const ProfileView: React.FC = () => {
               />
 
               <div>
-                <label className="text-[13px] font-medium text-white block mb-1.5">
+                <label className="text-[13px] font-medium text-[#d6ded8] block mb-1.5">
                   Email Address (Read-only)
                 </label>
                 <input
                   type="email"
                   value={user?.email || ''}
                   disabled
-                  className="w-full bg-[#0E171B]/50 border border-[#1F353C] rounded-[10px] p-2.5 text-[13px] text-[#7E96A0] cursor-not-allowed"
+                  className="w-full bg-[#0c120e]/50 border border-[#1b261f] rounded-[10px] p-2.5 text-[13px] text-[#78877d] cursor-not-allowed"
                 />
               </div>
 
@@ -296,7 +296,7 @@ export const ProfileView: React.FC = () => {
                 value={profileForm.skills}
                 onChange={(e) => setProfileForm({ ...profileForm, skills: e.target.value })}
               />
-              <span className="text-[12px] text-[#7E96A0] mt-1 block">
+              <span className="text-[12px] text-[#78877d] mt-1 block">
                 These tags will appear on your card in the student directory and assist peers in recruiting you.
               </span>
             </div>
@@ -316,14 +316,14 @@ export const ProfileView: React.FC = () => {
         </div>
 
         {/* 2. Security & Password Update Card */}
-        <div className="bg-[#15242A] border border-[#1F353C] rounded-[20px] p-6 sm:p-8 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
-          <div className="flex items-center gap-3 pb-6 mb-6 border-b border-[#1F353C]/60">
-            <div className="w-10 h-10 rounded-[12px] bg-[#0E171B] border border-[#1F353C] flex items-center justify-center text-[#FBBF24]">
+        <div className="bg-[#101713] border border-[#1b261f] rounded-[20px] p-6 sm:p-8 shadow-[0_12px_32px_rgba(0,0,0,0.25)]">
+          <div className="flex items-center gap-3 pb-6 mb-6 border-b border-[#1b261f]/60">
+            <div className="w-10 h-10 rounded-[12px] bg-[#0c120e] border border-[#1b261f] flex items-center justify-center text-[#d6b867]">
               <KeyRound className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-[17px] font-bold text-white tracking-tight">Security & Password</h2>
-              <p className="text-[12.5px] text-[#9BB2BC]">Ensure your account uses a strong, secure passphrase.</p>
+              <h2 className="text-[17px] font-bold text-[#d6ded8] tracking-tight">Security & Password</h2>
+              <p className="text-[12.5px] text-[#a7b3aa]">Ensure your account uses a strong, secure passphrase.</p>
             </div>
           </div>
 

@@ -45,17 +45,17 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const icons = {
-    success: <CheckCircle2 className="w-4 h-4 text-[#00D084] shrink-0" />,
-    error: <AlertCircle className="w-4 h-4 text-[#F87171] shrink-0" />,
-    warning: <AlertTriangle className="w-4 h-4 text-[#FBBF24] shrink-0" />,
-    info: <Info className="w-4 h-4 text-[#38BDF8] shrink-0" />,
+    success: <CheckCircle2 className="w-4 h-4 text-[#95b399] shrink-0" />,
+    error: <AlertCircle className="w-4 h-4 text-[#d66767] shrink-0" />,
+    warning: <AlertTriangle className="w-4 h-4 text-[#d6b867] shrink-0" />,
+    info: <Info className="w-4 h-4 text-[#7f9fb3] shrink-0" />,
   };
 
   const borders = {
-    success: 'border-[#00D084]/30 bg-[#15242A]',
-    error: 'border-[#F87171]/30 bg-[#15242A]',
-    warning: 'border-[#FBBF24]/30 bg-[#15242A]',
-    info: 'border-[#38BDF8]/30 bg-[#15242A]',
+    success: 'border-[#95b399]/30 bg-[#101713]',
+    error: 'border-[#d66767]/30 bg-[#101713]',
+    warning: 'border-[#d6b867]/30 bg-[#101713]',
+    info: 'border-[#7f9fb3]/30 bg-[#101713]',
   };
 
   return (
@@ -73,11 +73,11 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             >
               <div className="flex items-center gap-2.5">
                 {icons[item.type]}
-                <span className="text-[13px] text-white font-medium">{item.message}</span>
+                <span className="text-[13px] text-[#d6ded8] font-medium">{item.message}</span>
               </div>
               <button
                 onClick={() => removeToast(item.id)}
-                className="text-[#7E96A0] hover:text-white p-1 rounded-md transition-colors cursor-pointer"
+                className="text-[#78877d] hover:text-[#d6ded8] p-1 rounded-md transition-colors cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

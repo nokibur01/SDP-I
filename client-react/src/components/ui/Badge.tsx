@@ -25,23 +25,23 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    mint: 'bg-[rgba(0, 208, 132, 0.10)] text-[#00D084] border border-[rgba(0, 208, 132, 0.20)]',
-    danger: 'bg-[rgba(248,113,113,0.12)] text-[#F87171] border border-[rgba(248,113,113,0.25)]',
-    warning: 'bg-[rgba(251,191,36,0.12)] text-[#FBBF24] border border-[rgba(251,191,36,0.25)]',
-    info: 'bg-[rgba(56,189,248,0.12)] text-[#38BDF8] border border-[rgba(56,189,248,0.25)]',
-    purple: 'bg-[rgba(167,139,250,0.12)] text-[#A78BFA] border border-[rgba(167,139,250,0.25)]',
-    neutral: 'bg-[#192C34] text-[#7E96A0] border border-[#1F353C]',
-    muted: 'bg-[#0E171B] text-[#9BB2BC] border border-[#1F353C]',
+    mint: 'bg-[#1f2c23] text-[#95b399] border border-[#95b399]/20',
+    danger: 'bg-[#3b1c1c] text-[#d66767] border border-[#d66767]/20',
+    warning: 'bg-[#3a321c] text-[#d6b867] border border-[#d6b867]/20',
+    info: 'bg-[rgba(127,159,179,0.12)] text-[#7f9fb3] border border-[rgba(127,159,179,0.22)]',
+    purple: 'bg-[rgba(163,148,192,0.12)] text-[#a394c0] border border-[rgba(163,148,192,0.22)]',
+    neutral: 'bg-[#141d18] text-[#78877d] border border-[#1b261f]',
+    muted: 'bg-[#0c120e] text-[#a7b3aa] border border-[#1b261f]',
   };
 
   const dotColors = {
-    mint: 'bg-[#00D084]',
-    danger: 'bg-[#F87171]',
-    warning: 'bg-[#FBBF24]',
-    info: 'bg-[#38BDF8]',
-    purple: 'bg-[#A78BFA]',
-    neutral: 'bg-[#7E96A0]',
-    muted: 'bg-[#9BB2BC]',
+    mint: 'bg-[#95b399]',
+    danger: 'bg-[#d66767]',
+    warning: 'bg-[#d6b867]',
+    info: 'bg-[#7f9fb3]',
+    purple: 'bg-[#a394c0]',
+    neutral: 'bg-[#78877d]',
+    muted: 'bg-[#a7b3aa]',
   };
 
   return (

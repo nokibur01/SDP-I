@@ -155,7 +155,7 @@ export const AdminDashboardView: React.FC = () => {
         padding: "2rem",
         maxWidth: "1200px",
         margin: "0 auto",
-        color: "#f8fafc",
+        color: "#d6ded8",
       }}
     >
       <div style={{ marginBottom: "2rem" }}>
@@ -164,12 +164,12 @@ export const AdminDashboardView: React.FC = () => {
             fontSize: "1.875rem",
             fontWeight: 700,
             margin: 0,
-            color: "#ffffff",
+            color: "#d6ded8",
           }}
         >
           Admin Master Control Center
         </h1>
-        <p style={{ color: "#94a3b8", marginTop: "0.5rem" }}>
+        <p style={{ color: "#78877d", marginTop: "0.5rem" }}>
           Welcome Admin! All database records and system information are managed
           here.
         </p>
@@ -191,8 +191,8 @@ export const AdminDashboardView: React.FC = () => {
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
               style={{
-                backgroundColor: isSelected ? "#1e3a8a" : "#111827",
-                border: isSelected ? "2px solid #3b82f6" : "1px solid #1f2937",
+                backgroundColor: isSelected ? "#1f2c23" : "#101713",
+                border: isSelected ? "2px solid #95b399" : "1px solid #1b261f",
                 borderRadius: "0.75rem",
                 padding: "1.25rem",
                 cursor: "pointer",
@@ -202,7 +202,7 @@ export const AdminDashboardView: React.FC = () => {
               <div
                 style={{
                   fontSize: "0.85rem",
-                  color: isSelected ? "#93c5fd" : "#94a3b8",
+                  color: isSelected ? "#95b399" : "#78877d",
                   fontWeight: 600,
                 }}
               >
@@ -212,7 +212,7 @@ export const AdminDashboardView: React.FC = () => {
                 style={{
                   fontSize: "1.75rem",
                   fontWeight: 700,
-                  color: "#ffffff",
+                  color: "#d6ded8",
                   marginTop: "0.5rem",
                 }}
               >
@@ -238,7 +238,7 @@ export const AdminDashboardView: React.FC = () => {
           style={{
             fontSize: "1.25rem",
             fontWeight: 600,
-            color: "#f1f5f9",
+            color: "#d6ded8",
             margin: 0,
             textTransform: "capitalize",
           }}
@@ -254,9 +254,9 @@ export const AdminDashboardView: React.FC = () => {
           style={{
             padding: "0.5rem 1rem",
             borderRadius: "0.5rem",
-            backgroundColor: "#1e293b",
-            border: "1px solid #334155",
-            color: "#f8fafc",
+            backgroundColor: "#101713",
+            border: "1px solid #1b261f",
+            color: "#d6ded8",
             outline: "none",
             minWidth: "260px",
           }}
@@ -266,21 +266,21 @@ export const AdminDashboardView: React.FC = () => {
       {/* Items List Box */}
       <div
         style={{
-          backgroundColor: "#111827",
-          border: "1px solid #1f2937",
+          backgroundColor: "#101713",
+          border: "1px solid #1b261f",
           borderRadius: "0.75rem",
           overflow: "hidden",
         }}
       >
         {loading ? (
           <div
-            style={{ padding: "3rem", textAlign: "center", color: "#94a3b8" }}
+            style={{ padding: "3rem", textAlign: "center", color: "#78877d" }}
           >
             Loading {activeCategory} records...
           </div>
         ) : filteredItems.length === 0 ? (
           <div
-            style={{ padding: "3rem", textAlign: "center", color: "#64748b" }}
+            style={{ padding: "3rem", textAlign: "center", color: "#78877d" }}
           >
             No records found under {activeCategory}.
           </div>
@@ -294,7 +294,7 @@ export const AdminDashboardView: React.FC = () => {
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "1rem 1.25rem",
-                  borderBottom: "1px solid #1f2937",
+                  borderBottom: "1px solid #1b261f",
                   gap: "1rem",
                 }}
               >
@@ -313,9 +313,9 @@ export const AdminDashboardView: React.FC = () => {
                           fontSize: "0.75rem",
                           padding: "0.15rem 0.5rem",
                           borderRadius: "0.375rem",
-                          backgroundColor: "#1e293b",
-                          color: "#38bdf8",
-                          border: "1px solid #334155",
+                          backgroundColor: "#101713",
+                          color: "#7f9fb3",
+                          border: "1px solid #1b261f",
                         }}
                       >
                         {item.course_code}
@@ -324,7 +324,7 @@ export const AdminDashboardView: React.FC = () => {
                     <span
                       style={{
                         fontWeight: 600,
-                        color: "#f1f5f9",
+                        color: "#d6ded8",
                         fontSize: "1rem",
                       }}
                     >
@@ -342,11 +342,11 @@ export const AdminDashboardView: React.FC = () => {
                           borderRadius: "999px",
                           backgroundColor:
                             item.role === "admin"
-                              ? "#7c2d12"
+                              ? "#3b1c1c"
                               : item.role === "cr"
-                                ? "#1e3a8a"
-                                : "#1f2937",
-                          color: "#e2e8f0",
+                                ? "#1f2c23"
+                                : "#1b261f",
+                          color: "#d6ded8",
                         }}
                       >
                         {item.role}
@@ -357,7 +357,7 @@ export const AdminDashboardView: React.FC = () => {
                   <div
                     style={{
                       fontSize: "0.825rem",
-                      color: "#94a3b8",
+                      color: "#78877d",
                       marginTop: "0.25rem",
                     }}
                   >
@@ -378,7 +378,7 @@ export const AdminDashboardView: React.FC = () => {
                     borderRadius: "0.375rem",
                     border: "1px solid rgba(239, 68, 68, 0.4)",
                     backgroundColor: "rgba(239, 68, 68, 0.15)",
-                    color: "#f87171",
+                    color: "#d66767",
                     cursor: "pointer",
                     fontSize: "0.8rem",
                     fontWeight: 500,

@@ -44,7 +44,7 @@ export const AppLayout: React.FC<AppLayoutProps> = ({ children, title }) => {
     'Academic Flight Deck';
 
   return (
-    <div className="min-h-screen bg-[#0B1316] text-[#D2DFE5] flex">
+    <div className="min-h-screen bg-[#090e0b] text-[#d6ded8] flex">
       {/* Sidebar Rail */}
       <Sidebar
         isOpen={isSidebarOpen}

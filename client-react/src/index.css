@@ -1,40 +1,43 @@
 @import "tailwindcss";
 
+/* Matte Dark Forest & Sage Theme */
 @theme {
-  --color-canvas: #0B1316;
-  --color-sidebar: #0E181D;
-  --color-topbar: #0E181D;
-  --color-card: #15242A;
-  --color-card-hover: #192C34;
-  --color-card-inner: #0E171B;
-  --color-card-elevated: #1B2E36;
-  --color-border-subtle: #1F353C;
-  --color-border-accent: rgba(0, 208, 132, 0.20);
-  
-  --color-mint: #00D084;
-  --color-mint-hover: #00B875;
-  --color-mint-soft: rgba(0, 208, 132, 0.10);
-  --color-mint-glow: rgba(0, 208, 132, 0.20);
-  
-  --color-emerald: #00D084;
-  --color-emerald-hover: #00B875;
-  --color-emerald-soft: rgba(0, 208, 132, 0.10);
-  --color-emerald-glow: rgba(0, 208, 132, 0.20);
-  
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #D2DFE5;
-  --color-text-muted: #7E96A0;
-  --color-text-dim: #546B74;
+  --color-canvas: #090e0b;
+  --color-sidebar: #101713;
+  --color-topbar: #101713;
+  --color-card: #101713;
+  --color-card-hover: #141d18;
+  --color-card-inner: #0c120e;
+  --color-card-elevated: #16201a;
+  --color-border-subtle: #1b261f;
+  --color-border-accent: rgba(149, 179, 153, 0.20);
 
-  --color-danger: #F87171;
-  --color-danger-soft: rgba(248, 113, 113, 0.12);
-  --color-warning: #FBBF24;
-  --color-warning-soft: rgba(251, 191, 36, 0.12);
-  --color-info: #38BDF8;
-  --color-info-soft: rgba(56, 189, 248, 0.12);
-  --color-purple: #A78BFA;
-  --color-purple-soft: rgba(167, 139, 250, 0.12);
-  
+  --color-mint: #95b399;
+  --color-mint-hover: #839f87;
+  --color-mint-soft: rgba(149, 179, 153, 0.10);
+  --color-mint-glow: rgba(149, 179, 153, 0.20);
+
+  --color-emerald: #95b399;
+  --color-emerald-hover: #839f87;
+  --color-emerald-soft: rgba(149, 179, 153, 0.10);
+  --color-emerald-glow: rgba(149, 179, 153, 0.20);
+
+  --color-secondary-accent: #4a6352;
+
+  --color-text-primary: #d6ded8;
+  --color-text-secondary: #a7b3aa;
+  --color-text-muted: #78877d;
+  --color-text-dim: #56635a;
+
+  --color-danger: #d66767;
+  --color-danger-soft: #3b1c1c;
+  --color-warning: #d6b867;
+  --color-warning-soft: #3a321c;
+  --color-info: #7f9fb3;
+  --color-info-soft: rgba(127, 159, 179, 0.12);
+  --color-purple: #a394c0;
+  --color-purple-soft: rgba(163, 148, 192, 0.12);
+
   --radius-card: 18px;
   --radius-panel: 14px;
   --radius-pill: 12px;
@@ -42,35 +45,46 @@
 }
 
 :root {
-  --bg-color: #0b1316;
-  --sidebar-bg: #0e181d;
-  --topbar-bg: #0e181d;
-  --card-bg: #15242a;
-  --card-hover: #192c34;
-  --card-inner: #0e171b;
-  --card-elevated: #1b2e36;
-  --card-border: #1f353c;
-  --card-border-subtle: rgba(46, 229, 157, 0.08);
+  --bg-color: #090e0b;
+  --card-bg: #101713;
+  --sidebar-bg: #101713;
+  --topbar-bg: #101713;
+  --border-color: #1b261f;
 
-  --text-primary: #ffffff;
-  --text-secondary: #d2dfe5;
-  --text-muted: #7e96a0;
-  --text-dim: #546b74;
+  --primary-accent: #95b399;
+  --secondary-accent: #4a6352;
 
-  --primary-mint: #00d084;
-  --primary-mint-hover: #00b875;
-  --primary-mint-soft: rgba(0, 208, 132, 0.10);
-  --primary-mint-border: rgba(0, 208, 132, 0.20);
+  --text-main: #d6ded8;
+  --text-muted: #78877d;
 
-  --nav-active-bg: rgba(0, 208, 132, 0.12);
-  --nav-active-text: #00d084;
+  --btn-text: #090e0b;
 
-  --danger-red: #f87171;
-  --danger-soft: rgba(248, 113, 113, 0.12);
-  --warning-orange: #fbbf24;
-  --warning-soft: rgba(251, 191, 36, 0.12);
-  --info-blue: #38bdf8;
-  --info-soft: rgba(56, 189, 248, 0.12);
+  --badge-medium-bg: #3a321c;
+  --badge-medium-text: #d6b867;
+  --badge-high-bg: #3b1c1c;
+  --badge-high-text: #d66767;
+
+  /* Legacy aliases (kept so older references resolve to the new palette) */
+  --card-hover: #141d18;
+  --card-inner: #0c120e;
+  --card-elevated: #16201a;
+  --card-border: #1b261f;
+  --card-border-subtle: rgba(149, 179, 153, 0.08);
+  --text-primary: #d6ded8;
+  --text-secondary: #a7b3aa;
+  --text-dim: #56635a;
+  --primary-mint: #95b399;
+  --primary-mint-hover: #839f87;
+  --primary-mint-soft: rgba(149, 179, 153, 0.10);
+  --primary-mint-border: rgba(149, 179, 153, 0.20);
+  --nav-active-bg: rgba(149, 179, 153, 0.12);
+  --nav-active-text: #95b399;
+  --danger-red: #d66767;
+  --danger-soft: #3b1c1c;
+  --warning-orange: #d6b867;
+  --warning-soft: #3a321c;
+  --info-blue: #7f9fb3;
+  --info-soft: rgba(127, 159, 179, 0.12);
 
   --radius-card: 18px;
   --radius-panel: 14px;
@@ -85,27 +99,27 @@
 
 body {
   background-color: var(--bg-color);
-  color: var(--text-primary);
+  color: var(--text-main);
   min-height: 100vh;
   overflow-x: hidden;
   letter-spacing: -0.01em;
 }
 
-/* Custom scrollbars matching Midnight Campus theme */
+/* Custom scrollbars matching the forest theme */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B1316;
+  background: #090e0b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1F353C;
+  background: #1b261f;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2E4E58;
+  background: #2a3a2f;
 }

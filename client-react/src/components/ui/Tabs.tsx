@@ -34,7 +34,7 @@ export const Tabs: React.FC<TabsProps> = ({
     <div
       className={twMerge(
         clsx(
-          'inline-flex items-center gap-1 bg-[#0E171B] p-1 rounded-[14px] border border-[#1F353C]/80',
+          'inline-flex items-center gap-1 bg-[#0c120e] p-1 rounded-[14px] border border-[#1b261f]/80',
           className
         )
       )}
@@ -49,14 +49,14 @@ export const Tabs: React.FC<TabsProps> = ({
               clsx(
                 'relative flex items-center gap-2 font-medium transition-colors select-none cursor-pointer focus:outline-none',
                 sizeClasses[size],
-                isActive ? 'text-white font-semibold' : 'text-[#7E96A0] hover:text-[#D2DFE5]'
+                isActive ? 'text-[#d6ded8] font-semibold' : 'text-[#78877d] hover:text-[#d6ded8]'
               )
             )}
           >
             {isActive && (
               <motion.div
                 layoutId="activeTabPill"
-                className="absolute inset-0 bg-[#1A323A] border border-[#00D084]/30 rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
+                className="absolute inset-0 bg-[#16201a] border border-[#95b399]/30 rounded-[10px] shadow-[0_2px_8px_rgba(0,0,0,0.3)]"
                 transition={{ type: 'spring', stiffness: 450, damping: 35 }}
               />
             )}
@@ -68,8 +68,8 @@ export const Tabs: React.FC<TabsProps> = ({
                   className={clsx(
                     'text-[12px] px-2 py-0.5 rounded-full font-bold',
                     isActive
-                      ? 'bg-[#00D084]/20 text-[#00D084]'
-                      : 'bg-[#15242A] text-[#9BB2BC]'
+                      ? 'bg-[#95b399]/20 text-[#95b399]'
+                      : 'bg-[#101713] text-[#a7b3aa]'
                   )}
                 >
                   {tab.count}

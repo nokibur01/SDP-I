@@ -21,7 +21,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     <div
       className={twMerge(
         clsx(
-          'animate-pulse bg-[#1A2E36]/80',
+          'animate-pulse bg-[#16201a]/80',
           variantStyles[variant],
           className
         )
@@ -35,7 +35,7 @@ export const DashboardSkeleton: React.FC = () => {
   return (
     <div className="space-y-6 animate-pulse">
       {/* Header Skeleton */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-[#1F353C]/60">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-[#1b261f]/60">
         <div className="space-y-2">
           <Skeleton className="h-7 w-64" />
           <Skeleton className="h-4 w-96 max-w-full" />
@@ -49,7 +49,7 @@ export const DashboardSkeleton: React.FC = () => {
       {/* KPI Cards Skeleton (4 columns) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-3">
+          <div key={i} className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-3">
             <div className="flex items-center justify-between">
               <Skeleton className="h-4 w-24" />
               <Skeleton className="h-8 w-8 rounded-lg" />
@@ -63,14 +63,14 @@ export const DashboardSkeleton: React.FC = () => {
       {/* Main Content Grid Skeleton */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-4">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-4">
             <div className="flex items-center justify-between">
               <Skeleton className="h-5 w-40" />
               <Skeleton className="h-4 w-20" />
             </div>
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center justify-between p-3 bg-[#0E171B]/50 rounded-xl border border-[#1F353C]/50">
+                <div key={i} className="flex items-center justify-between p-3 bg-[#0c120e]/50 rounded-xl border border-[#1b261f]/50">
                   <div className="flex items-center gap-3">
                     <Skeleton className="h-5 w-5 rounded-md" />
                     <div className="space-y-1.5">
@@ -84,11 +84,11 @@ export const DashboardSkeleton: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-4">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-4">
             <Skeleton className="h-5 w-44" />
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="p-4 bg-[#0E171B]/50 rounded-xl border border-[#1F353C]/50 space-y-2">
+                <div key={i} className="p-4 bg-[#0c120e]/50 rounded-xl border border-[#1b261f]/50 space-y-2">
                   <div className="flex justify-between items-center">
                     <Skeleton className="h-4 w-36" />
                     <Skeleton className="h-3 w-16" />
@@ -101,11 +101,11 @@ export const DashboardSkeleton: React.FC = () => {
         </div>
 
         <div className="space-y-6">
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-4">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-4">
             <Skeleton className="h-5 w-36" />
             <div className="space-y-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="p-3 bg-[#0E171B]/50 rounded-xl border border-[#1F353C]/50 space-y-2">
+                <div key={i} className="p-3 bg-[#0c120e]/50 rounded-xl border border-[#1b261f]/50 space-y-2">
                   <div className="flex justify-between">
                     <Skeleton className="h-4 w-32" />
                     <Skeleton className="h-5 w-14 rounded-full" />
@@ -116,7 +116,7 @@ export const DashboardSkeleton: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-3">
+          <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-3">
             <Skeleton className="h-5 w-32" />
             <Skeleton className="h-24 w-full rounded-xl" />
           </div>
@@ -130,7 +130,7 @@ export const CardGridSkeleton: React.FC<{ count?: number }> = ({ count = 6 }) =>
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 animate-pulse">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="bg-[#15242A] border border-[#1F353C] rounded-[16px] p-5 space-y-4">
+        <div key={i} className="bg-[#101713] border border-[#1b261f] rounded-[16px] p-5 space-y-4">
           <div className="flex items-center justify-between">
             <Skeleton className="h-5 w-20 rounded-full" />
             <Skeleton className="h-4 w-16" />
@@ -140,7 +140,7 @@ export const CardGridSkeleton: React.FC<{ count?: number }> = ({ count = 6 }) =>
             <Skeleton className="h-3 w-full" />
             <Skeleton className="h-3 w-4/5" />
           </div>
-          <div className="pt-3 border-t border-[#1F353C]/60 flex items-center justify-between">
+          <div className="pt-3 border-t border-[#1b261f]/60 flex items-center justify-between">
             <Skeleton className="h-4 w-24" />
             <Skeleton className="h-7 w-20 rounded-lg" />
           </div>
@@ -152,12 +152,12 @@ export const CardGridSkeleton: React.FC<{ count?: number }> = ({ count = 6 }) =>
 
 export const TableSkeleton: React.FC<{ rows?: number }> = ({ rows = 5 }) => {
   return (
-    <div className="bg-[#15242A] border border-[#1F353C] rounded-[16px] overflow-hidden animate-pulse">
-      <div className="p-4 border-b border-[#1F353C] flex items-center justify-between bg-[#111C21]">
+    <div className="bg-[#101713] border border-[#1b261f] rounded-[16px] overflow-hidden animate-pulse">
+      <div className="p-4 border-b border-[#1b261f] flex items-center justify-between bg-[#0c120e]">
         <Skeleton className="h-5 w-40" />
         <Skeleton className="h-8 w-28 rounded-lg" />
       </div>
-      <div className="divide-y divide-[#1F353C]/60">
+      <div className="divide-y divide-[#1b261f]/60">
         {Array.from({ length: rows }).map((_, i) => (
           <div key={i} className="p-4 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 flex-1">
@@ -181,7 +181,7 @@ export const ListSkeleton: React.FC<{ items?: number }> = ({ items = 4 }) => {
   return (
     <div className="space-y-3 animate-pulse">
       {Array.from({ length: items }).map((_, i) => (
-        <div key={i} className="p-4 bg-[#15242A] border border-[#1F353C] rounded-[14px] flex items-center justify-between gap-4">
+        <div key={i} className="p-4 bg-[#101713] border border-[#1b261f] rounded-[14px] flex items-center justify-between gap-4">
           <div className="flex items-center gap-3.5 flex-1 min-w-0">
             <Skeleton className="h-6 w-6 rounded-md shrink-0" />
             <div className="space-y-1.5 flex-1 min-w-0">

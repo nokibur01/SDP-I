@@ -38,17 +38,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     const variantStyles = {
       primary:
-        'bg-[#00D084] text-[#0B1316] hover:bg-[#00B875] font-semibold active:scale-[0.98] disabled:opacity-50 disabled:hover:bg-[#00D084] disabled:active:scale-100 shadow-[0_2px_8px_rgba(0,0,0,0.25)]',
+        'bg-[#95b399] text-[#090e0b] hover:bg-[#839f87] font-semibold active:scale-[0.98] disabled:opacity-50 disabled:hover:bg-[#95b399] disabled:active:scale-100 shadow-[0_2px_8px_rgba(0,0,0,0.25)]',
       secondary:
-        'bg-[#192C34] text-[#D2DFE5] hover:text-white border border-[#1F353C] hover:border-[#00D084]/40 hover:bg-[#1E343E] active:scale-[0.98] disabled:opacity-50',
+        'bg-[#141d18] text-[#d6ded8] hover:text-[#d6ded8] border border-[#1b261f] hover:border-[#95b399]/40 hover:bg-[#16201a] active:scale-[0.98] disabled:opacity-50',
       outline:
-        'bg-transparent text-[#D2DFE5] border border-[#1F353C] hover:border-[#00D084]/50 hover:text-white active:scale-[0.98] disabled:opacity-50',
+        'bg-transparent text-[#d6ded8] border border-[#1b261f] hover:border-[#95b399]/50 hover:text-[#d6ded8] active:scale-[0.98] disabled:opacity-50',
       danger:
-        'bg-[rgba(248,113,113,0.12)] text-[#F87171] border border-[rgba(248,113,113,0.3)] hover:bg-[rgba(248,113,113,0.2)] active:scale-[0.98] disabled:opacity-50',
+        'bg-[rgba(214,103,103,0.12)] text-[#d66767] border border-[rgba(214,103,103,0.3)] hover:bg-[rgba(214,103,103,0.2)] active:scale-[0.98] disabled:opacity-50',
       ghost:
-        'bg-transparent text-[#7E96A0] hover:text-[#D2DFE5] hover:bg-[#192C34] active:scale-[0.98] disabled:opacity-50',
+        'bg-transparent text-[#78877d] hover:text-[#d6ded8] hover:bg-[#141d18] active:scale-[0.98] disabled:opacity-50',
       subtle:
-        'bg-[#0E171B] text-[#D2DFE5] hover:text-white border border-[#1F353C]/60 hover:border-[#1F353C] active:scale-[0.98] disabled:opacity-50',
+        'bg-[#0c120e] text-[#d6ded8] hover:text-[#d6ded8] border border-[#1b261f]/60 hover:border-[#1b261f] active:scale-[0.98] disabled:opacity-50',
     };
 
     return (

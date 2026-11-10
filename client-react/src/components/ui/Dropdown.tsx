@@ -55,7 +55,7 @@ export const Dropdown: React.FC<DropdownProps> = ({
             transition={{ duration: 0.12 }}
             className={twMerge(
               clsx(
-                'absolute z-50 mt-2 min-w-[180px] bg-[#1B2E36] border border-[#1F353C] rounded-[14px] p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.5)]',
+                'absolute z-50 mt-2 min-w-[180px] bg-[#16201a] border border-[#1b261f] rounded-[14px] p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.5)]',
                 align === 'right' ? 'right-0' : 'left-0',
                 className
               )
@@ -71,8 +71,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
                 className={clsx(
                   'w-full flex items-center gap-2.5 px-3 py-2 text-[13px] rounded-[10px] font-medium transition-colors text-left cursor-pointer',
                   item.danger
-                    ? 'text-[#F87171] hover:bg-[rgba(248,113,113,0.15)]'
-                    : 'text-[#D2DFE5] hover:text-white hover:bg-[#15242A]'
+                    ? 'text-[#d66767] hover:bg-[rgba(214,103,103,0.15)]'
+                    : 'text-[#d6ded8] hover:text-[#d6ded8] hover:bg-[#101713]'
                 )}
               >
                 {item.icon && <span className="w-4 h-4 shrink-0 text-current">{item.icon}</span>}

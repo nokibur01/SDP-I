@@ -95,21 +95,21 @@ export const Topbar: React.FC<TopbarProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-30 h-16 w-full bg-[#0E181D]/90 backdrop-blur-md border-b border-[#1F353C] px-4 sm:px-6 lg:px-8 flex items-center justify-between select-none">
+    <header className="sticky top-0 z-30 h-16 w-full bg-[#101713]/90 backdrop-blur-md border-b border-[#1b261f] px-4 sm:px-6 lg:px-8 flex items-center justify-between select-none">
       {/* Left: Mobile Toggle & Page Title */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={onOpenSidebar}
-          className="lg:hidden p-2 rounded-[10px] text-[#9BB2BC] hover:text-white hover:bg-[#15242A] transition-colors cursor-pointer shrink-0"
+          className="lg:hidden p-2 rounded-[10px] text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713] transition-colors cursor-pointer shrink-0"
           aria-label="Open sidebar"
         >
           <Menu className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-2.5 truncate">
-          <h1 className="text-[17px] font-bold text-white tracking-tight truncate">{title}</h1>
-          <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#00D084] shrink-0" />
-          <span className="hidden sm:inline-block text-[12px] text-[#9BB2BC] font-medium truncate">
+          <h1 className="text-[17px] font-bold text-[#d6ded8] tracking-tight truncate">{title}</h1>
+          <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#95b399] shrink-0" />
+          <span className="hidden sm:inline-block text-[12px] text-[#a7b3aa] font-medium truncate">
             Semester Cohort Hub
           </span>
         </div>
@@ -120,15 +120,15 @@ export const Topbar: React.FC<TopbarProps> = ({
         <button
           type="button"
           onClick={onOpenCommand}
-          className="w-full flex items-center justify-between bg-[#0E171B] border border-[#1F353C] hover:border-[#00D084]/40 rounded-[12px] py-1.5 px-3.5 text-[13px] text-[#9BB2BC] transition-all cursor-pointer group shadow-sm"
+          className="w-full flex items-center justify-between bg-[#0c120e] border border-[#1b261f] hover:border-[#95b399]/40 rounded-[12px] py-1.5 px-3.5 text-[13px] text-[#a7b3aa] transition-all cursor-pointer group shadow-sm"
         >
           <div className="flex items-center gap-2">
-            <Search className="w-4 h-4 text-[#9BB2BC] group-hover:text-[#00D084] transition-colors" />
-            <span className="group-hover:text-[#D2DFE5] transition-colors">
+            <Search className="w-4 h-4 text-[#a7b3aa] group-hover:text-[#95b399] transition-colors" />
+            <span className="group-hover:text-[#d6ded8] transition-colors">
               Search students, events, or announcements...
             </span>
           </div>
-          <kbd className="text-[11.5px] font-mono bg-[#15242A] border border-[#1F353C] px-1.5 py-0.5 rounded text-[#9BB2BC]">
+          <kbd className="text-[11.5px] font-mono bg-[#101713] border border-[#1b261f] px-1.5 py-0.5 rounded text-[#a7b3aa]">
             Ctrl + K
           </kbd>
         </button>
@@ -139,7 +139,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Mobile Search Button */}
         <button
           onClick={onOpenCommand}
-          className="md:hidden p-2 rounded-[10px] text-[#9BB2BC] hover:text-white hover:bg-[#15242A] transition-colors cursor-pointer"
+          className="md:hidden p-2 rounded-[10px] text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713] transition-colors cursor-pointer"
           aria-label="Search"
         >
           <Search className="w-5 h-5" />
@@ -148,7 +148,7 @@ export const Topbar: React.FC<TopbarProps> = ({
         {/* Calendar Quick Action */}
         <button
           onClick={() => navigate('/events')}
-          className="p-2 rounded-[10px] text-[#9BB2BC] hover:text-white hover:bg-[#15242A] transition-colors cursor-pointer"
+          className="p-2 rounded-[10px] text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713] transition-colors cursor-pointer"
           title="Campus Calendar"
         >
           <Calendar className="w-4 h-4" />
@@ -158,20 +158,20 @@ export const Topbar: React.FC<TopbarProps> = ({
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setIsNotifOpen(!isNotifOpen)}
-            className="p-2 rounded-[10px] text-[#9BB2BC] hover:text-white hover:bg-[#15242A] transition-colors cursor-pointer relative"
+            className="p-2 rounded-[10px] text-[#a7b3aa] hover:text-[#d6ded8] hover:bg-[#101713] transition-colors cursor-pointer relative"
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
             {unreadCount > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#00D084] animate-pulse" />
+              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[#95b399] animate-pulse" />
             )}
           </button>
 
           {isNotifOpen && (
-            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#1B2E36] border border-[#1F353C] rounded-[16px] shadow-[0_16px_40px_rgba(0,0,0,0.6)] p-3.5 z-50 animate-in fade-in zoom-in-95 duration-100 max-h-[460px] flex flex-col">
-              <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#1F353C]">
+            <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#16201a] border border-[#1b261f] rounded-[16px] shadow-[0_16px_40px_rgba(0,0,0,0.6)] p-3.5 z-50 animate-in fade-in zoom-in-95 duration-100 max-h-[460px] flex flex-col">
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-[#1b261f]">
                 <div className="flex items-center gap-2">
-                  <span className="text-[13px] font-bold text-white">Cohort Notifications</span>
+                  <span className="text-[13px] font-bold text-[#d6ded8]">Cohort Notifications</span>
                   {unreadCount > 0 ? (
                     <Badge variant="mint" size="xs">
                       {unreadCount} New
@@ -186,7 +186,7 @@ export const Topbar: React.FC<TopbarProps> = ({
                 {unreadCount > 0 && (
                   <button
                     onClick={() => markAllReadMutation.mutate()}
-                    className="text-[11.5px] text-[#00D084] hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                    className="text-[11.5px] text-[#95b399] hover:underline flex items-center gap-1 font-medium cursor-pointer"
                   >
                     <CheckCheck className="w-3.5 h-3.5" />
                     <span>Mark all read</span>
@@ -196,7 +196,7 @@ export const Topbar: React.FC<TopbarProps> = ({
 
               <div className="flex-1 overflow-y-auto flex flex-col gap-2 max-h-72 pr-0.5">
                 {notifications.length === 0 ? (
-                  <div className="py-8 text-center text-[12.5px] text-[#9BB2BC]">
+                  <div className="py-8 text-center text-[12.5px] text-[#a7b3aa]">
                     All caught up! No recent notifications.
                   </div>
                 ) : (
@@ -215,30 +215,30 @@ export const Topbar: React.FC<TopbarProps> = ({
                         }}
                         className={`p-2.5 rounded-[10px] border flex flex-col gap-1 text-left transition-colors cursor-pointer ${
                           isUnread
-                            ? 'bg-[#15242A] border-[#00D084]/30 hover:border-[#00D084]/60'
-                            : 'bg-[#121F24] border-[#1F353C]/40 hover:bg-[#15242A]'
+                            ? 'bg-[#101713] border-[#95b399]/30 hover:border-[#95b399]/60'
+                            : 'bg-[#16201a] border-[#1b261f]/40 hover:bg-[#101713]'
                         }`}
                       >
                         <div className="flex items-center justify-between gap-1">
                           <span
                             className={`text-[11px] font-bold uppercase tracking-wider ${
                               n.type === 'announcement'
-                                ? 'text-[#38BDF8]'
+                                ? 'text-[#7f9fb3]'
                                 : n.type === 'task'
-                                ? 'text-[#00D084]'
-                                : 'text-[#F59E0B]'
+                                ? 'text-[#95b399]'
+                                : 'text-[#d6b867]'
                             }`}
                           >
                             {n.type}
                           </span>
-                          <span className="text-[10.5px] text-[#9BB2BC]">
+                          <span className="text-[10.5px] text-[#a7b3aa]">
                             {new Date(n.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </span>
                         </div>
-                        <span className="text-[12.5px] font-semibold text-white leading-snug">
+                        <span className="text-[12.5px] font-semibold text-[#d6ded8] leading-snug">
                           {n.title}
                         </span>
-                        <p className="text-[11.5px] text-[#9BB2BC] line-clamp-2 leading-relaxed">
+                        <p className="text-[11.5px] text-[#a7b3aa] line-clamp-2 leading-relaxed">
                           {n.message}
                         </p>
                       </div>
@@ -250,7 +250,7 @@ export const Topbar: React.FC<TopbarProps> = ({
               <Link
                 to="/announcements"
                 onClick={() => setIsNotifOpen(false)}
-                className="block text-center text-[12px] text-[#00D084] hover:underline font-medium pt-2.5 mt-2 border-t border-[#1F353C]"
+                className="block text-center text-[12px] text-[#95b399] hover:underline font-medium pt-2.5 mt-2 border-t border-[#1b261f]"
               >
                 View all cohort announcements →
               </Link>
@@ -258,20 +258,20 @@ export const Topbar: React.FC<TopbarProps> = ({
           )}
         </div>
 
-        <div className="h-4 w-px bg-[#1F353C] mx-1" />
+        <div className="h-4 w-px bg-[#1b261f] mx-1" />
 
         {/* Profile Avatar Dropdown */}
         <Dropdown
           trigger={
-            <div className="flex items-center gap-2.5 p-1 rounded-[12px] hover:bg-[#15242A] transition-colors cursor-pointer select-none">
-              <div className="w-8 h-8 rounded-full bg-[#192C34] border border-[#00D084]/30 flex items-center justify-center text-[13px] font-bold text-[#00D084]">
+            <div className="flex items-center gap-2.5 p-1 rounded-[12px] hover:bg-[#101713] transition-colors cursor-pointer select-none">
+              <div className="w-8 h-8 rounded-full bg-[#141d18] border border-[#95b399]/30 flex items-center justify-center text-[13px] font-bold text-[#95b399]">
                 {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
               </div>
               <div className="hidden lg:flex flex-col text-left">
-                <span className="text-[13px] font-semibold text-white leading-tight">
+                <span className="text-[13px] font-semibold text-[#d6ded8] leading-tight">
                   {user?.name || 'Academic User'}
                 </span>
-                <span className="text-[11.5px] text-[#9BB2BC] capitalize">
+                <span className="text-[11.5px] text-[#a7b3aa] capitalize">
                   {user?.role || 'student'}
                 </span>
               </div>
